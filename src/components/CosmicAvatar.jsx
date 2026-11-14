@@ -715,7 +715,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
       {/* Human-Like Return-To-Top Floating Guide Widget */}
       {returnPrompt.visible && (
-        <div className="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:right-6 z-50 flex items-center justify-between sm:justify-start gap-3 p-3.5 sm:px-5 sm:py-3.5 rounded-2xl bg-space-950/95 border border-energy-teal/60 backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.8),0_0_25px_rgba(0,242,254,0.3)] animate-slideUp">
+        <div className="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:right-6 z-[100] flex items-center justify-between sm:justify-start gap-3 p-3.5 sm:px-5 sm:py-3.5 rounded-2xl bg-space-950/95 border border-energy-teal/60 backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.8),0_0_25px_rgba(0,242,254,0.3)] animate-slideUp">
           <div className="flex items-center space-x-2.5">
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-energy-cyan opacity-75" />
