@@ -1,5 +1,6 @@
 import React from 'react';
-import { Globe, Server, Film, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Globe, Server, Film, Sparkles, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import { useInView } from '../hooks/useInView';
 
 const SERVICES = [
   {
@@ -29,12 +30,19 @@ const SERVICES = [
 ];
 
 export const ServicesSection = () => {
+  const [sectionRef, isInView] = useInView({ threshold: 0.1, triggerOnce: true });
+
   return (
-    <section id="services" className="py-24 px-6 bg-space-950 relative border-t border-slate-900">
-      <div className="max-w-7xl mx-auto">
+    <section
+      id="services"
+      ref={sectionRef}
+      className="py-24 px-6 bg-space-950 relative border-t border-slate-900 overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-16">
           <div className="inline-flex items-center space-x-2 font-mono text-xs tracking-widest text-cyan-400 bg-cyan-400/10 border border-cyan-400/30 px-3.5 py-1.5 rounded-full mb-3">
+            <Sparkles className="w-3.5 h-3.5" />
             <span>OFFERINGS // PRODUCTION SERVICES</span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4">
@@ -52,16 +60,28 @@ export const ServicesSection = () => {
             return (
               <div
                 key={idx}
-                className="p-8 rounded-3xl bg-space-900/80 border border-slate-800/80 hover:border-slate-700 backdrop-blur-xl flex flex-col justify-between transition-all group"
+                className={`p-8 rounded-3xl bg-space-900/80 border border-slate-800/80 hover:border-slate-700 backdrop-blur-xl flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(0,0,0,0.8)] group relative overflow-hidden ${
+                  isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{
+                  transitionDelay: `${idx * 150}ms`,
+                }}
               >
+                {/* Subtle Hover Ambient Top Glow */}
+                <div
+                  className="absolute -top-24 -left-24 w-48 h-48 rounded-full pointer-events-none opacity-0 group-hover:opacity-40 transition-opacity duration-700 blur-[50px]"
+                  style={{ backgroundColor: srv.color }}
+                />
+
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <div
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
                       style={{
                         backgroundColor: `${srv.color}15`,
                         border: `1px solid ${srv.color}35`,
                         color: srv.color,
+                        boxShadow: `0 0 20px ${srv.color}20`,
                       }}
                     >
                       <Icon className="w-6 h-6" />
@@ -78,7 +98,9 @@ export const ServicesSection = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-white mb-3">{srv.title}</h3>
+                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-energy-cyan transition-colors">
+                    {srv.title}
+                  </h3>
                   <p className="text-sm text-slate-400 leading-relaxed mb-6">{srv.desc}</p>
 
                   <div className="space-y-2.5 pt-4 border-t border-slate-800">
@@ -93,7 +115,13 @@ export const ServicesSection = () => {
 
                 <div className="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between font-mono text-xs text-slate-500">
                   <span>DISPATCH_RATE</span>
-                  <span className="text-emerald-400 font-semibold">AVAILABLE</span>
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center space-x-1 text-emerald-400 font-semibold hover:text-emerald-300 transition-colors"
+                  >
+                    <span>AVAILABLE</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
                 </div>
               </div>
             );

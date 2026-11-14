@@ -1,8 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+const ORBITING_TECH = [
+  { label: 'React 18', angle: 0, radius: 195, tilt: 65, color: '#00F2FE' },
+  { label: 'Supabase', angle: 60, radius: 215, tilt: -45, color: '#10B981' },
+  { label: 'PostgreSQL', angle: 120, radius: 185, tilt: 55, color: '#38BDF8' },
+  { label: 'Node.js', angle: 180, radius: 210, tilt: -60, color: '#8B5CF6' },
+  { label: 'TypeScript', angle: 240, radius: 190, tilt: 40, color: '#00FFE0' },
+  { label: 'Remotion', angle: 300, radius: 220, tilt: -50, color: '#EC4899' },
+];
+
 export const CosmicAvatar = ({ size = 420, className = "" }) => {
   const containerRef = useRef(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const [pulseShield, setPulseShield] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -19,27 +30,40 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  const triggerShieldBurst = () => {
+    setPulseShield(true);
+    setTimeout(() => setPulseShield(false), 900);
+  };
+
   const tiltX = mousePos.y * -14;
   const tiltY = mousePos.x * 18;
 
   return (
     <div
       ref={containerRef}
-      className={`relative flex items-center justify-center select-none ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={triggerShieldBurst}
+      className={`relative flex items-center justify-center select-none cursor-pointer group ${className}`}
       style={{
         width: size,
         height: size,
         perspective: '1200px',
       }}
+      title="Click to trigger quantum shield aura"
     >
       {/* 1. Deep Core Gravitational Glow */}
       <div
-        className="absolute rounded-full blur-[70px] opacity-60 animate-pulse pointer-events-none"
+        className={`absolute rounded-full blur-[70px] pointer-events-none transition-all duration-700 ${
+          pulseShield ? 'scale-125 opacity-90' : isHovered ? 'scale-110 opacity-75' : 'opacity-60'
+        }`}
         style={{
           width: size * 0.75,
           height: size * 0.75,
-          background: 'radial-gradient(circle, #00F2FE 0%, #7928CA 45%, rgba(0, 242, 254, 0) 75%)',
-          animationDuration: '4s',
+          background: pulseShield
+            ? 'radial-gradient(circle, #00FFE0 0%, #00F2FE 40%, #7928CA 70%, transparent 85%)'
+            : 'radial-gradient(circle, #00F2FE 0%, #7928CA 45%, rgba(0, 242, 254, 0) 75%)',
+          animation: 'pulseSlow 4s infinite ease-in-out',
         }}
       />
 
@@ -84,7 +108,37 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
         }}
       />
 
-      {/* 3. The 3D Cyber-Astronaut / Developer Avatar Vessel */}
+      {/* 3. Orbiting Interactive Floating Tech Badges */}
+      {ORBITING_TECH.map((tech, i) => {
+        // Compute position based on angle
+        const rad = (tech.angle * Math.PI) / 180;
+        const xOffset = Math.cos(rad) * (tech.radius * (size / 420));
+        const yOffset = Math.sin(rad) * (tech.radius * (size / 420) * 0.42);
+
+        return (
+          <div
+            key={i}
+            className="absolute z-20 pointer-events-none sm:pointer-events-auto transition-transform hover:scale-125"
+            style={{
+              transform: `translate(${xOffset}px, ${yOffset}px)`,
+              animation: `orbitFloat 4s ease-in-out infinite ${i * 0.65}s`,
+            }}
+          >
+            <div
+              className="px-2.5 py-1 rounded-full font-mono text-[10px] font-extrabold tracking-wider bg-space-950/90 border backdrop-blur-md shadow-lg transition-all"
+              style={{
+                borderColor: `${tech.color}60`,
+                color: tech.color,
+                boxShadow: `0 0 15px ${tech.color}35`,
+              }}
+            >
+              {tech.label}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* 4. The 3D Cyber-Astronaut / Developer Avatar Vessel */}
       <div
         className="relative z-10 flex flex-col items-center justify-center transition-transform duration-300 ease-out"
         style={{
@@ -136,7 +190,16 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
           </defs>
 
           {/* Halo Energy Behind Avatar */}
-          <circle cx="100" cy="90" r="62" stroke="url(#neonRim)" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.6" className="animate-spin-slow" />
+          <circle
+            cx="100"
+            cy="90"
+            r="62"
+            stroke="url(#neonRim)"
+            strokeWidth="1.5"
+            strokeDasharray="6 4"
+            opacity="0.6"
+            className="animate-spin-slow"
+          />
 
           {/* Shoulder Armor Plates */}
           <path
@@ -174,6 +237,31 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
             filter="url(#neonBlur)"
             opacity="0.95"
           />
+
+          {/* Animated Scanning Laser Sweep Line on Visor */}
+          <line
+            x1="68"
+            y1="75"
+            x2="132"
+            y2="75"
+            stroke="#FFFFFF"
+            strokeWidth="1.5"
+            opacity="0.8"
+            filter="url(#neonBlur)"
+          >
+            <animate
+              attributeName="y1"
+              values="62;102;62"
+              dur="3s"
+              repeatCount="indefinite"
+            />
+            <animate
+              attributeName="y2"
+              values="62;102;62"
+              dur="3s"
+              repeatCount="indefinite"
+            />
+          </line>
 
           {/* Visor Reflection Streak */}
           <path
@@ -225,6 +313,14 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
           50% {
             transform: scale(0.82);
             opacity: 0.28;
+          }
+        }
+        @keyframes orbitFloat {
+          0%, 100% {
+            transform: translate(var(--tx, 0), var(--ty, 0)) translateY(0px);
+          }
+          50% {
+            transform: translate(var(--tx, 0), var(--ty, 0)) translateY(-8px);
           }
         }
         @keyframes spinClockwise {

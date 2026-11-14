@@ -1,8 +1,10 @@
-import React from 'react';
-import { Code, Server, Wrench, Sparkles, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Code, Server, Wrench, Sparkles, Filter, CheckCircle2 } from 'lucide-react';
+import { useInView } from '../hooks/useInView';
 
 const SKILLS_DATA = [
   {
+    id: 'frontend',
     category: 'Frontend & Reactive UI',
     icon: Code,
     color: '#00F2FE',
@@ -16,6 +18,7 @@ const SKILLS_DATA = [
     ],
   },
   {
+    id: 'backend',
     category: 'Backend & Cloud Systems',
     icon: Server,
     color: '#8B5CF6',
@@ -29,6 +32,7 @@ const SKILLS_DATA = [
     ],
   },
   {
+    id: 'architecture',
     category: 'Architecture & Delivery',
     icon: Wrench,
     color: '#38BDF8',
@@ -44,14 +48,25 @@ const SKILLS_DATA = [
 ];
 
 export const SkillsGrid = () => {
+  const [sectionRef, isInView] = useInView({ threshold: 0.1, triggerOnce: true });
+  const [filter, setFilter] = useState('all');
+
+  const filteredData = filter === 'all' 
+    ? SKILLS_DATA 
+    : SKILLS_DATA.filter((item) => item.id === filter);
+
   return (
-    <section id="skills" className="py-28 px-6 bg-space-950 relative border-t border-slate-900 overflow-hidden">
+    <section
+      id="skills"
+      ref={sectionRef}
+      className="py-28 px-6 bg-space-950 relative border-t border-slate-900 overflow-hidden"
+    >
       {/* Background Glow */}
       <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-energy-teal/10 blur-[180px] pointer-events-none rounded-full" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
+        <div className="flex flex-col items-center text-center mb-12">
           <div className="inline-flex items-center space-x-2 font-mono text-xs tracking-widest text-energy-teal bg-energy-teal/10 border border-energy-teal/30 px-4 py-1.5 rounded-full mb-3 shadow-[0_0_20px_rgba(0,242,254,0.2)]">
             <Sparkles className="w-3.5 h-3.5" />
             <span>CORE STACK // REPOSITORY MATRIX</span>
@@ -59,20 +74,45 @@ export const SkillsGrid = () => {
           <h2 className="text-4xl sm:text-6xl font-black text-white tracking-tight mb-4">
             Technical Stack & Capabilities
           </h2>
-          <p className="text-slate-400 max-w-2xl text-lg">
+          <p className="text-slate-400 max-w-2xl text-lg mb-8">
             Mastered across enterprise production applications, relational data modeling, and high-fidelity motion.
           </p>
+
+          {/* Interactive Filter Pills */}
+          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-space-900/90 border border-slate-800 backdrop-blur-md">
+            {[
+              { id: 'all', label: 'All Disciplines' },
+              { id: 'frontend', label: 'Frontend' },
+              { id: 'backend', label: 'Backend' },
+              { id: 'architecture', label: 'Architecture' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setFilter(tab.id)}
+                className={`px-4 py-1.5 rounded-xl font-mono text-xs font-semibold transition-all ${
+                  filter === tab.id
+                    ? 'bg-energy-teal text-space-950 shadow-[0_0_15px_rgba(0,242,254,0.4)] scale-105'
+                    : 'text-slate-400 hover:text-white hover:bg-space-800'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* 3 Interactive Cards with Glowing Animated Bars */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {SKILLS_DATA.map((col, idx) => {
+          {filteredData.map((col, idx) => {
             const Icon = col.icon;
             return (
               <div
-                key={idx}
-                className="p-8 rounded-3xl bg-space-900/80 border border-slate-800/80 hover:border-slate-700 backdrop-blur-xl transition-all hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(0,0,0,0.8)] group"
+                key={col.id}
+                className={`p-8 rounded-3xl bg-space-900/80 border border-slate-800/80 hover:border-slate-700 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(0,0,0,0.8)] group ${
+                  isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
                 style={{
+                  transitionDelay: `${idx * 150}ms`,
                   boxShadow: `0 20px 40px rgba(0,0,0,0.6), 0 0 25px ${col.color}10`,
                 }}
               >
@@ -114,7 +154,8 @@ export const SkillsGrid = () => {
                         <div
                           className="h-full rounded-full transition-all duration-1000 ease-out"
                           style={{
-                            width: `${skill.percent}%`,
+                            width: isInView ? `${skill.percent}%` : '0%',
+                            transitionDelay: `${(idx * 5 + sIdx) * 100}ms`,
                             background: `linear-gradient(90deg, ${col.color}80, ${col.color})`,
                             boxShadow: `0 0 10px ${col.color}60`,
                           }}

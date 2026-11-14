@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-space-950 text-slate-100;
   }
@@ -64,6 +67,26 @@
   }
 }
 
+@keyframes shimmerSweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes neonBorderPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+    border-color: rgba(0, 242, 254, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(0, 242, 254, 0.5);
+    border-color: rgba(0, 242, 254, 0.7);
+  }
+}
+
 .animate-gradient-x {
   animation: gradientX 6s ease infinite;
 }
@@ -78,6 +101,10 @@
 
 .animate-float-slow {
   animation: floatingDrift 6s ease-in-out infinite;
+}
+
+.animate-neon-pulse {
+  animation: neonBorderPulse 3s ease-in-out infinite;
 }
 
 /* Glassmorphism Card Specular Hover */

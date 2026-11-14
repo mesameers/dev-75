@@ -15,12 +15,15 @@ import {
   GraduationCap,
   FileText,
   DollarSign,
-  UserCheck
+  UserCheck,
+  PlayCircle
 } from 'lucide-react';
+import { EIMSDemoModal } from './EIMSDemoModal';
 
 export const ProjectEIMS = () => {
   const [activeTab, setActiveTab] = useState('superadmin');
   const [liveSessions, setLiveSessions] = useState(2341);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [auditLog, setAuditLog] = useState([
     { id: 1, time: 'Just now', event: 'Division zone synchronized: Rawalpindi North', status: 'OK' },
     { id: 2, time: '12s ago', event: 'Superadmin RBAC token renewed: admin@schoolms.com', status: 'AUTH' },
@@ -51,9 +54,18 @@ export const ProjectEIMS = () => {
           <h2 className="text-4xl sm:text-6xl font-black text-white tracking-tight mb-4">
             Multi-Campus School Management System (EIMS)
           </h2>
-          <p className="text-slate-400 max-w-3xl text-lg leading-relaxed">
+          <p className="text-slate-400 max-w-3xl text-lg leading-relaxed mb-6">
             A production-hardened multi-tenant educational governance platform built with React, Vite, Node.js Express, and Supabase PostgreSQL.
           </p>
+
+          {/* Launch Live Interactive Sandbox Button */}
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center space-x-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-energy-teal via-cyan-400 to-secondary-violet text-space-950 font-black text-sm tracking-wide shadow-[0_0_30px_rgba(0,242,254,0.35)] hover:scale-105 transition-all"
+          >
+            <PlayCircle className="w-5 h-5 fill-current" />
+            <span>Launch Live Interactive Demo Sandbox</span>
+          </button>
         </div>
 
         {/* Live Executive KPI Metric Cards */}
@@ -182,7 +194,7 @@ export const ProjectEIMS = () => {
                     Superadmin Executive Engine
                   </h3>
                   <p className="text-sm text-slate-300 leading-relaxed">
-                    Designed for apex educational authorities to manage regional divisions, districts, examination boards (BISE Lahore, Cambridge CAIE, FBISE), and complete campus directory with 1-click administrative delegation.
+                    Centralized platform governor managing educational divisions, districts, examination boards (BISE Lahore, Cambridge CAIE, FBISE), and complete campus directory with 1-click administrative delegation.
                   </p>
 
                   <div className="grid grid-cols-2 gap-4 pt-4">
@@ -352,6 +364,9 @@ export const ProjectEIMS = () => {
           </div>
         </div>
       </div>
+
+      {/* Interactive Sandbox Modal */}
+      <EIMSDemoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 };
