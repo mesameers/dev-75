@@ -1,5 +1,5 @@
-// Procedural Serene Ambient Flute Engine using Web Audio API
-// Soft, meditative, peaceful background flute melody that auto-ducks during conversation
+// Authentic Bansuri Flute Engine - "Hum Tumhare Hain Sanam" Melody
+// Synthesizes the iconic romantic Bollywood melody with real flute breath, warmth, and auto-ducking
 
 class AmbientFluteEngine {
   constructor() {
@@ -10,20 +10,58 @@ class AmbientFluteEngine {
     this.noteTimer = null;
     this.melodyIndex = 0;
 
-    // Meditative Bansuri / Celtic Pentatonic Flute Melody
+    // "Hum Tumhare Hain Sanam" (ہم تمہارے ہیں صنم) Authentic Flute Notations
     this.notes = [
-      { freq: 293.66, dur: 3.0, pause: 0.6 }, // D4
-      { freq: 349.23, dur: 2.6, pause: 0.5 }, // F4
-      { freq: 392.00, dur: 3.4, pause: 0.8 }, // G4
-      { freq: 440.00, dur: 2.8, pause: 0.5 }, // A4
-      { freq: 523.25, dur: 3.8, pause: 1.0 }, // C5
-      { freq: 440.00, dur: 2.6, pause: 0.6 }, // A4
-      { freq: 392.00, dur: 3.2, pause: 0.8 }, // G4
-      { freq: 349.23, dur: 2.8, pause: 0.6 }, // F4
-      { freq: 293.66, dur: 4.2, pause: 1.2 }, // D4 home
-      { freq: 261.63, dur: 2.4, pause: 0.5 }, // C4
-      { freq: 293.66, dur: 3.6, pause: 0.8 }, // D4
-      { freq: 392.00, dur: 3.4, pause: 1.0 }, // G4
+      // Phrase 1: "Hum tumhaare hain... tumhaare sanam..."
+      { freq: 329.63, dur: 0.65, pause: 0.08, label: 'Hum' },        // E4
+      { freq: 349.23, dur: 0.65, pause: 0.08, label: 'tum-' },       // F4
+      { freq: 392.00, dur: 0.70, pause: 0.08, label: '-haa-' },      // G4
+      { freq: 440.00, dur: 1.35, pause: 0.28, label: '-re hain' },   // A4
+      { freq: 440.00, dur: 0.55, pause: 0.08, label: 'tum-' },       // A4
+      { freq: 440.00, dur: 0.50, pause: 0.08, label: '-haa-' },      // A4
+      { freq: 493.88, dur: 0.55, pause: 0.08, label: '-re' },        // B4
+      { freq: 523.25, dur: 1.85, pause: 0.55, label: 'sa-nam...' },  // C5
+
+      // Phrase 2: "Jaaneman mohabbat ki, har kasam ki kasam..."
+      { freq: 523.25, dur: 0.65, pause: 0.08, label: 'Jaa-' },       // C5
+      { freq: 493.88, dur: 0.52, pause: 0.08, label: '-ne-' },       // B4
+      { freq: 440.00, dur: 0.58, pause: 0.08, label: '-man' },       // A4
+      { freq: 392.00, dur: 1.15, pause: 0.28, label: 'mohab-bat' },  // G4
+      { freq: 392.00, dur: 0.42, pause: 0.06, label: 'har' },        // G4
+      { freq: 349.23, dur: 0.42, pause: 0.06, label: 'ka-' },        // F4
+      { freq: 392.00, dur: 0.45, pause: 0.06, label: '-sam' },       // G4
+      { freq: 440.00, dur: 0.45, pause: 0.06, label: 'ki' },         // A4
+      { freq: 493.88, dur: 0.52, pause: 0.06, label: 'ka-' },        // B4
+      { freq: 440.00, dur: 0.45, pause: 0.06, label: '-sam' },       // A4
+      { freq: 392.00, dur: 1.35, pause: 0.40, label: 'ki...' },      // G4
+
+      // Phrase 3: "Na juda honge hum..."
+      { freq: 349.23, dur: 0.58, pause: 0.08, label: 'Na' },         // F4
+      { freq: 392.00, dur: 0.58, pause: 0.08, label: 'ju-' },        // G4
+      { freq: 440.00, dur: 0.62, pause: 0.08, label: '-da' },        // A4
+      { freq: 392.00, dur: 0.58, pause: 0.08, label: 'hon-' },       // G4
+      { freq: 349.23, dur: 0.58, pause: 0.08, label: '-ge' },        // F4
+      { freq: 329.63, dur: 0.75, pause: 0.10, label: 'hum...' },     // E4
+      { freq: 293.66, dur: 1.65, pause: 0.50, label: 'hum...' },     // D4
+
+      // Phrase 4: "Hum tumhaare hain, tumhaare sanam" (Refrain climax)
+      { freq: 329.63, dur: 0.65, pause: 0.08, label: 'Hum' },        // E4
+      { freq: 349.23, dur: 0.65, pause: 0.08, label: 'tum-' },       // F4
+      { freq: 392.00, dur: 0.70, pause: 0.08, label: '-haa-' },      // G4
+      { freq: 440.00, dur: 1.35, pause: 0.28, label: '-re hain' },   // A4
+      { freq: 440.00, dur: 0.55, pause: 0.08, label: 'tum-' },       // A4
+      { freq: 440.00, dur: 0.50, pause: 0.08, label: '-haa-' },      // A4
+      { freq: 493.88, dur: 0.55, pause: 0.08, label: '-re' },        // B4
+      { freq: 523.25, dur: 2.30, pause: 0.85, label: 'sa-nam...' },  // C5
+
+      // Phrase 5: Serene Flute Alaap / Interlude connecting into next cycle
+      { freq: 587.33, dur: 0.75, pause: 0.10, label: 'D5 alaap' },   // D5
+      { freq: 523.25, dur: 0.85, pause: 0.12, label: 'C5 alaap' },   // C5
+      { freq: 493.88, dur: 0.75, pause: 0.10, label: 'B4 alaap' },   // B4
+      { freq: 440.00, dur: 1.10, pause: 0.15, label: 'A4 alaap' },   // A4
+      { freq: 392.00, dur: 0.90, pause: 0.15, label: 'G4 alaap' },   // G4
+      { freq: 349.23, dur: 0.85, pause: 0.15, label: 'F4 alaap' },   // F4
+      { freq: 329.63, dur: 1.70, pause: 1.25, label: 'E4 resolve' }, // E4 peaceful resolution before looping
     ];
   }
 
@@ -34,8 +72,8 @@ class AmbientFluteEngine {
       if (!AudioCtx) return;
       this.ctx = new AudioCtx();
       this.masterGain = this.ctx.createGain();
-      // "slightly sound" -> soft, gentle background volume
-      this.masterGain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+      // Soft, gentle background presence ("slightly sound k saath")
+      this.masterGain.gain.setValueAtTime(0.045, this.ctx.currentTime);
       this.masterGain.connect(this.ctx.destination);
     } catch (e) {}
   }
@@ -50,41 +88,46 @@ class AmbientFluteEngine {
       const now = this.ctx.currentTime;
       const osc = this.ctx.createOscillator();
       const harmonic = this.ctx.createOscillator();
+      const harmonicGain = this.ctx.createGain();
       const lfo = this.ctx.createOscillator();
       const lfoGain = this.ctx.createGain();
       const noteGain = this.ctx.createGain();
       const filter = this.ctx.createBiquadFilter();
 
-      // Flute Warmth Filter
+      // Flute Warmth Filter (bamboo resonance)
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(1400, now);
-      filter.Q.setValueAtTime(1.5, now);
+      filter.frequency.setValueAtTime(1550, now);
+      filter.Q.setValueAtTime(1.8, now);
 
       // Fundamental Tone (Sine)
       osc.type = 'sine';
       osc.frequency.setValueAtTime(note.freq, now);
 
-      // Soft 2nd Harmonic Tone (Triangle) for authentic flute body
+      // Soft 2nd Harmonic Tone (Triangle) for authentic bansuri body
       harmonic.type = 'triangle';
       harmonic.frequency.setValueAtTime(note.freq * 2, now);
+      harmonicGain.gain.setValueAtTime(0.22, now);
 
-      // 5Hz Subtle Breath Vibrato
+      // 5.2Hz Natural Breath Vibrato
       lfo.frequency.setValueAtTime(5.2, now);
-      lfoGain.gain.setValueAtTime(1.8, now); // subtle pitch vibrato
+      lfoGain.gain.setValueAtTime(2.1, now);
       lfo.connect(lfoGain);
       lfoGain.connect(osc.frequency);
       lfoGain.connect(harmonic.frequency);
 
-      // Natural Flute Envelope: gentle swell (attack) -> soft breath sustain -> graceful decay
-      const attack = 0.45;
-      const release = 0.85;
+      // Natural Flute Breath Envelope (soft attack swell -> sustain -> gentle decay)
+      const attack = Math.min(0.22, note.dur * 0.28);
+      const release = Math.min(0.32, note.dur * 0.38);
+      const sustainTime = Math.max(0.05, note.dur - attack - release);
+
       noteGain.gain.setValueAtTime(0.0001, now);
-      noteGain.gain.linearRampToValueAtTime(0.7, now + attack);
-      noteGain.gain.linearRampToValueAtTime(0.55, now + note.dur - release);
+      noteGain.gain.linearRampToValueAtTime(0.68, now + attack);
+      noteGain.gain.linearRampToValueAtTime(0.52, now + attack + sustainTime);
       noteGain.gain.linearRampToValueAtTime(0.0001, now + note.dur);
 
       osc.connect(filter);
-      harmonic.connect(filter);
+      harmonic.connect(harmonicGain);
+      harmonicGain.connect(filter);
       filter.connect(noteGain);
       noteGain.connect(this.masterGain);
 
@@ -97,7 +140,7 @@ class AmbientFluteEngine {
       harmonic.stop(stopTime);
       lfo.stop(stopTime);
 
-      // Schedule next note
+      // Schedule next note with exact phrasing pause
       const intervalMs = (note.dur + note.pause) * 1000;
       this.noteTimer = setTimeout(() => {
         this.playNextNote();
@@ -115,11 +158,11 @@ class AmbientFluteEngine {
 
     if (this.isPlaying) return;
     this.isPlaying = true;
-    this.masterGain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+    this.masterGain.gain.setValueAtTime(0.045, this.ctx.currentTime);
     this.playNextNote();
   }
 
-  // Auto-Ducking: Immediately pause / fade out when conversation starts
+  // Auto-Ducking: Immediately pause / duck volume when speech starts
   duck() {
     if (!this.ctx || !this.masterGain) return;
     this.isDucked = true;
@@ -134,7 +177,7 @@ class AmbientFluteEngine {
     this.isDucked = false;
     try {
       if (this.ctx.state === 'suspended') this.ctx.resume();
-      this.masterGain.gain.setTargetAtTime(0.04, this.ctx.currentTime, 0.5);
+      this.masterGain.gain.setTargetAtTime(0.045, this.ctx.currentTime, 0.5);
     } catch (e) {}
   }
 
