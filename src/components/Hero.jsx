@@ -1,7 +1,6 @@
 import React from 'react';
 import { Film, ArrowRight, Code2, Database, Layers, Sparkles, Activity, Server, Cpu } from 'lucide-react';
 import { CosmicAvatar } from './CosmicAvatar';
-import { HeroTelemetryCard } from './HeroTelemetryCard';
 import { HeroSystemMatrix } from './HeroSystemMatrix';
 import { CyberScramble } from './CyberScramble';
 
@@ -73,17 +72,9 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Right Column: High-Tech Telemetry HUD & 3D Cosmic Avatar (6 cols) */}
-          <div className="lg:col-span-6 flex flex-col items-center justify-center space-y-4 relative">
-            {/* Top Right: Holographic Telemetry HUD */}
-            <div className="w-full flex justify-end">
-              <HeroTelemetryCard />
-            </div>
-
-            {/* Bottom Floating Cyber Avatar with 3D Rings & Orbiting Tech Badges */}
-            <div className="relative -mt-6">
-              <CosmicAvatar size={340} />
-            </div>
+          {/* Right Column: 3D Animated Cyber AI Girl Avatar (Large & Prominent) */}
+          <div className="lg:col-span-6 flex flex-col items-center justify-center relative">
+            <CosmicAvatar size={480} />
           </div>
         </div>
 
