@@ -1,0 +1,36 @@
+name: Render Preview on PR
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  render-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Chrome/Chromium for Remotion
+        run: npx remotion browser ensure
+
+      - name: Render 540p Video Preview
+        run: |
+          mkdir -p public/media
+          npx remotion render video/src/index.ts BuiltInOrbit public/media/preview-540p.mp4 --scale 0.5 --crf 24
+
+      - name: Upload Video Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remotion-pr-preview
+          path: public/media/preview-540p.mp4
+          retention-days: 7
