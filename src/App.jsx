@@ -4,6 +4,8 @@ import { Hero } from './components/Hero';
 import { WatchTheFilm } from './components/WatchTheFilm';
 import { FeaturedProjects } from './components/FeaturedProjects';
 import { Interactive3DTechSphere } from './components/Interactive3DTechSphere';
+import { ArchitectureTopology } from './components/ArchitectureTopology';
+import { ProductionCodeInspector } from './components/ProductionCodeInspector';
 import { SkillsGrid } from './components/SkillsGrid';
 import { ServicesSection } from './components/ServicesSection';
 import { ScopeEstimator } from './components/ScopeEstimator';
@@ -42,6 +44,8 @@ export function App() {
         </section>
 
         <FeaturedProjects />
+        <ArchitectureTopology />
+        <ProductionCodeInspector />
         <SkillsGrid />
         <ServicesSection />
         <ScopeEstimator />

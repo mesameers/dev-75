@@ -23,19 +23,22 @@ export const Navbar = () => {
         </a>
 
         {/* Navigation Links */}
-        <nav className="hidden lg:flex items-center space-x-8 text-sm font-medium text-slate-300">
+        <nav className="hidden lg:flex items-center space-x-7 text-sm font-medium text-slate-300">
           <a href="#film" className="flex items-center space-x-1.5 hover:text-energy-teal transition-colors">
             <Film className="w-4 h-4 text-energy-teal" />
-            <span>Watch Film</span>
+            <span>Film</span>
           </a>
           <a href="#projects" className="hover:text-energy-teal transition-colors">
-            Featured Systems
+            Systems
+          </a>
+          <a href="#architecture" className="hover:text-energy-teal transition-colors">
+            Topology
+          </a>
+          <a href="#code" className="hover:text-energy-teal transition-colors">
+            Code
           </a>
           <a href="#skills" className="hover:text-energy-teal transition-colors">
-            Tech Matrix
-          </a>
-          <a href="#services" className="hover:text-energy-teal transition-colors">
-            Services
+            Matrix
           </a>
           <a href="#terminal" className="hover:text-energy-teal transition-colors font-mono text-xs text-violet-400">
             &gt;_ CLI
