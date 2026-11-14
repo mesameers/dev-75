@@ -2,15 +2,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Terminal, Send, Sparkles, CornerDownLeft } from 'lucide-react';
 
 const COMMANDS = {
-  help: 'Available commands: about, skills, projects, eims, stack, contact, clear, matrix, orbit',
-  about: 'Sameer Hussain: Senior Full-Stack Developer & Creative Engineer. Specializing in high-performance web systems, Supabase multi-tenant architectures, and deterministic motion as code.',
-  skills: 'React 18 (95%), TypeScript (92%), Tailwind (96%), Node.js Express (94%), Supabase PostgreSQL 16 (92%), Docker (86%), Remotion Motion Design (94%).',
-  projects: '1. Multi-Campus EIMS (2,341 live sessions, 1,240 students, 68 faculty)\n2. "Built in Orbit" 30.0 fps Remotion Film\n3. Dev-75 Cloud Infrastructure',
-  eims: 'EIMS Stats: 2,341 Active Sessions | 1,240 Students | 3 Campuses | 94.0% Fee Recovery | 16 PostgreSQL Tables | Zero-Trust RBAC Model.',
-  stack: 'Stack: React 18, Vite, Tailwind CSS, Node.js, Supabase (PostgreSQL 16), Remotion, Docker, Vercel Edge.',
+  help: 'Available commands: about, skills, projects, arch, stack, contact, clear, matrix, orbit',
+  about: 'Sameer Hussain: Senior Full-Stack Developer & Systems Architect. Specializing in high-performance cloud architectures, reactive frontends, and deterministic 3D motion systems.',
+  skills: 'React 18 (95%), TypeScript (92%), Tailwind (96%), Node.js Express (94%), PostgreSQL 16 (92%), Redis (90%), Docker (86%), Remotion (94%).',
+  projects: '1. NexusCloud Distributed Platform (12,400 req/s, 99.99% uptime, sub-15ms p99)\n2. OrbitMotion 30.0 fps Remotion Engine\n3. CyberAuth Zero-Trust RBAC Gateway',
+  arch: 'Architecture: Event-driven microservices | Multi-tenant PostgreSQL RLS | Redis distributed caching | Zero-trust token rotation | Sub-15ms p99 latency.',
+  stack: 'Core Stack: React 18, Next.js, TypeScript, Node.js, PostgreSQL 16, Redis, Docker, Kubernetes, Remotion, Tailwind CSS, Vercel Edge.',
   contact: 'Email: mesameer762@gmail.com | GitHub: https://github.com/mesameers',
-  matrix: 'ðŸ•¶ Wake up, Neo... The Matrix has you. Welcome to Sameer Hussain\'s Orbit Repository.',
-  orbit: 'ðŸ›° Orbit altitude: 300km LEO | Speed: 7.8 km/s | Telemetry: 100% nominal | 0 unhandled exceptions.',
+  matrix: '🕶️ Wake up, Neo... The Matrix has you. Welcome to Sameer Hussain\'s Orbit Repository.',
+  orbit: '🛰️ Orbit altitude: 300km LEO | Speed: 7.8 km/s | Telemetry: 100% nominal | 0 unhandled exceptions.',
 };
 
 export const InteractiveTerminal = () => {
@@ -110,7 +110,7 @@ export const InteractiveTerminal = () => {
               type="text"
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
-              placeholder="type 'help', 'skills', 'eims'..."
+              placeholder="type 'help', 'skills', 'projects'..."
               className="flex-1 bg-transparent text-white outline-none font-mono text-xs sm:text-sm placeholder-slate-600"
             />
             <button

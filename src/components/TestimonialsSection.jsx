@@ -26,7 +26,7 @@ export const TestimonialsSection = () => {
           <Quote className="w-12 h-12 text-energy-teal/30 mx-auto mb-6 animate-pulse" />
 
           <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white leading-snug tracking-tight mb-8">
-            “Sameer architected our Multi-Campus Management System with exceptional reliability. It seamlessly handles over 2,300 live sessions across campuses with zero data leakage and flawless RBAC isolation.”
+            “Sameer architected our distributed multi-tenant platform with exceptional reliability. It seamlessly handles over 12,000 requests/sec with zero downtime, sub-15ms p99 latency, and bulletproof security isolation.”
           </p>
 
           <div className="flex flex-col items-center">
@@ -35,8 +35,8 @@ export const TestimonialsSection = () => {
                 <Star key={i} className="w-4 h-4 fill-current animate-pulse" style={{ animationDelay: `${i * 150}ms` }} />
               ))}
             </div>
-            <h4 className="text-lg font-bold text-slate-100">Executive Campus Administration</h4>
-            <p className="text-xs font-mono text-energy-teal">Multi-Campus Educational Network</p>
+            <h4 className="text-lg font-bold text-slate-100">Enterprise Cloud Engineering Team</h4>
+            <p className="text-xs font-mono text-energy-teal">Distributed SaaS Network</p>
           </div>
         </div>
       </div>

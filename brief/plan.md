@@ -50,7 +50,7 @@
 | **01** | **Hero: Orbit Initialization** | 0.0s – 8.0s | 0 – 240 | "SAMEER HUSSAIN" kinetic mask reveal, role "Full-Stack Developer & Creative Engineer", drifting cosmic particles, hero wireframe orb with beat-synced shell breathing. |
 | **02** | **Philosophy & Telemetry** | 8.0s – 17.0s | 240 – 510 | "Systems Built for Resilience & Scale", terminal window compiling live commit logs, real metrics telemetry counters. |
 | **03** | **Skills in Orbit** | 17.0s – 26.0s | 510 – 780 | 12-column grid of levitating tech cards (React, Node.js, TypeScript, PostgreSQL, Supabase, Cloud/Docker) with vertical sine drift and softening contact shadows. |
-| **04** | **Flagship System: EIMS** | 26.0s – 37.0s | 780 – 1110 | Enterprise School Management System showcase: Superadmin KPI cards, 2,341 active sessions, multi-campus governance, floating cards detaching in 3D depth and re-docking. |
+| **04** | **Flagship System: NexusCloud** | 26.0s – 37.0s | 780 – 1110 | Enterprise Cloud Platform showcase: High-throughput telemetry, 12.4k req/sec, multi-tenant governance, floating cards detaching in 3D depth and re-docking. |
 | **05** | **Services & Engineering Capabilities** | 37.0s – 47.0s | 1110 – 1410 | Core service disciplines: Enterprise Web Apps, Cloud Architecture & Security, High-Throughput APIs, Interactive Motion UIs. |
 | **06** | **Finale: Git Convergence & CTA** | 47.0s – 60.0s | 1410 – 1800 | Branch trails and commit nodes accelerate into a gravitational merge, exploding into the closing lockup: **LET'S TALK** (`mesameer762@gmail.com` / GitHub `@mesameers`). |
 

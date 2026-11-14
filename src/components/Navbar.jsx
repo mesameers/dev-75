@@ -29,7 +29,7 @@ export const Navbar = () => {
             <span>Watch Film</span>
           </a>
           <a href="#projects" className="hover:text-energy-teal transition-colors">
-            Featured EIMS
+            Featured Systems
           </a>
           <a href="#skills" className="hover:text-energy-teal transition-colors">
             Tech Matrix

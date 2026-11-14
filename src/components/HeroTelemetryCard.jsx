@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Activity, ShieldCheck, Cpu, Terminal, Radio, Zap, Globe, Sparkles } from 'lucide-react';
 
 const LIVE_FEEDS = [
-  { text: "git: commit #7a3313f pushed to main", tag: "GIT", color: "text-energy-teal" },
+  { text: "git: commit #533e7b5 pushed to main", tag: "GIT", color: "text-energy-teal" },
   { text: "supabase: RLS verified on 16 relational tables", tag: "DB", color: "text-secondary-violet" },
-  { text: "cluster: 2,341 active student sessions connected", tag: "EIMS", color: "text-cyan-400" },
+  { text: "cluster: 12,400 distributed requests/sec nominal", tag: "CLOUD", color: "text-cyan-400" },
   { text: "remotion: deterministic 30.0 fps clock sync", tag: "RENDER", color: "text-emerald-400" },
   { text: "security: zero-trust RBAC token validated", tag: "AUTH", color: "text-amber-400" },
-  { text: "network: CDN cache hit ratio 98.4%", tag: "EDGE", color: "text-energy-cyan" },
+  { text: "network: CDN cache hit ratio 99.2%", tag: "EDGE", color: "text-energy-cyan" },
 ];
 
 export const HeroTelemetryCard = () => {

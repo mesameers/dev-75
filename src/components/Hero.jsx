@@ -1,5 +1,5 @@
 import React from 'react';
-import { Film, ArrowRight, Code2, Database, Layers, Sparkles, Activity } from 'lucide-react';
+import { Film, ArrowRight, Code2, Database, Layers, Sparkles, Activity, Server, Cpu } from 'lucide-react';
 import { CosmicAvatar } from './CosmicAvatar';
 import { HeroTelemetryCard } from './HeroTelemetryCard';
 import { CyberScramble } from './CyberScramble';
@@ -41,7 +41,7 @@ export const Hero = () => {
 
             {/* Subtitle & Architecture Philosophy */}
             <p className="text-base sm:text-lg md:text-xl font-medium text-slate-300 max-w-xl leading-relaxed mb-8">
-              Architecting hardened multi-tenant platforms, high-throughput APIs, and weightless motion systems with zero downtime and deterministic precision.
+              Senior Full-Stack Developer & Creative Systems Architect engineering hardened multi-tenant platforms, high-throughput APIs, and deterministic 3D motion experiences.
             </p>
 
             {/* Call to Actions */}
@@ -59,22 +59,22 @@ export const Hero = () => {
                 href="#projects"
                 className="flex items-center space-x-2.5 px-6 py-3.5 rounded-2xl bg-space-900/80 border border-slate-700/80 hover:border-energy-teal/50 text-slate-200 font-semibold text-sm transition-all hover:bg-space-850 hover:shadow-[0_0_20px_rgba(0,242,254,0.15)]"
               >
-                <span>Explore Flagship EIMS</span>
+                <span>Explore Architecture Systems</span>
               </a>
             </div>
 
             {/* Monospace Quick Status */}
             <div className="flex items-center space-x-3 font-mono text-xs text-slate-400 bg-space-900/70 border border-slate-800/80 px-4 py-2 rounded-xl backdrop-blur-md">
               <Activity className="w-3.5 h-3.5 text-energy-teal animate-pulse" />
-              <span className="text-slate-300 font-semibold">2,341 Active Sessions</span>
+              <span className="text-slate-300 font-semibold">&gt; 12,400 req/sec</span>
               <span className="text-slate-600">•</span>
-              <span className="text-slate-300">16 Relational Tables</span>
+              <span className="text-slate-300">99.99% Cloud Uptime SLA</span>
             </div>
           </div>
 
           {/* Right Column: High-Tech Telemetry HUD & 3D Cosmic Avatar (6 cols) */}
           <div className="lg:col-span-6 flex flex-col items-center justify-center space-y-4 relative">
-            {/* Top Right: Holographic Telemetry HUD (Directly fills the user's empty highlighted space!) */}
+            {/* Top Right: Holographic Telemetry HUD */}
             <div className="w-full flex justify-end">
               <HeroTelemetryCard />
             </div>
@@ -91,25 +91,25 @@ export const Hero = () => {
           <div className="p-5 rounded-2xl bg-space-900/70 border border-slate-800/80 backdrop-blur-xl hover:border-energy-teal/50 hover:shadow-[0_0_25px_rgba(0,242,254,0.2)] transition-all hover:-translate-y-1 group">
             <div className="flex items-center space-x-2 text-energy-teal mb-2 group-hover:scale-105 transition-transform">
               <Code2 className="w-4 h-4" />
-              <span className="font-mono text-xs font-bold uppercase">React 18 / Vite</span>
+              <span className="font-mono text-xs font-bold uppercase">React 18 / Next.js</span>
             </div>
-            <p className="text-xs text-slate-300 font-medium">Ultra-responsive reactive clients</p>
+            <p className="text-xs text-slate-300 font-medium">Server components & reactive state</p>
           </div>
 
           <div className="p-5 rounded-2xl bg-space-900/70 border border-slate-800/80 backdrop-blur-xl hover:border-secondary-violet/50 hover:shadow-[0_0_25px_rgba(139,92,246,0.2)] transition-all hover:-translate-y-1 group">
             <div className="flex items-center space-x-2 text-secondary-violet mb-2 group-hover:scale-105 transition-transform">
               <Database className="w-4 h-4" />
-              <span className="font-mono text-xs font-bold uppercase">Supabase / Node</span>
+              <span className="font-mono text-xs font-bold uppercase">PostgreSQL 16 & Redis</span>
             </div>
-            <p className="text-xs text-slate-300 font-medium">PostgreSQL 16 & RBAC security</p>
+            <p className="text-xs text-slate-300 font-medium">ACID isolation & sub-15ms p99 cache</p>
           </div>
 
           <div className="p-5 rounded-2xl bg-space-900/70 border border-slate-800/80 backdrop-blur-xl hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(56,189,248,0.2)] transition-all hover:-translate-y-1 group">
             <div className="flex items-center space-x-2 text-cyan-400 mb-2 group-hover:scale-105 transition-transform">
-              <Layers className="w-4 h-4" />
-              <span className="font-mono text-xs font-bold uppercase">Multi-Campus EIMS</span>
+              <Server className="w-4 h-4" />
+              <span className="font-mono text-xs font-bold uppercase">Cloud Microservices</span>
             </div>
-            <p className="text-xs text-slate-300 font-medium">2,341 live sessions & 1,240 students</p>
+            <p className="text-xs text-slate-300 font-medium">Docker, Kubernetes & Node.js clusters</p>
           </div>
 
           <div className="p-5 rounded-2xl bg-space-900/70 border border-slate-800/80 backdrop-blur-xl hover:border-energy-teal/50 hover:shadow-[0_0_25px_rgba(0,242,254,0.2)] transition-all hover:-translate-y-1 group">

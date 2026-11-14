@@ -17,7 +17,7 @@ export const Footer = () => {
         <div className="flex items-center space-x-6 text-slate-400">
           <a href="#hero" className="hover:text-energy-teal transition-colors">Orbit</a>
           <a href="#film" className="hover:text-energy-teal transition-colors">The Film</a>
-          <a href="#projects" className="hover:text-energy-teal transition-colors">EIMS</a>
+          <a href="#projects" className="hover:text-energy-teal transition-colors">Projects</a>
           <a href="#skills" className="hover:text-energy-teal transition-colors">Stack</a>
           <a href="#contact" className="hover:text-energy-teal transition-colors">Contact</a>
         </div>
