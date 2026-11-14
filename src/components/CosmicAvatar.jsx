@@ -11,10 +11,7 @@ import {
   Compass,
   ArrowRight,
   Radio,
-  Sparkles,
-  ArrowUp,
-  X,
-  Volume2
+  Sparkles
 } from 'lucide-react';
 
 // Navigation Targets for Direct Click & Voice Dispatch
@@ -25,8 +22,8 @@ const NAV_TARGETS = [
     icon: Film,
     color: '#00F2FE',
     keywords: ['film', 'flim', 'filam', 'video', 'movie', 'cinema', 'built in orbit', 'film dikhao', 'video dikhao', 'فلم', 'ویڈیو', 'سینما'],
-    voiceConfirm: "چلیے! سمیر کی 'بلٹ ان اوربٹ' فلم سنیما پر چلتے ہیں۔",
-    romanConfirm: "Chaliye! Sameer ki 'Built in Orbit' film cinema per chaltay hain.",
+    voiceConfirm: "جی! ہم فلم سیکشن پر آ گئے ہیں۔",
+    romanConfirm: "Jee! Hum film section par aa gaye hain.",
   },
   {
     id: 'projects',
@@ -34,15 +31,14 @@ const NAV_TARGETS = [
     label: 'Systems',
     icon: Layers,
     color: '#10B981',
-    // STRICT keywords: Excluded 'assistant' to prevent self-voice echo loop
     keywords: [
       'system', 'systems', 'sistem', 'sistems', 'sustam',
       'project', 'projects', 'projeck', 'projekts', 'featured',
       'platform', 'platforms', 'kam', 'kaam', 'system dikhao',
       'systems dikhao', 'projects dikhao', 'kam dikhao', 'سسٹم', 'سسٹمز', 'پروجیکٹ', 'کام'
     ],
-    voiceConfirm: "جی ضرور! چلیے میں آپ کو سمیر کے سسٹمز اور پروجیکٹس پر لے چلتی ہوں۔",
-    romanConfirm: "Jee zaroor! Chaliye main aap ko Sameer ke systems aur projects par le kar chalti hoon.",
+    voiceConfirm: "جی! ہم سسٹمز اور پروجیکٹس سیکشن پر آ گئے ہیں۔",
+    romanConfirm: "Jee! Hum systems aur projects section par aa gaye hain.",
   },
   {
     id: 'architecture',
@@ -50,8 +46,8 @@ const NAV_TARGETS = [
     icon: Activity,
     color: '#8B5CF6',
     keywords: ['architecture', 'topology', 'toplogy', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster', 'topology dikhao', 'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ'],
-    voiceConfirm: "چلیے! مائیکروسروسز میش ٹوپولوجی پر لے چلتی ہوں۔",
-    romanConfirm: "Chaliye! Microservices Mesh Topology par le chalti hoon.",
+    voiceConfirm: "جی! ہم مائیکروسروسز ٹوپولوجی پر آ گئے ہیں۔",
+    romanConfirm: "Jee! Hum microservices topology par aa gaye hain.",
   },
   {
     id: 'code',
@@ -59,8 +55,8 @@ const NAV_TARGETS = [
     icon: Code2,
     color: '#38BDF8',
     keywords: ['code', 'coding', 'inspector', 'algorithm', 'algorithms', 'typescript', 'sql', 'code dikhao', 'coding dikhao', 'کوڈ', 'الگورتھم', 'کوڈنگ'],
-    voiceConfirm: "جی بالکل! چلیے میں آپ کو پروڈکشن کوڈ انسپیکٹر دکھاتی ہوں۔",
-    romanConfirm: "Jee bilkul! Chaliye main aap ko production code inspector dikhati hoon.",
+    voiceConfirm: "جی! ہم پروڈکشن کوڈ انسپیکٹر پر آ گئے ہیں۔",
+    romanConfirm: "Jee! Hum production code inspector par aa gaye hain.",
   },
   {
     id: 'api-playground',
@@ -68,8 +64,8 @@ const NAV_TARGETS = [
     icon: Zap,
     color: '#EC4899',
     keywords: ['api', 'api suite', 'playground', 'endpoint', 'endpoints', 'api test', 'api dikhao', 'اے پی آئی', 'ٹیسٹ'],
-    voiceConfirm: "جی ہاں! لائیو پروڈکشن API سویٹ حاضر ہے۔",
-    romanConfirm: "Jee haan! Live production API suite hazir hai.",
+    voiceConfirm: "جی! ہم لائیو API سویٹ پر آ گئے ہیں۔",
+    romanConfirm: "Jee! Hum live API suite par aa gaye hain.",
   },
   {
     id: 'skills',
@@ -77,8 +73,8 @@ const NAV_TARGETS = [
     icon: Cpu,
     color: '#06B6D4',
     keywords: ['skills', 'skill', 'tech stack', 'technologies', 'technology', 'tools', 'kya aata hai', 'skills dikhao', 'اسکلز', 'ٹیکنالوجی'],
-    voiceConfirm: "جی! سمیر کے تمام ٹیکنیکل اسکلز کی لسٹ حاضر ہے۔",
-    romanConfirm: "Jee! Sameer ke tamam technical skills ki list hazir hai.",
+    voiceConfirm: "جی! ہم ٹیکنیکل اسکلز سیکشن پر آ گئے ہیں۔",
+    romanConfirm: "Jee! Hum technical skills section par aa gaye hain.",
   },
   {
     id: 'tech-sphere',
@@ -86,8 +82,8 @@ const NAV_TARGETS = [
     icon: Compass,
     color: '#F59E0B',
     keywords: ['matrix', 'sphere', '3d', 'globe', '3d dikhao', 'matrix dikhao', 'تھری ڈی', 'میٹرکس'],
-    voiceConfirm: "چلیے! تھری ڈی انٹرایکٹو میٹرکس دکھاتی ہوں۔",
-    romanConfirm: "Chaliye! 3D Interactive Matrix dikhati hoon.",
+    voiceConfirm: "جی! ہم تھری ڈی انٹرایکٹو میٹرکس پر آ گئے ہیں۔",
+    romanConfirm: "Jee! Hum 3D interactive matrix par aa gaye hain.",
   },
   {
     id: 'terminal',
@@ -95,8 +91,8 @@ const NAV_TARGETS = [
     icon: Terminal,
     color: '#A855F7',
     keywords: ['terminal', 'cli', 'shell', 'bash', 'console', 'command', 'terminal dikhao', 'terminal kholo', 'ٹرمینل', 'سی ایل آئی'],
-    voiceConfirm: "جی! ڈویلپر سی ایل آئی ٹرمینل اوپن کر دیا ہے۔",
-    romanConfirm: "Jee! Developer CLI terminal open kar diya hai.",
+    voiceConfirm: "جی! ہم ڈویلپر سی ایل آئی ٹرمینل پر آ گئے ہیں۔",
+    romanConfirm: "Jee! Hum developer CLI terminal par aa gaye hain.",
   },
   {
     id: 'contact',
@@ -104,19 +100,73 @@ const NAV_TARGETS = [
     icon: Mail,
     color: '#00FFE0',
     keywords: ['contact', 'hire', 'email', 'mail', 'connect', 'message', 'rabta', 'baat karni hai', 'contact dikhao', 'رابطہ', 'ای میل'],
-    voiceConfirm: "سمیر سے رابطہ کرنا ہے؟ چلیے میں آپ کو کانٹیکٹ فارم پر لے چلتی ہوں۔",
-    romanConfirm: "Sameer se rabta karna hai? Chaliye main aap ko contact form par le chalti hoon.",
+    voiceConfirm: "جی! ہم کانٹیکٹ سیکشن پر آ گئے ہیں۔",
+    romanConfirm: "Jee! Hum contact section par aa gaye hain.",
   },
   {
     id: 'hero',
     label: 'Top',
     icon: ArrowRight,
     color: '#00F2FE',
-    keywords: ['upar', 'top', 'hero', 'home', 'shuru', 'start', 'wapas', 'upar jao', 'اوپر', 'ہیرو', 'شروع'],
-    voiceConfirm: "ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔",
-    romanConfirm: "Hum wapas upar hero section par aa gaye hain.",
+    keywords: ['upar', 'top', 'hero', 'home', 'shuru', 'start', 'wapas', 'upar jao', 'wapas upar', 'wapas chalo', 'upar le jao', 'اوپر', 'ہیرو', 'شروع', 'واپس'],
+    voiceConfirm: "جی چلیے! ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔",
+    romanConfirm: "Jee chaliye! Hum wapas upar hero section par aa gaye hain.",
   },
 ];
+
+// In-Depth Explanations for Each Section (Active ONLY when user asks to explain)
+const SECTION_EXPLANATIONS = {
+  projects: {
+    label: 'Systems & Projects',
+    urdu: "سمیر کے سسٹمز سیکشن میں انٹرپرائز کلاؤڈ پلیٹ فارمز شامل ہیں۔ یہ ہائی تھرو پٹ مائیکروسروسز، سب-15 ملی سیکنڈ ڈیٹا بیس کیشنگ، اور رئیل ٹائم ڈیٹا پروسیسنگ کے لیے بنائے گئے ہیں۔",
+    roman: "Sameer ke systems section mein enterprise cloud platforms shamil hain. Yeh high-throughput microservices, sub-15 millisecond database caching, aur real-time data processing ke liye banaye gaye hain.",
+  },
+  film: {
+    label: 'Built in Orbit Film',
+    urdu: "بلٹ ان اوربٹ فلم سمیر کا فریم ایکوریٹ سنیما شوکیس ہے۔ یہ ری موشن اور ٹائپ اسکرپٹ پر 30 فریم فی سیکنڈ پر بنی ہے اور سمیر کے انجینئرنگ فلسفے کو پیش کرتی ہے۔",
+    roman: "'Built in Orbit' film Sameer ka frame-accurate cinema showcase hai. Yeh Remotion aur TypeScript par 30 frames per second par bani hai aur Sameer ke engineering philosophy ko pesh karti hai.",
+  },
+  architecture: {
+    label: 'Microservices Topology',
+    urdu: "مائیکروسروسز ٹوپولوجی سمیر کے کلاؤڈ انفراسٹرکچر کا لائیو نیٹ ورک میش ہے۔ اس میں گلوبل ایج روٹنگ، زیرو ٹرسٹ سیکیورٹی اور ہائی اویلیبلٹی کلسٹرز شامل ہیں۔",
+    roman: "Microservices topology Sameer ke cloud infrastructure ka live network mesh hai. Is mein global edge routing, zero-trust security aur high availability clusters shamil hain.",
+  },
+  code: {
+    label: 'Code Inspector',
+    urdu: "پروڈکشن کوڈ انسپیکٹر میں سمیر کے ری ایکٹو الگورتھمز اور کلین ٹائپ اسکرپٹ و ایس کیو ایل کوڈ نمونے ہیں۔ آپ یہاں لائیو فنکشنز اور لاجک کا معائنہ کر سکتے ہیں۔",
+    roman: "Production code inspector mein Sameer ke reactive algorithms aur clean TypeScript wa SQL code samples hain. Aap yahan live functions aur logic ka muayana kar sakte hain.",
+  },
+  'api-playground': {
+    label: 'API Suite',
+    urdu: "لائیو API پلے گراؤنڈ پر آپ سمیر کے پروڈکشن مائیکروسروسز اینڈ پوائنٹس کو کال کر کے ریئل ٹائم رسپانس اور لیٹنسی ٹیسٹ کر سکتے ہیں۔",
+    roman: "Live API playground par aap Sameer ke production microservices endpoints ko call kar ke real-time response aur latency test kar sakte hain.",
+  },
+  skills: {
+    label: 'Technical Skills',
+    urdu: "اسکلز میٹرکس سمیر کی کور ٹیکنالوجیز دکھاتا ہے جن میں ری ایکٹ 18، نیکسٹ جے ایس، نوڈ جے ایس، پوسٹگریس 16، ریڈس اور ڈاکر شامل ہیں۔",
+    roman: "Skills matrix Sameer ki core technologies dikhata hai jin mein React 18, Next.js, Node.js, PostgreSQL 16, Redis aur Docker shamil hain.",
+  },
+  'tech-sphere': {
+    label: '3D Matrix',
+    urdu: "تھری ڈی میٹرکس ویب جی ایل پر مبنی انٹرایکٹو پارٹیکل گلوب ہے جو سمیر کے فل اسٹیک اور موشن صلاحیتوں کو بصری طور پر ظاہر کرتا ہے۔",
+    roman: "3D matrix WebGL par mabni interactive particle globe hai jo Sameer ke full-stack aur motion capabilities ko visually display karta hai.",
+  },
+  terminal: {
+    label: 'Developer CLI Terminal',
+    urdu: "ڈویلپر سی ایل آئی ٹرمینل کے ذریعے آپ کسٹم کمانڈز رن کر سکتے ہیں جیسے سسٹم انفو، اسکلز، پروجیکٹس اور کانٹیکٹ کمانڈز۔",
+    roman: "Developer CLI terminal ke zariye aap custom commands run kar sakte hain jaise system info, skills, projects aur contact commands.",
+  },
+  contact: {
+    label: 'Contact Suite',
+    urdu: "کانٹیکٹ سیکشن سے آپ براہ راست سمیر کو پروجیکٹ کے لیے ہائر کر سکتے ہیں یا ای میل و لنکس کے ذریعے رابطہ قائم کر سکتے ہیں۔",
+    roman: "Contact section se aap barah-e-raast Sameer ko project ke liye hire kar sakte hain ya email aur links ke zariye rabta qaim kar sakte hain.",
+  },
+  hero: {
+    label: 'Hero Section',
+    urdu: "یہ ہیرو سیکشن ہے جہاں سمیر حسین کا بنیادی تعارف، ریئل ٹائم میٹرکس اور میں خودمختار اسسٹنٹ موجود ہوں۔",
+    roman: "Yeh hero section hai jahan Sameer Hussain ka bunyadi taaruf, real-time matrix aur main autonomous assistant maujood hoon.",
+  },
+};
 
 // Required Initial Greeting in Pakistani Urdu
 const INITIAL_GREETING_URDU = "خوش آمدید! میں سمیر حسین کی اسسٹنٹ ہوں۔ آپ کو اس پورٹ فولیو کے کون سے حصے پر لے کر جاؤں؟";
@@ -133,8 +183,8 @@ const AI_KNOWLEDGE_BASE = [
       'portfolio explain karo', 'sab explain karo', 'portfolio ka introduction', 'overview do', 'website ka intro',
       'tell me about this portfolio', 'what is this website', 'features batao', 'kya kya hai yahan', 'تعارف'
     ],
-    urdu: "سمیر حسین کے اس پورٹ فولیو میں آٹھ جدید ترین سسٹمز شامل ہیں۔ پہلا، بلٹ ان اوربٹ فلم جو ری موشن پر ویڈیو شوکیس ہے۔ دوسرا، فلیگ شپ کلاؤڈ سسٹمز اور پروجیکٹس۔ تیسرا، مائیکروسروسز میش ٹوپولوجی جس کی لیٹنسی بارہ ملی سیکنڈ ہے۔ چوتھا، لائیو کوڈ انسپیکٹر جس میں پروڈکشن الگورتھمز ہیں۔ پانچواں، لائیو API ٹیسٹنگ سوٹ۔ چھٹا، ٹیکنیکل اسکلز میٹرکس۔ ساتواں، انٹرایکٹو تھری ڈی میٹرکس۔ اور آٹھواں، لائیو ڈویلپر سی ایل آئی ٹرمینل۔ آپ جس سیکشن پر جانا چاہیں، بس فرمائیے میں فوراً لے چلوں گی!",
-    roman: "Sameer Hussain ke is portfolio mein aath jadeed systems shamil hain. Pehla, 'Built in Orbit' film jo Remotion 30 fps par video showcase hai. Doosra, flagship cloud systems aur platforms. Teesra, microservices mesh topology jis ki latency sirf 12 millisecond hai. Chautha, live code inspector jis mein production algorithms hain. Panchwa, live API testing suite. Chhata, technical skills matrix. Satwa, interactive 3D matrix globe. Aur aathwa, live developer CLI terminal. Aap jis section par jana chahein, bas mujhe batayein main foran aap ko wahan le chaloon gi!",
+    urdu: "سمیر حسین کے اس پورٹ فولیو میں آٹھ جدید ترین سسٹمز شامل ہیں۔ پہلا، بلٹ ان اوربٹ فلم جو ری موشن پر ویڈیو شوکیس ہے۔ دوسرا، فلیگ شپ کلاؤڈ سسٹمز اور پروجیکٹس۔ تیسرا، مائیکروسروسز میش ٹوپولوجی جس کی لیٹنسی بارہ ملی سیکنڈ ہے۔ چوتھا، لائیو کوڈ انسپیکٹر جس میں پروڈکشن الگورتھمز ہیں۔ پانچواں، لائیو API ٹیسٹنگ سوٹ۔ چھٹا، ٹیکنیکل اسکلز میٹرکس۔ ساتواں، انٹرایکٹو تھری ڈی میٹرکس۔ اور آٹھواں، لائیو ڈویلپر سی ایل آئی ٹرمینل۔ آپ جس سیکشن پر جانا چاہیں، بس فرمائیے میں لے چلوں گی۔",
+    roman: "Sameer Hussain ke is portfolio mein aath jadeed systems shamil hain. Pehla, 'Built in Orbit' film jo Remotion 30 fps par video showcase hai. Doosra, flagship cloud systems aur platforms. Teesra, microservices mesh topology jis ki latency sirf 12 millisecond hai. Chautha, live code inspector jis mein production algorithms hain. Panchwa, live API testing suite. Chhata, technical skills matrix. Satwa, interactive 3D matrix globe. Aur aathwa, live developer CLI terminal. Aap jis section par jana chahein, bas mujhe batayein main aap ko wahan le chaloon gi.",
   },
   // 2. About Sameer
   {
@@ -195,16 +245,13 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
   const speechCooldownUntilRef = useRef(0);
   const isListeningRef = useRef(false);
 
+  // Active section tracking (Default: hero)
+  const currentSectionRef = useRef('hero');
+
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
-
-  // Return-to-top Human Guiding Prompt state
-  const [returnPrompt, setReturnPrompt] = useState({
-    visible: false,
-    sectionName: '',
-  });
 
   // Mouse tracking for realistic 3D parallax tilt
   useEffect(() => {
@@ -242,7 +289,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       // PAUSE recognition while speaking to prevent self-voice echo loop
       isSpeakingRef.current = true;
       setIsSpeaking(true);
-      speechCooldownUntilRef.current = Date.now() + 15000; // safety ceiling
+      speechCooldownUntilRef.current = Date.now() + 15000;
 
       if (recognitionRef.current) {
         try {
@@ -293,34 +340,16 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     }
   }, []);
 
-  // Multi-Strategy Teleport Navigation Function with Human-Like Return-To-Top Prompt
+  // Multi-Strategy Teleport Navigation Function (Strictly Navigates & Confirms Arrival Only)
   const teleportTo = useCallback(
     (targetId, voiceConfirmText, romanConfirmText = '') => {
-      // 1. Announce arrival verbally in Pakistani Urdu
-      speak(voiceConfirmText, romanConfirmText, () => {
-        // 2. If navigated to any sub-section (other than top hero), ask user if they want to return to top!
-        if (targetId !== 'hero') {
-          const targetObj = NAV_TARGETS.find((t) => t.id === targetId);
-          const secName = targetObj ? targetObj.label : 'section';
+      // Update active section tracker
+      currentSectionRef.current = targetId;
 
-          setReturnPrompt({
-            visible: true,
-            sectionName: secName,
-          });
+      // Announce arrival verbally in Pakistani Urdu - DO NOT add unprompted questions or explanations!
+      speak(voiceConfirmText, romanConfirmText);
 
-          // Guide user with polite human voice after 600ms
-          setTimeout(() => {
-            speak(
-              `ہم ${secName} پر پہنچ گئے ہیں۔ کیا آپ کو واپس اوپر لے کر چلوں یا کچھ اور دیکھنا چاہتے ہیں؟`,
-              `Hum ${secName} par pohnch gaye hain. Kya aap ko wapas upar le kar chaloon ya kuch aur dekhna chahte hain?`
-            );
-          }, 600);
-        } else {
-          setReturnPrompt({ visible: false, sectionName: '' });
-        }
-      });
-
-      // 3. Smooth scroll with navbar offset
+      // Perform smooth scroll with navbar offset
       const executeScroll = () => {
         let el = document.getElementById(targetId);
 
@@ -372,18 +401,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     [speak]
   );
 
-  // Handle User Voice or Click to Return to Top
-  const handleReturnToTop = useCallback(() => {
-    setReturnPrompt({ visible: false, sectionName: '' });
-    teleportTo('hero', "جی چلیے! ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔", "Jee chaliye! Hum wapas upar hero section par aa gaye hain.");
-  }, [teleportTo]);
-
-  // Handle Dismiss Return Prompt
-  const handleDismissPrompt = useCallback(() => {
-    setReturnPrompt({ visible: false, sectionName: '' });
-    speak("جی ٹھیک ہے، آپ اطمینان سے پورٹ فولیو کا جائزہ لیجیے۔", "Jee theek hai, aap itminan se portfolio ka jaiza lijiye.");
-  }, [speak]);
-
   // Automatic Speech Recognition (Zero Buttons, Pure Autonomous AI)
   const initAutoVoiceRecognition = useCallback(() => {
     if (typeof window === 'undefined') return;
@@ -421,21 +438,42 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
         if (!cleanTranscript || cleanTranscript.length < 2) return;
 
-        // 1. Check if user is answering the "Wapas Upar" Return-to-Top prompt!
-        const returnYesKeywords = ['haan', 'yes', 'wapas', 'upar', 'upar chalo', 'upar le jao', 'wapas upar', 'wapas le jao', 'back to top', 'top par jao', 'jee haan', 'ہاں', 'اوپر', 'واپس'];
-        const returnNoKeywords = ['nahin', 'nahi', 'no', 'rehne do', 'yahin dekhna hai', 'نہیں'];
-
-        if (returnYesKeywords.some((w) => cleanTranscript.includes(w))) {
-          handleReturnToTop();
+        // 1. Check Return-to-Top Requests (Only when user explicitly asks to go back/up)
+        const returnTopWords = [
+          'wapas upar', 'wapas chalo', 'upar le jao', 'upar chalo', 'back to top',
+          'upar jao', 'wapas le jao', 'hero par jao', 'top par jao', 'home par jao',
+          'wapas', 'upar', 'واپس', 'اوپر'
+        ];
+        if (returnTopWords.some((w) => cleanTranscript.includes(w))) {
+          teleportTo('hero', "جی چلیے! ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔", "Jee chaliye! Hum wapas upar hero section par aa gaye hain.");
           return;
         }
 
-        if (returnNoKeywords.some((w) => cleanTranscript.includes(w))) {
-          handleDismissPrompt();
+        // 2. Check On-Demand Section Explanation (Only when user explicitly asks to explain)
+        const explainWords = [
+          'explain', 'explain karo', 'ye kya hai', 'is ke bare mein batao',
+          'is section ko explain karo', 'ye kya kaam karta hai', 'detail batao',
+          'details', 'tell me about this', 'what is this', 'batao', 'تفصیل', 'وضاحت'
+        ];
+        if (explainWords.some((w) => cleanTranscript.includes(w))) {
+          // Check if specific section was named in the request
+          let targetSectionKey = currentSectionRef.current || 'hero';
+          if (cleanTranscript.includes('film') || cleanTranscript.includes('video')) targetSectionKey = 'film';
+          else if (cleanTranscript.includes('system') || cleanTranscript.includes('project')) targetSectionKey = 'projects';
+          else if (cleanTranscript.includes('topology') || cleanTranscript.includes('architecture')) targetSectionKey = 'architecture';
+          else if (cleanTranscript.includes('code') || cleanTranscript.includes('coding')) targetSectionKey = 'code';
+          else if (cleanTranscript.includes('api')) targetSectionKey = 'api-playground';
+          else if (cleanTranscript.includes('skill')) targetSectionKey = 'skills';
+          else if (cleanTranscript.includes('matrix') || cleanTranscript.includes('3d')) targetSectionKey = 'tech-sphere';
+          else if (cleanTranscript.includes('terminal') || cleanTranscript.includes('cli')) targetSectionKey = 'terminal';
+          else if (cleanTranscript.includes('contact') || cleanTranscript.includes('rabta')) targetSectionKey = 'contact';
+
+          const explanation = SECTION_EXPLANATIONS[targetSectionKey] || SECTION_EXPLANATIONS['projects'];
+          speak(explanation.urdu, explanation.roman);
           return;
         }
 
-        // 2. Check Specific Navigation Section Targets
+        // 3. Check Specific Navigation Section Targets
         const matchedNav = NAV_TARGETS.find((target) =>
           target.keywords.some((kw) => cleanTranscript.includes(kw.toLowerCase()))
         );
@@ -445,7 +483,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           return;
         }
 
-        // 3. Check Conversational AI Knowledge Engine (Intro, Sameer, Experience, etc.)
+        // 4. Check Conversational AI Knowledge Engine (Intro, Sameer, Experience, etc.)
         const matchedKnowledge = AI_KNOWLEDGE_BASE.find((entry) =>
           entry.triggers.some((trig) => cleanTranscript.includes(trig.toLowerCase()))
         );
@@ -455,7 +493,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           return;
         }
 
-        // 4. Gentle Fallback without Random Auto-Jumps
+        // 5. Gentle Fallback without Random Auto-Jumps
         if (cleanTranscript.length > 3) {
           speak(
             "معاف کیجیے گا، کیا آپ دوبارہ کہیں گے؟ آپ فلم، سسٹمز، کوڈ، ٹوپولوجی، یا پورٹ فولیو کا تعارف پوچھ سکتے ہیں۔",
@@ -484,7 +522,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
       recognition.start();
     } catch (err) {}
-  }, [speak, teleportTo, handleReturnToTop, handleDismissPrompt]);
+  }, [speak, teleportTo]);
 
   // Automatic Welcome Greeting on Page Load / First User Gesture (Autoplay Policy Safe)
   useEffect(() => {
@@ -582,7 +620,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             </div>
           </div>
 
-          {/* High-Resolution 3D Pixar News Anchor Character Image with Animated Lip-Sync and Hands Motion */}
+          {/* High-Resolution 3D Pixar News Anchor Character Image (Clean & Pristine - Zero Misplaced Overlays) */}
           <div className="relative w-full aspect-[16/10] overflow-hidden bg-space-950">
             {/* The Main Presenter Character Container with Subtle Natural Hand & Head Motion while Speaking */}
             <div
@@ -595,55 +633,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
                 alt="3D Pixar Style Female News Anchor"
                 className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
-
-              {/* Realistic Animated Lip-Sync Mouth Overlay - Active ONLY while speaking */}
-              {isSpeaking && (
-                <div
-                  className="absolute pointer-events-none z-20 flex items-center justify-center"
-                  style={{
-                    top: '49.3%',
-                    left: '50.1%',
-                    width: '3.6%',
-                    minWidth: '22px',
-                    maxWidth: '32px',
-                    aspectRatio: '16/9',
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 100 60"
-                    className="w-full h-full overflow-visible drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
-                  >
-                    {/* Inner Oral Cavity & Teeth */}
-                    <ellipse cx="50" cy="30" rx="28" ry="16" fill="#4B121C" className="animate-mouthCavity" />
-                    <path d="M 28 22 Q 50 18 72 22 Q 50 25 28 22 Z" fill="#FFF5F5" opacity="0.95" />
-                    {/* Natural Upper & Lower Coral Lips Matching Character */}
-                    <path
-                      d="M 12 28 Q 50 15 88 28 Q 78 44 50 45 Q 22 44 12 28 Z"
-                      fill="#C8485D"
-                      stroke="#8D2435"
-                      strokeWidth="2"
-                      className="animate-mouthLips"
-                    />
-                  </svg>
-                </div>
-              )}
-
-              {/* Subtle Natural Hands Holding Microphone Cadence Overlay while Speaking */}
-              {isSpeaking && (
-                <div
-                  className="absolute pointer-events-none z-10"
-                  style={{
-                    top: '72%',
-                    left: '46%',
-                    width: '18%',
-                    height: '24%',
-                    animation: 'handsPresenterCadence 1.4s ease-in-out infinite',
-                  }}
-                >
-                  <div className="w-full h-full rounded-full bg-energy-cyan/5 blur-md" />
-                </div>
-              )}
             </div>
 
             {/* Ambient Studio Lighting Sheen Overlay */}
@@ -681,7 +670,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             {isSpeaking
               ? 'Ayla Speaking...'
               : isListening
-              ? 'Listening Hands-Free (Speak or ask for Portfolio Intro)'
+              ? 'Listening Hands-Free (Speak anytime)'
               : 'Ayla Online — Speak or click below'}
           </span>
         </div>
@@ -713,43 +702,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         </div>
       </div>
 
-      {/* Human-Like Return-To-Top Floating Guide Widget */}
-      {returnPrompt.visible && (
-        <div className="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:right-6 z-[100] flex items-center justify-between sm:justify-start gap-3 p-3.5 sm:px-5 sm:py-3.5 rounded-2xl bg-space-950/95 border border-energy-teal/60 backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.8),0_0_25px_rgba(0,242,254,0.3)] animate-slideUp">
-          <div className="flex items-center space-x-2.5">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-energy-cyan opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-energy-teal" />
-            </span>
-            <div className="text-left">
-              <p className="font-mono text-[11px] font-bold text-white tracking-wide">
-                AYLA GUIDE: Arrived at {returnPrompt.sectionName}
-              </p>
-              <p className="text-[11px] text-slate-300">
-                Wapas upar chalein? (Say "Haan Wapas" or click button)
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2 ml-2">
-            <button
-              onClick={handleReturnToTop}
-              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-energy-teal to-secondary-violet text-space-950 font-bold text-xs flex items-center space-x-1.5 shadow-[0_0_15px_rgba(0,242,254,0.4)] hover:scale-105 active:scale-95 transition-all"
-            >
-              <ArrowUp className="w-3.5 h-3.5 text-space-950" />
-              <span>Wapas Upar</span>
-            </button>
-            <button
-              onClick={handleDismissPrompt}
-              className="p-1.5 rounded-xl bg-space-900 border border-slate-700 text-slate-400 hover:text-white transition-colors"
-              title="Dismiss"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      )}
-
       <style>{`
         @keyframes avatarLevitate {
           0%, 100% {
@@ -775,51 +727,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           90% {
             transform: translateY(-0.8px) rotate(-0.15deg) scale(1.002);
           }
-        }
-        @keyframes handsPresenterCadence {
-          0%, 100% {
-            transform: translateY(0px) scale(1);
-            opacity: 0.3;
-          }
-          50% {
-            transform: translateY(-3px) scale(1.05);
-            opacity: 0.8;
-          }
-        }
-        @keyframes mouthLipCycle {
-          0%, 100% {
-            transform: scale(1, 0.55);
-          }
-          30% {
-            transform: scale(1.05, 1.25);
-          }
-          60% {
-            transform: scale(0.95, 0.85);
-          }
-          85% {
-            transform: scale(1.02, 1.1);
-          }
-        }
-        .animate-mouthCavity {
-          animation: mouthLipCycle 0.24s infinite ease-in-out alternate;
-          transform-origin: center;
-        }
-        .animate-mouthLips {
-          animation: mouthLipCycle 0.24s infinite ease-in-out alternate;
-          transform-origin: center;
-        }
-        @keyframes slideUpBanner {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0px);
-          }
-        }
-        .animate-slideUp {
-          animation: slideUpBanner 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
       `}</style>
     </div>
