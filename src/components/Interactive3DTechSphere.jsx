@@ -46,18 +46,18 @@ export const Interactive3DTechSphere = () => {
     if (!ctx) return;
 
     let animId;
-    let width = (canvas.width = canvas.parentElement.clientWidth);
-    let height = (canvas.height = canvas.parentElement.clientHeight || 500);
+    let width = (canvas.width = Math.max(300, canvas.parentElement?.clientWidth || 600));
+    let height = (canvas.height = Math.max(300, canvas.parentElement?.clientHeight || 500));
 
     const handleResize = () => {
       if (!canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight || 500;
+      width = canvas.width = Math.max(300, canvas.parentElement.clientWidth || 600);
+      height = canvas.height = Math.max(300, canvas.parentElement.clientHeight || 500);
     };
     window.addEventListener('resize', handleResize);
 
     // Distribute tech items evenly on a 3D sphere surface using Fibonacci Sphere Algorithm
-    const radius = Math.min(width, height) * 0.38;
+    const radius = Math.max(100, Math.min(width, height) * 0.38);
     const nodes = TECH_ITEMS.map((tech, i) => {
       const phi = Math.acos(1 - (2 * (i + 0.5)) / TECH_ITEMS.length);
       const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5);
@@ -108,7 +108,8 @@ export const Interactive3DTechSphere = () => {
         node.py = cy + y2 * scale;
         node.scale = scale;
         node.z = z2;
-        node.alpha = Math.max(0.18, (z2 + radius) / (2 * radius));
+        const rawAlpha = (z2 + radius) / (2 * radius);
+        node.alpha = Number.isFinite(rawAlpha) ? Math.max(0.18, Math.min(1, rawAlpha)) : 0.5;
       }
 
       // Sort by Z for proper 3D depth rendering
@@ -122,7 +123,9 @@ export const Interactive3DTechSphere = () => {
           const dist = Math.hypot(dx, dy);
 
           if (dist < 130) {
-            const avgAlpha = (nodes[i].alpha + nodes[j].alpha) / 2;
+            const a1 = Number.isFinite(nodes[i].alpha) ? nodes[i].alpha : 0.5;
+            const a2 = Number.isFinite(nodes[j].alpha) ? nodes[j].alpha : 0.5;
+            const avgAlpha = (a1 + a2) / 2;
             ctx.beginPath();
             ctx.moveTo(nodes[i].px, nodes[i].py);
             ctx.lineTo(nodes[j].px, nodes[j].py);
@@ -133,14 +136,28 @@ export const Interactive3DTechSphere = () => {
         }
       }
 
+      // Safe hex to rgba conversion helper
+      const hexToRgba = (hex, a) => {
+        if (!hex || typeof hex !== 'string') return `rgba(0, 242, 254, ${a})`;
+        const clean = hex.replace('#', '');
+        if (clean.length === 6) {
+          const r = parseInt(clean.substring(0, 2), 16) || 0;
+          const g = parseInt(clean.substring(2, 4), 16) || 0;
+          const b = parseInt(clean.substring(4, 6), 16) || 0;
+          return `rgba(${r}, ${g}, ${b}, ${a})`;
+        }
+        return `rgba(0, 242, 254, ${a})`;
+      };
+
       // 2. Render each 3D tech node
       for (let node of nodes) {
         const isSelected = selectedTech?.name === node.name;
         const size = Math.max(16, 26 * node.scale * (isSelected ? 1.4 : 1));
+        const safeAlpha = Number.isFinite(node.alpha) ? Math.max(0.05, Math.min(1, node.alpha)) : 0.6;
 
         // Outer glow
         const grad = ctx.createRadialGradient(node.px, node.py, 0, node.px, node.py, size * 1.5);
-        grad.addColorStop(0, `${node.color}${Math.floor(node.alpha * 200).toString(16).padStart(2, '0')}`);
+        grad.addColorStop(0, hexToRgba(node.color, safeAlpha * 0.75));
         grad.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = grad;
         ctx.beginPath();

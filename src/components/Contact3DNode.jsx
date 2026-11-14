@@ -12,25 +12,27 @@ export const Contact3DNode = ({ isTransmitting = false }) => {
     if (!ctx) return;
 
     let animId;
-    let width = (canvas.width = canvas.parentElement.clientWidth);
-    let height = (canvas.height = canvas.parentElement.clientHeight || 320);
+    let width = (canvas.width = Math.max(200, canvas.parentElement?.clientWidth || 320));
+    let height = (canvas.height = Math.max(200, canvas.parentElement?.clientHeight || 320));
 
     const handleResize = () => {
       if (!canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight || 320;
+      width = canvas.width = Math.max(200, canvas.parentElement.clientWidth || 320);
+      height = canvas.height = Math.max(200, canvas.parentElement.clientHeight || 320);
     };
     window.addEventListener('resize', handleResize);
 
     const handleMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
-      mouseRef.current.targetX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
-      mouseRef.current.targetY = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+      const halfW = rect.width / 2 || 1;
+      const halfH = rect.height / 2 || 1;
+      mouseRef.current.targetX = (e.clientX - (rect.left + halfW)) / halfW;
+      mouseRef.current.targetY = (e.clientY - (rect.top + halfH)) / halfH;
     };
     canvas.addEventListener('mousemove', handleMouseMove);
 
     // Build 3D Globe Latitude & Longitude Circles
-    const radius = Math.min(width, height) * 0.36;
+    const radius = Math.max(80, Math.min(width, height) * 0.36);
     const latLines = [-50, -25, 0, 25, 50]; // degrees
     const longLines = [0, 30, 60, 90, 120, 150]; // degrees
 
