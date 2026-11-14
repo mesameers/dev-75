@@ -4,6 +4,7 @@ import {
   Layers,
   Code2,
   Cpu,
+  Zap,
   Terminal,
   Mail,
   Activity,
