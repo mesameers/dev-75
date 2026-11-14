@@ -37,15 +37,16 @@ const MODES = [
   },
 ];
 
-const EXTRA_SPEECHES = [
-  "Greetings! I am DEV-75, Sameer Hussain's autonomous companion. Welcome to his engineering portfolio.",
-  "Sameer specializes in hardened cloud architectures, high-performance APIs, and deterministic 3D motion.",
-  "Every system here is engineered for zero-trust security, sub-15 millisecond p99 latency, and 99.99 percent cloud uptime.",
-  "Explore the live API playground below to test production auth and sliding-window rate limiter algorithms.",
+const WELCOME_SPEECHES = [
+  "Welcome! I am DEV-75, Sameer Hussain's autonomous orbit companion. Welcome to his engineering portfolio! Please take a moment to explore his architecture systems, interactive live API suite, and creative motion work down below.",
+  "Hello and welcome! Sameer Hussain is a Senior Full-Stack Developer and Systems Architect. Be sure to check out his deterministic Remotion film, cloud microservices, and interactive CLI terminal!",
+  "Welcome aboard! I invite you to explore Sameer's portfolio: test the real-time API suite, inspect production algorithms, and connect for enterprise engineering collaborations.",
+  "Welcome! Take a look through Sameer's portfolio below to see hardened multi-tenant platforms, sub-15 millisecond latency architectures, and 99.99 percent cloud uptime SLAs."
 ];
 
 export const CosmicAvatar = ({ size = 420, className = "" }) => {
   const containerRef = useRef(null);
+  const hasSpokenFirstRef = useRef(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [activeMode, setActiveMode] = useState(MODES[0]);
@@ -54,7 +55,7 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
 
   // Speech State
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [speechText, setSpeechText] = useState("Greetings! Click me or tap 'Hear DEV-75 Speak' to activate voice transmission.");
+  const [speechText, setSpeechText] = useState("👋 Welcome! Click me or tap 'Hear DEV-75 Speak' to explore Sameer's portfolio.");
   const [speechIndex, setSpeechIndex] = useState(0);
   const [speechSupported, setSpeechSupported] = useState(false);
 
@@ -134,9 +135,18 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
 
   const triggerNextSpeech = (e) => {
     if (e) e.stopPropagation();
-    const nextIndex = (speechIndex + 1) % EXTRA_SPEECHES.length;
+
+    // If first time clicking, always speak the Welcome & Portfolio Exploration message first!
+    if (!hasSpokenFirstRef.current) {
+      hasSpokenFirstRef.current = true;
+      setSpeechIndex(0);
+      speak(WELCOME_SPEECHES[0]);
+      return;
+    }
+
+    const nextIndex = (speechIndex + 1) % WELCOME_SPEECHES.length;
     setSpeechIndex(nextIndex);
-    speak(EXTRA_SPEECHES[nextIndex]);
+    speak(WELCOME_SPEECHES[nextIndex]);
   };
 
   const switchMode = (mode) => {
