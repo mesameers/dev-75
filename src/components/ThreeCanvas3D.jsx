@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 export const ThreeCanvas3D = () => {
   const canvasRef = useRef(null);
-  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
+  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0, screenX: -1000, screenY: -1000 });
   const scrollRef = useRef({ y: 0, targetY: 0 });
 
   useEffect(() => {
@@ -22,6 +22,8 @@ export const ThreeCanvas3D = () => {
     window.addEventListener('resize', handleResize);
 
     const handleMouseMove = (e) => {
+      mouseRef.current.screenX = e.clientX;
+      mouseRef.current.screenY = e.clientY;
       mouseRef.current.targetX = (e.clientX - width / 2) / (width / 2);
       mouseRef.current.targetY = (e.clientY - height / 2) / (height / 2);
     };
@@ -33,23 +35,28 @@ export const ThreeCanvas3D = () => {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // 1. 3D Starfield Particles with deep Z-depth
-    const starCount = Math.min(130, Math.floor((width * height) / 10000));
-    const stars = [];
-    for (let i = 0; i < starCount; i++) {
-      stars.push({
-        x: (Math.random() - 0.5) * 2200,
-        y: (Math.random() - 0.5) * 2200,
-        z: Math.random() * 1600 + 100,
-        vz: 0.9 + Math.random() * 1.6,
-        radius: 0.9 + Math.random() * 2.2,
-        color: Math.random() > 0.4 ? '#00F2FE' : '#8B5CF6',
+    // 1. Continuous 3D Constellation Nodes (Spanning the entire universe)
+    const nodeCount = Math.min(110, Math.floor((width * height) / 9500));
+    const nodes = [];
+    for (let i = 0; i < nodeCount; i++) {
+      nodes.push({
+        x: (Math.random() - 0.5) * (width * 1.5),
+        y: (Math.random() - 0.5) * (height * 1.5),
+        z: Math.random() * 800 + 100,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        vz: (Math.random() - 0.5) * 0.3,
+        radius: 1.5 + Math.random() * 2.2,
+        color: Math.random() > 0.35 ? '#00F2FE' : '#8B5CF6',
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.02 + Math.random() * 0.03,
       });
     }
 
-    // 2. Geometry 1: 3D Wireframe Icosahedron (Hero & Upper Orbit)
+    // 2. 3D Wireframe Geometries
+    // Geometry A: Icosahedron
     const phi = (1 + Math.sqrt(5)) / 2;
-    const icoScale = 140;
+    const icoScale = 135;
     const icosahedronVertices = [
       [-1, phi, 0], [1, phi, 0], [-1, -phi, 0], [1, -phi, 0],
       [0, -1, phi], [0, 1, phi], [0, -1, -phi], [0, 1, -phi],
@@ -65,8 +72,8 @@ export const ThreeCanvas3D = () => {
       [8, 1], [9, 5], [4, 11], [2, 10], [6, 7]
     ];
 
-    // 3. Geometry 2: 3D Wireframe Octahedron (Middle Scroll Area)
-    const octScale = 160;
+    // Geometry B: Octahedron
+    const octScale = 140;
     const octahedronVertices = [
       [1, 0, 0], [-1, 0, 0],
       [0, 1, 0], [0, -1, 0],
@@ -79,58 +86,130 @@ export const ThreeCanvas3D = () => {
       [0, 5], [1, 5], [2, 5], [3, 5]
     ];
 
-    // 4. Geometry 3: 3D Gyroscope Dual Rings (Bottom / Contact Section)
+    // Geometry C: Gyroscope Concentric Rings
     const ringSegments = 24;
     const ring1Vertices = [];
     const ring2Vertices = [];
-    const ringRadius = 180;
+    const ringRadius = 155;
     for (let i = 0; i < ringSegments; i++) {
       const theta = (i / ringSegments) * Math.PI * 2;
       ring1Vertices.push([Math.cos(theta) * ringRadius, Math.sin(theta) * ringRadius, 0]);
-      ring2Vertices.push([0, Math.cos(theta) * (ringRadius * 0.85), Math.sin(theta) * (ringRadius * 0.85)]);
+      ring2Vertices.push([0, Math.cos(theta) * (ringRadius * 0.82), Math.sin(theta) * (ringRadius * 0.82)]);
     }
+    const ring1Edges = ring1Vertices.map((_, i) => [i, (i + 1) % ringSegments]);
+    const ring2Edges = ring2Vertices.map((_, i) => [i, (i + 1) % ringSegments]);
 
-    let rot1 = { x: 0.2, y: 0.3 };
-    let rot2 = { x: 0.4, y: 0.1 };
-    let rot3 = { x: 0.6, y: 0.5 };
+    // Rotation accumulators
+    let rotA = { x: 0.2, y: 0.3 };
+    let rotB = { x: 0.5, y: 0.1 };
+    let rotC = { x: 0.3, y: 0.6 };
+    let rotD = { x: 0.4, y: 0.4 };
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Smooth mouse & scroll lerp
+      // Smooth mouse & scroll interpolation
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
       mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
       scrollRef.current.y += (scrollRef.current.targetY - scrollRef.current.y) * 0.08;
 
       const cx = width / 2;
       const cy = height / 2;
-      const fov = 650;
+      const fov = 580;
       const sY = scrollRef.current.y;
 
-      // 1. Render 3D Starfield
-      for (let star of stars) {
-        star.z -= star.vz;
-        if (star.z <= 10) {
-          star.z = 1600;
-          star.x = (Math.random() - 0.5) * 2200;
-          star.y = (Math.random() - 0.5) * 2200;
+      // 1. UPDATE & PROJECT 3D NODES
+      const projectedNodes = [];
+      const boundX = width * 0.8;
+      const boundY = height * 0.8;
+
+      for (let node of nodes) {
+        node.x += node.vx;
+        node.y += node.vy;
+        node.z += node.vz;
+        node.pulse += node.pulseSpeed;
+
+        // Wrap around boundaries in 3D
+        if (node.x < -boundX) node.x = boundX;
+        if (node.x > boundX) node.x = -boundX;
+        if (node.y < -boundY) node.y = boundY;
+        if (node.y > boundY) node.y = -boundY;
+        if (node.z < 80) node.z = 900;
+        if (node.z > 900) node.z = 80;
+
+        // Perspective projection with mouse parallax & scroll drift
+        const scale = fov / (fov + node.z);
+        const px = cx + (node.x - mouseRef.current.x * 100) * scale;
+        const py = cy + (node.y - mouseRef.current.y * 100 + (sY - 0.5) * 200) * scale;
+
+        projectedNodes.push({
+          px,
+          py,
+          scale,
+          z: node.z,
+          radius: node.radius * scale,
+          color: node.color,
+          alpha: Math.min(1, Math.max(0.18, (900 - node.z) / 700)) * (0.8 + 0.2 * Math.sin(node.pulse)),
+        });
+      }
+
+      // 2. DRAW 3D CONSTELLATION LATTICE LINES
+      // Connect nodes that are within 3D proximity
+      const maxConnectDist = 150;
+      for (let i = 0; i < projectedNodes.length; i++) {
+        const p1 = projectedNodes[i];
+        if (p1.px < -50 || p1.px > width + 50 || p1.py < -50 || p1.py > height + 50) continue;
+
+        for (let j = i + 1; j < projectedNodes.length; j++) {
+          const p2 = projectedNodes[j];
+          if (p2.px < -50 || p2.px > width + 50 || p2.py < -50 || p2.py > height + 50) continue;
+
+          const dx = p1.px - p2.px;
+          const dy = p1.py - p2.py;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < maxConnectDist) {
+            const lineAlpha = (1 - dist / maxConnectDist) * Math.min(p1.alpha, p2.alpha) * 0.45;
+            ctx.beginPath();
+            ctx.moveTo(p1.px, p1.py);
+            ctx.lineTo(p2.px, p2.py);
+            ctx.strokeStyle = p1.color === '#00F2FE' ? `rgba(0, 242, 254, ${lineAlpha})` : `rgba(139, 92, 246, ${lineAlpha})`;
+            ctx.lineWidth = Math.max(0.7, 1.4 * p1.scale);
+            ctx.stroke();
+          }
         }
 
-        const scale = fov / star.z;
-        const px = cx + (star.x - mouseRef.current.x * 140) * scale;
-        const py = cy + (star.y - mouseRef.current.y * 140 + (sY - 0.5) * 350) * scale;
-
-        if (px >= 0 && px <= width && py >= 0 && py <= height) {
-          const alpha = Math.min(1, Math.max(0.12, (1600 - star.z) / 1000));
-          ctx.beginPath();
-          ctx.arc(px, py, star.radius * scale, 0, Math.PI * 2);
-          ctx.fillStyle = star.color;
-          ctx.globalAlpha = alpha * 0.55;
-          ctx.fill();
+        // Connect nearby nodes to user's interactive mouse cursor!
+        if (mouseRef.current.screenX > 0 && mouseRef.current.screenY > 0) {
+          const mDist = Math.hypot(p1.px - mouseRef.current.screenX, p1.py - mouseRef.current.screenY);
+          if (mDist < 180) {
+            const mouseLineAlpha = (1 - mDist / 180) * 0.55;
+            ctx.beginPath();
+            ctx.moveTo(p1.px, p1.py);
+            ctx.lineTo(mouseRef.current.screenX, mouseRef.current.screenY);
+            ctx.strokeStyle = `rgba(0, 255, 224, ${mouseLineAlpha})`;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          }
         }
       }
 
-      // Helper function to render a 3D wireframe mesh
+      // 3. DRAW GLOWING CONSTELLATION NODES
+      for (let p of projectedNodes) {
+        if (p.px < -20 || p.px > width + 20 || p.py < -20 || p.py > height + 20) continue;
+
+        ctx.beginPath();
+        ctx.arc(p.px, p.py, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 10 * p.scale;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      ctx.globalAlpha = 1.0;
+
+      // 4. HELPER TO RENDER A 3D ROTATING WIREFRAME POLYHEDRON
       const renderMesh = (vertices, edges, center, rot, color, alpha) => {
         const cosX = Math.cos(rot.x);
         const sinX = Math.sin(rot.x);
@@ -165,89 +244,93 @@ export const ThreeCanvas3D = () => {
           ctx.stroke();
         }
 
-        // Vertices dots
+        // Draw glowing vertex points
         for (let p of projected) {
           ctx.beginPath();
           ctx.arc(p.px, p.py, 2.5 * p.scale, 0, Math.PI * 2);
           ctx.fillStyle = '#00FFE0';
-          ctx.globalAlpha = alpha * 1.5;
+          ctx.globalAlpha = Math.min(1, alpha * 1.6);
           ctx.fill();
         }
       };
 
-      // 2. Render 3D Polyhedron 1 (Hero - Top Right)
-      rot1.x += 0.003;
-      rot1.y += 0.004;
-      const poly1Alpha = Math.max(0.08, 0.28 * (1 - sY * 1.5));
-      if (poly1Alpha > 0.02) {
-        renderMesh(
-          icosahedronVertices,
-          icosahedronEdges,
-          {
-            x: cx + width * 0.32 + mouseRef.current.x * 40,
-            y: cy - height * 0.18 + mouseRef.current.y * 40 - sY * 200,
-            z: 560,
-          },
-          { x: rot1.x + mouseRef.current.y * 0.5, y: rot1.y + mouseRef.current.x * 0.5 },
-          '#00F2FE',
-          poly1Alpha
-        );
-      }
+      // 5. RENDER CONTINUOUS 3D GEOMETRIC OBJECTS AT MULTIPLE QUADRANTS (Covering EVERY section)
+      // Polyhedron 1: Hero Quadrant (Upper Right)
+      rotA.x += 0.003;
+      rotA.y += 0.004;
+      renderMesh(
+        icosahedronVertices,
+        icosahedronEdges,
+        {
+          x: cx + width * 0.35 + mouseRef.current.x * 40,
+          y: cy - height * 0.2 + mouseRef.current.y * 40,
+          z: 520,
+        },
+        { x: rotA.x + mouseRef.current.y * 0.4, y: rotA.y + mouseRef.current.x * 0.4 },
+        '#00F2FE',
+        0.32
+      );
 
-      // 3. Render 3D Polyhedron 2 (Mid-Page - Left Orbit)
-      rot2.x += 0.004;
-      rot2.y -= 0.003;
-      const poly2Alpha = Math.max(0.08, 0.25 * (1 - Math.abs(sY - 0.45) * 2));
-      if (poly2Alpha > 0.02) {
-        renderMesh(
-          octahedronVertices,
-          octahedronEdges,
-          {
-            x: cx - width * 0.35 + mouseRef.current.x * 50,
-            y: cy + (sY - 0.45) * 150 + mouseRef.current.y * 30,
-            z: 580,
-          },
-          { x: rot2.x + mouseRef.current.y * 0.4, y: rot2.y + mouseRef.current.x * 0.4 },
-          '#8B5CF6',
-          poly2Alpha
-        );
-      }
+      // Polyhedron 2: Film & Tech Quadrant (Upper Left)
+      rotB.x += 0.004;
+      rotB.y -= 0.003;
+      renderMesh(
+        octahedronVertices,
+        octahedronEdges,
+        {
+          x: cx - width * 0.36 + mouseRef.current.x * 50,
+          y: cy - height * 0.05 + mouseRef.current.y * 30,
+          z: 560,
+        },
+        { x: rotB.x + mouseRef.current.y * 0.3, y: rotB.y + mouseRef.current.x * 0.3 },
+        '#8B5CF6',
+        0.28
+      );
 
-      // 4. Render 3D Gyroscope Rings (Bottom - Contact Section Behind LET'S TALK)
-      rot3.x += 0.005;
-      rot3.y += 0.006;
-      const poly3Alpha = Math.max(0.08, 0.32 * (sY * 1.4));
-      if (poly3Alpha > 0.03) {
-        // Ring 1 Edges
-        const ring1Edges = ring1Vertices.map((_, i) => [i, (i + 1) % ringSegments]);
-        const ring2Edges = ring2Vertices.map((_, i) => [i, (i + 1) % ringSegments]);
+      // Polyhedron 3: Systems & Skills Quadrant (Mid Right)
+      rotC.x += 0.003;
+      rotC.y += 0.005;
+      renderMesh(
+        icosahedronVertices,
+        icosahedronEdges,
+        {
+          x: cx + width * 0.38 + mouseRef.current.x * 45,
+          y: cy + height * 0.15 + mouseRef.current.y * 35,
+          z: 540,
+        },
+        { x: rotC.x + mouseRef.current.y * 0.35, y: rotC.y + mouseRef.current.x * 0.35 },
+        '#00FFE0',
+        0.30
+      );
 
-        renderMesh(
-          ring1Vertices,
-          ring1Edges,
-          {
-            x: cx + mouseRef.current.x * 60,
-            y: cy + height * 0.15 + mouseRef.current.y * 40,
-            z: 520,
-          },
-          { x: rot3.x + mouseRef.current.y * 0.6, y: rot3.y + mouseRef.current.x * 0.6 },
-          '#00F2FE',
-          poly3Alpha
-        );
+      // Polyhedron 4: Terminal & Contact Gyroscope Rings (Bottom Left & Center)
+      rotD.x += 0.005;
+      rotD.y += 0.006;
+      renderMesh(
+        ring1Vertices,
+        ring1Edges,
+        {
+          x: cx - width * 0.25 + mouseRef.current.x * 50,
+          y: cy + height * 0.28 + mouseRef.current.y * 40,
+          z: 500,
+        },
+        { x: rotD.x + mouseRef.current.y * 0.5, y: rotD.y + mouseRef.current.x * 0.5 },
+        '#00F2FE',
+        0.34
+      );
 
-        renderMesh(
-          ring2Vertices,
-          ring2Edges,
-          {
-            x: cx + mouseRef.current.x * 60,
-            y: cy + height * 0.15 + mouseRef.current.y * 40,
-            z: 520,
-          },
-          { x: -rot3.x * 0.8 + mouseRef.current.y * 0.4, y: -rot3.y * 0.8 + mouseRef.current.x * 0.4 },
-          '#EC4899',
-          poly3Alpha * 0.75
-        );
-      }
+      renderMesh(
+        ring2Vertices,
+        ring2Edges,
+        {
+          x: cx - width * 0.25 + mouseRef.current.x * 50,
+          y: cy + height * 0.28 + mouseRef.current.y * 40,
+          z: 500,
+        },
+        { x: -rotD.x * 0.8 + mouseRef.current.y * 0.4, y: -rotD.y * 0.8 + mouseRef.current.x * 0.4 },
+        '#EC4899',
+        0.26
+      );
 
       ctx.globalAlpha = 1.0;
       animId = requestAnimationFrame(render);
