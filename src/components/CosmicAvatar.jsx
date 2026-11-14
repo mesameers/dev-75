@@ -8,16 +8,18 @@ import {
   Mail,
   Activity,
   Compass,
-  ArrowRight
+  ArrowRight,
+  Radio,
+  Sparkles
 } from 'lucide-react';
 
 const ORBITING_TECH = [
-  { label: 'React 18', angle: 0, radius: 215, tilt: 65, color: '#00F2FE' },
-  { label: 'Supabase', angle: 60, radius: 235, tilt: -45, color: '#10B981' },
-  { label: 'PostgreSQL', angle: 120, radius: 210, tilt: 55, color: '#38BDF8' },
-  { label: 'Node.js', angle: 180, radius: 230, tilt: -60, color: '#8B5CF6' },
-  { label: 'TypeScript', angle: 240, radius: 215, tilt: 40, color: '#00FFE0' },
-  { label: 'Remotion', angle: 300, radius: 240, tilt: -50, color: '#EC4899' },
+  { label: 'React 18', angle: 0, radius: 220, color: '#00F2FE' },
+  { label: 'Supabase', angle: 60, radius: 240, color: '#10B981' },
+  { label: 'PostgreSQL', angle: 120, radius: 215, color: '#38BDF8' },
+  { label: 'Node.js', angle: 180, radius: 235, color: '#8B5CF6' },
+  { label: 'TypeScript', angle: 240, radius: 220, color: '#00FFE0' },
+  { label: 'Remotion', angle: 300, radius: 245, color: '#EC4899' },
 ];
 
 // Pure Pakistani Urdu Voice Navigation Targets with Full Phonetic Matching
@@ -138,35 +140,11 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
-
-  // Animated Girl Facial Expressions
-  const [isBlinking, setIsBlinking] = useState(false);
-  const [mouthShape, setMouthShape] = useState(0); // 0: closed smile, 1: talking, 2: open
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [audioJitter, setAudioJitter] = useState([12, 24, 18, 30, 16]);
 
-  // Natural Blinking Interval
-  useEffect(() => {
-    const blinkInterval = setInterval(() => {
-      setIsBlinking(true);
-      setTimeout(() => setIsBlinking(false), 170);
-    }, 3800);
-    return () => clearInterval(blinkInterval);
-  }, []);
-
-  // Lip-Sync talking animation when speaking
-  useEffect(() => {
-    if (!isSpeaking) {
-      setMouthShape(0);
-      return;
-    }
-    const mouthInterval = setInterval(() => {
-      setMouthShape((prev) => (prev === 0 ? 1 : prev === 1 ? 2 : 0));
-    }, 140);
-    return () => clearInterval(mouthInterval);
-  }, [isSpeaking]);
-
-  // Mouse tracking for head tilt and eye gaze
+  // Mouse tracking for realistic 3D parallax tilt
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!containerRef.current) return;
@@ -182,6 +160,21 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Equalizer animation for microphone in studio
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const multiplier = isSpeaking ? 1.8 : isListening ? 1.3 : 0.8;
+      setAudioJitter([
+        Math.floor((8 + Math.random() * 16) * multiplier),
+        Math.floor((14 + Math.random() * 20) * multiplier),
+        Math.floor((18 + Math.random() * 22) * multiplier),
+        Math.floor((12 + Math.random() * 18) * multiplier),
+        Math.floor((6 + Math.random() * 14) * multiplier),
+      ]);
+    }, isSpeaking ? 90 : 200);
+    return () => clearInterval(interval);
+  }, [isSpeaking, isListening]);
+
   // Natural Pakistani Urdu Speech Synthesis Engine (Normal Clear Speed)
   const speak = useCallback((urduText, romanText = '') => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
@@ -193,11 +186,10 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     try {
       window.speechSynthesis.cancel();
 
-      // Utterance with Pakistani Urdu text
       const utterance = new SpeechSynthesisUtterance(romanText || urduText);
       const voices = window.speechSynthesis.getVoices();
 
-      // Look for natural female / Urdu voice
+      // Look for natural female / Pakistani Urdu voices
       const preferredVoice =
         voices.find((v) => (v.lang.includes('ur') || v.lang.includes('hi')) && !v.name.includes('Hemant')) ||
         voices.find((v) => (v.name.includes('Zira') || v.name.includes('Jenny') || v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Female') || v.name.includes('Natural'))) ||
@@ -205,8 +197,8 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         voices.find((v) => v.lang.startsWith('en'));
 
       if (preferredVoice) utterance.voice = preferredVoice;
-      utterance.pitch = 1.2; // Natural, polite, feminine Pakistani Urdu tone
-      utterance.rate = 0.88; // Normal, crystal-clear understandable speed
+      utterance.pitch = 1.18; // Warm, polite, feminine Pakistani Urdu presenter voice
+      utterance.rate = 0.88; // Normal, crystal-clear understandable cadence
 
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
@@ -229,7 +221,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       const executeScroll = () => {
         let el = document.getElementById(targetId);
 
-        // Aliases fallback (e.g. systems <-> projects, skills <-> tech-sphere)
         if (!el && (targetId === 'systems' || targetId === 'projects')) {
           el = document.getElementById('systems') || document.getElementById('projects');
         }
@@ -246,25 +237,21 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
         const targetOffset = Math.max(0, rect.top + scrollTop - 85);
 
-        // A. Primary Window Scroll
         window.scrollTo({
           top: targetOffset,
           behavior: 'smooth',
         });
 
-        // B. Secondary Element scrollIntoView fallback
         try {
           el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } catch (e) {}
 
-        // C. Update URL hash
         try {
           if (window.history && window.history.pushState) {
             window.history.pushState(null, '', `#${targetId}`);
           }
         } catch (e) {}
 
-        // D. Visual Cyber Highlight Pulse on Arrival
         try {
           el.style.transition = 'box-shadow 0.6s ease, outline 0.6s ease';
           el.style.outline = '2px solid rgba(0, 242, 254, 0.9)';
@@ -296,7 +283,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
       const recognition = new SpeechRecognition();
       recognitionRef.current = recognition;
-      recognition.lang = 'en-US'; // Multilingual phonetic engine for Roman Urdu & Pakistani pronunciation
+      recognition.lang = 'en-US';
       recognition.continuous = true;
       recognition.interimResults = false;
 
@@ -376,7 +363,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       recognition.onend = () => {
         setIsListening(false);
         isListeningRef.current = false;
-        // Automatically restart listening continuously in the background
         setTimeout(() => {
           try {
             if (recognitionRef.current && !isListeningRef.current) {
@@ -399,12 +385,10 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       initAutoVoiceRecognition();
     };
 
-    // Attempt automatic speech immediately
     try {
       triggerWelcome();
     } catch (e) {}
 
-    // Fallback on first browser interaction (for browsers requiring user gesture)
     const interactionEvents = ['click', 'touchstart', 'keydown', 'scroll'];
     const handleFirstInteraction = () => {
       triggerWelcome();
@@ -417,20 +401,18 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     };
   }, [speak, initAutoVoiceRecognition]);
 
-  // User can also click on Ayla to trigger her speech / info
+  // User can click on Anchor to hear greeting / guidance
   const handleAvatarClick = () => {
     speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN);
     initAutoVoiceRecognition();
   };
 
-  const tiltX = mousePos.y * -12;
-  const tiltY = mousePos.x * 16;
-  const pupilX = mousePos.x * 3.5;
-  const pupilY = mousePos.y * 2.5;
+  const tiltX = mousePos.y * -9;
+  const tiltY = mousePos.x * 12;
 
   return (
     <div className="flex flex-col items-center relative w-full select-none">
-      {/* Main 3D Animated Cyber AI Girl Avatar Canvas with Complete Figure, Beautiful Dress, Hands & Feet */}
+      {/* Main 3D Pixar News Presenter Studio Canvas */}
       <div
         ref={containerRef}
         onMouseEnter={() => setIsHovered(true)}
@@ -439,16 +421,16 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         className={`relative flex items-center justify-center cursor-pointer group ${className}`}
         style={{
           width: size,
-          height: Math.round(size * 1.25),
+          height: Math.round(size * 1.15),
           perspective: '1200px',
         }}
         title="میں سمیر حسین کی اسسٹنٹ ہوں۔ مجھے کلک کریں یا بتائیں کہاں جانا ہے!"
       >
-        {/* 1. Deep Core Gravitational Quantum Nebula */}
+        {/* 1. Deep Core Ambient Studio Spotlight Nebula */}
         <div
           className={`absolute rounded-full blur-[90px] pointer-events-none transition-all duration-700 ${
             isSpeaking || isListening
-              ? 'scale-140 opacity-95'
+              ? 'scale-135 opacity-95'
               : isHovered
               ? 'scale-120 opacity-85'
               : 'opacity-70'
@@ -456,60 +438,16 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           style={{
             width: size * 0.85,
             height: size * 0.85,
-            background: 'radial-gradient(circle, #00F2FE 0%, #7928CA 45%, rgba(0, 242, 254, 0) 75%)',
-            animation: 'pulseSlow 3.5s infinite ease-in-out',
+            background: 'radial-gradient(circle, #00F2FE 0%, #7928CA 40%, rgba(0, 242, 254, 0) 75%)',
+            animation: 'pulseSlow 4s infinite ease-in-out',
           }}
         />
 
-        {/* 2. Interactive Soundwave Ripple Rings When Speaking / Listening */}
-        {(isSpeaking || isListening) && (
-          <>
-            <div
-              className="absolute rounded-full border-2 pointer-events-none animate-soundwave"
-              style={{
-                width: size * 0.7,
-                height: size * 0.7,
-                borderColor: '#00F2FE80',
-              }}
-            />
-            <div
-              className="absolute rounded-full border pointer-events-none animate-soundwave-delayed"
-              style={{
-                width: size * 0.9,
-                height: size * 0.9,
-                borderColor: '#00F2FE40',
-              }}
-            />
-          </>
-        )}
-
-        {/* 3. Outer 3D Gyroscopic Gimbal Orbit Rings */}
-        <div
-          className="absolute rounded-full border pointer-events-none transition-all duration-500"
-          style={{
-            width: size * 0.98,
-            height: size * 0.98,
-            borderColor: '#00F2FE30',
-            boxShadow: '0 0 30px #00F2FE20',
-            animation: 'spinClockwise 24s linear infinite',
-          }}
-        />
-        <div
-          className="absolute rounded-full border pointer-events-none transition-all duration-500"
-          style={{
-            width: size * 0.88,
-            height: size * 0.88,
-            borderColor: '#00F2FE40',
-            borderStyle: 'dashed',
-            animation: 'spinCounterClockwise 18s linear infinite',
-          }}
-        />
-
-        {/* 4. Orbiting Floating Tech Badges */}
+        {/* 2. Orbiting Floating Tech Badges */}
         {ORBITING_TECH.map((tech, i) => {
           const rad = (tech.angle * Math.PI) / 180;
           const xOffset = Math.cos(rad) * (tech.radius * 0.95);
-          const yOffset = Math.sin(rad) * (tech.radius * 0.82);
+          const yOffset = Math.sin(rad) * (tech.radius * 0.78);
 
           return (
             <div
@@ -535,378 +473,81 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           );
         })}
 
-        {/* 5. Complete 3D Animated Cyber Anime Girl with Beautiful Dress, Hands & Feet */}
+        {/* 3. 3D Pixar News Presenter Character Card Stage */}
         <div
-          className="relative z-10 flex flex-col items-center justify-center transition-transform duration-200 ease-out"
+          className="relative z-10 w-full max-w-[420px] rounded-3xl overflow-hidden border border-energy-teal/35 bg-space-900/90 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(0,242,254,0.2)] transition-transform duration-200 ease-out group-hover:border-energy-teal/70"
           style={{
-            transform: `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateZ(35px)`,
+            transform: `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateZ(25px)`,
             animation: 'avatarLevitate 4.5s ease-in-out infinite',
           }}
         >
-          {/* Complete Girl Full Figure Vector SVG with Hands & Feet */}
-          <svg
-            width={size * 0.88}
-            height={Math.round(size * 1.22)}
-            viewBox="0 0 280 470"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)]"
-          >
-            <defs>
-              {/* Skin Tone Gradient */}
-              <linearGradient id="girlSkinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FFF4ED" />
-                <stop offset="65%" stopColor="#FFE3D3" />
-                <stop offset="100%" stopColor="#F7C6B0" />
-              </linearGradient>
+          {/* Top Holographic Broadcast Header */}
+          <div className="flex items-center justify-between px-4 py-2 bg-space-950/80 border-b border-slate-800/80">
+            <div className="flex items-center space-x-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500" />
+              </span>
+              <span className="font-mono text-[10px] font-black text-white tracking-widest uppercase">
+                LIVE BROADCAST // DEV-75 STUDIO
+              </span>
+            </div>
 
-              {/* Glowing Hair Gradient */}
-              <linearGradient id="girlHairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#00FFE0" />
-                <stop offset="45%" stopColor="#00F2FE" />
-                <stop offset="100%" stopColor="#7928CA" />
-              </linearGradient>
+            <div className="flex items-center space-x-2 font-mono text-[10px] text-slate-400">
+              <Radio className="w-3 h-3 text-energy-teal animate-pulse" />
+              <span>AYLA // SAMEER'S AI PRESENTER</span>
+            </div>
+          </div>
 
-              {/* Eye Iris Gradient */}
-              <radialGradient id="girlEyeGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#FFFFFF" />
-                <stop offset="35%" stopColor="#00F2FE" />
-                <stop offset="85%" stopColor="#0B132B" />
-                <stop offset="100%" stopColor="#02040A" />
-              </radialGradient>
-
-              {/* Beautiful Dress Main Gradient (Deep Space Silk) */}
-              <linearGradient id="dressMainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#1B2234" />
-                <stop offset="40%" stopColor="#0E1424" />
-                <stop offset="80%" stopColor="#070B14" />
-                <stop offset="100%" stopColor="#02040A" />
-              </linearGradient>
-
-              {/* Dress Glowing Accent Gradient */}
-              <linearGradient id="dressAccentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#00F2FE" />
-                <stop offset="50%" stopColor="#7928CA" />
-                <stop offset="100%" stopColor="#00FFE0" />
-              </linearGradient>
-
-              {/* Translucent Ruffle Sleeves Gradient */}
-              <linearGradient id="ruffleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#00F2FE" stopOpacity="0.75" />
-                <stop offset="60%" stopColor="#7928CA" stopOpacity="0.45" />
-                <stop offset="100%" stopColor="#00FFE0" stopOpacity="0.15" />
-              </linearGradient>
-
-              {/* Glow Filter */}
-              <filter id="aylaGlow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="5" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-              </filter>
-            </defs>
-
-            {/* Back Flowing Hair Locks */}
-            <path
-              d="M75 90 C35 150 40 240 65 310 C85 270 90 200 92 135 Z"
-              fill="url(#girlHairGrad)"
-              opacity="0.95"
-            />
-            <path
-              d="M205 90 C245 150 240 240 215 310 C195 270 190 200 188 135 Z"
-              fill="url(#girlHairGrad)"
-              opacity="0.95"
+          {/* High-Resolution 3D Pixar News Anchor Character Image */}
+          <div className="relative w-full aspect-[16/10] overflow-hidden bg-space-950">
+            <img
+              src="/media/news_anchor.jpg"
+              alt="3D Pixar Style Female News Anchor"
+              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
             />
 
-            {/* Back Floating Anime Ribbon Bow Tails */}
-            <path
-              d="M125 240 C110 270 95 330 85 365 C100 355 118 310 130 260 Z"
-              fill="url(#dressAccentGrad)"
-              opacity="0.8"
-            />
-            <path
-              d="M155 240 C170 270 185 330 195 365 C180 355 162 310 150 260 Z"
-              fill="url(#dressAccentGrad)"
-              opacity="0.8"
-            />
+            {/* Ambient Studio Lighting Sheen Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-space-950 via-transparent to-transparent opacity-80 pointer-events-none" />
 
-            {/* ----------------- FEET & LEGS (Visible beneath the gown hem) ----------------- */}
-            {/* Left Leg in Cyber Stocking */}
-            <path
-              d="M118 385 L116 438 L126 438 L128 385 Z"
-              fill="#080C16"
-              stroke="#00F2FE40"
-              strokeWidth="1"
-            />
-            {/* Left High-Heel Cyber Boot / Foot */}
-            <path
-              d="M112 438 L114 456 L128 456 L128 438 Z"
-              fill="#0E1626"
-              stroke="#00F2FE"
-              strokeWidth="1.5"
-            />
-            {/* Left Glowing Boot Sole */}
-            <path d="M112 456 L128 456" stroke="#00F2FE" strokeWidth="2.5" filter="url(#aylaGlow)" />
-
-            {/* Right Leg in Cyber Stocking */}
-            <path
-              d="M152 385 L154 438 L164 438 L162 385 Z"
-              fill="#080C16"
-              stroke="#00F2FE40"
-              strokeWidth="1"
-            />
-            {/* Right High-Heel Cyber Boot / Foot */}
-            <path
-              d="M152 438 L152 456 L166 456 L168 438 Z"
-              fill="#0E1626"
-              stroke="#00F2FE"
-              strokeWidth="1.5"
-            />
-            {/* Right Glowing Boot Sole */}
-            <path d="M152 456 L168 456" stroke="#00F2FE" strokeWidth="2.5" filter="url(#aylaGlow)" />
-
-            {/* ----------------- BEAUTIFUL DRESS SKIRT & GOWN ----------------- */}
-            {/* Underskirt Layer */}
-            <path
-              d="M105 240 C90 270 60 320 40 395 C80 410 200 410 240 395 C220 320 190 270 175 240 Z"
-              fill="url(#dressMainGrad)"
-              stroke="#00F2FE"
-              strokeWidth="1.5"
-            />
-
-            {/* Flowing Pleated Dress Folds */}
-            <path
-              d="M115 245 C95 290 70 345 55 400 C75 408 105 410 120 405 C115 350 118 290 125 245 Z"
-              fill="#121A2D"
-              opacity="0.8"
-            />
-            <path
-              d="M165 245 C185 290 210 345 225 400 C205 408 175 410 160 405 C165 350 162 290 155 245 Z"
-              fill="#121A2D"
-              opacity="0.8"
-            />
-            <path
-              d="M130 245 C125 300 120 360 115 408 C130 412 150 412 165 408 C160 360 155 300 150 245 Z"
-              fill="#19233C"
-              stroke="#00F2FE40"
-              strokeWidth="1"
-            />
-
-            {/* Glowing Cyber Circuit Trims & Scalloped Hemline */}
-            <path
-              d="M40 395 Q140 425 240 395"
-              stroke="#00F2FE"
-              strokeWidth="3"
-              fill="none"
-              filter="url(#aylaGlow)"
-            />
-            <path
-              d="M50 402 Q140 430 230 402"
-              stroke="#00FFE0"
-              strokeWidth="1.5"
-              fill="none"
-              strokeDasharray="4 4"
-            />
-
-            {/* Vertical Fiber-Optic Pinstripes */}
-            <path d="M120 250 Q105 320 85 390" stroke="#00F2FE" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
-            <path d="M160 250 Q175 320 195 390" stroke="#00F2FE" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
-            <path d="M140 250 L140 400" stroke="#00F2FE" strokeWidth="1.5" opacity="0.9" filter="url(#aylaGlow)" />
-
-            {/* Elegant Cyber Corset Bodice */}
-            <path
-              d="M100 178 C95 200 102 235 106 242 C115 246 165 246 174 242 C178 235 185 200 180 178 C165 185 150 185 140 180 C130 185 115 185 100 178 Z"
-              fill="url(#dressMainGrad)"
-              stroke="#00F2FE"
-              strokeWidth="2"
-            />
-            <path d="M122 184 L124 243" stroke="#00F2FE90" strokeWidth="1.5" />
-            <path d="M158 184 L156 243" stroke="#00F2FE90" strokeWidth="1.5" />
-
-            {/* Glowing Center Quantum Heart on Bodice */}
-            <circle cx="140" cy="205" r="5.5" fill="#00F2FE" filter="url(#aylaGlow)">
-              <animate attributeName="r" values="4.5;6.5;4.5" dur="1.3s" repeatCount="indefinite" />
-            </circle>
-
-            {/* Waist Ribbon & Bow */}
-            <path
-              d="M104 238 C120 243 160 243 176 238 L176 245 C160 249 120 249 104 245 Z"
-              fill="#00F2FE"
-              filter="url(#aylaGlow)"
-            />
-            <circle cx="140" cy="242" r="4" fill="#FFFFFF" />
-
-            {/* ----------------- HANDS & ARMS (Slender & Graceful) ----------------- */}
-            {/* Left Arm & Forearm */}
-            <path
-              d="M98 182 C85 210 82 245 92 270 C97 274 102 268 100 260 C92 235 96 205 106 186 Z"
-              fill="url(#girlSkinGrad)"
-            />
-            {/* Left Hand & Fingers (Resting gracefully on waist/dress) */}
-            <path
-              d="M92 270 C94 282 104 285 108 278 C108 274 104 270 98 268 Z"
-              fill="url(#girlSkinGrad)"
-              stroke="#F7C6B0"
-              strokeWidth="1"
-            />
-            {/* Left Cyber Wrist Bracelet */}
-            <ellipse cx="94" cy="268" rx="5" ry="2.5" fill="#0E1424" stroke="#00F2FE" strokeWidth="1.5" />
-
-            {/* Right Arm & Forearm */}
-            <path
-              d="M182 182 C195 210 198 245 188 270 C183 274 178 268 180 260 C188 235 184 205 174 186 Z"
-              fill="url(#girlSkinGrad)"
-            />
-            {/* Right Hand & Fingers (Resting gracefully on waist/dress) */}
-            <path
-              d="M188 270 C186 282 176 285 172 278 C172 274 176 270 182 268 Z"
-              fill="url(#girlSkinGrad)"
-              stroke="#F7C6B0"
-              strokeWidth="1"
-            />
-            {/* Right Cyber Wrist Bracelet */}
-            <ellipse cx="186" cy="268" rx="5" ry="2.5" fill="#0E1424" stroke="#00F2FE" strokeWidth="1.5" />
-
-            {/* Translucent Off-Shoulder Cyber Ruffles */}
-            <path
-              d="M85 180 C80 195 95 205 106 195 C115 188 105 175 92 175 Z"
-              fill="url(#ruffleGrad)"
-              stroke="#00F2FE"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M195 180 C200 195 185 205 174 195 C165 188 175 175 188 175 Z"
-              fill="url(#ruffleGrad)"
-              stroke="#00F2FE"
-              strokeWidth="1.5"
-            />
-
-            {/* Slender Neck & Velvet Choker */}
-            <path
-              d="M125 142 L125 170 C132 174 148 174 155 170 L155 142 Z"
-              fill="url(#girlSkinGrad)"
-            />
-            <path
-              d="M123 158 C130 162 150 162 157 158 L157 165 C150 168 130 168 123 165 Z"
-              fill="#060913"
-              stroke="#00F2FE"
-              strokeWidth="1.5"
-            />
-            <circle cx="140" cy="162" r="3.5" fill="#00F2FE" filter="url(#aylaGlow)" />
-
-            {/* ----------------- CUTE ANIME FACE & EXPRESSIONS ----------------- */}
-            <path
-              d="M95 95 C95 138 115 156 140 158 C165 156 185 138 185 95 C185 58 165 52 140 52 C115 52 95 58 95 95 Z"
-              fill="url(#girlSkinGrad)"
-            />
-
-            {/* Soft Rosy Kawaii Cheek Blush */}
-            <ellipse cx="108" cy="118" rx="9" ry="5" fill="#FF4D8D" opacity="0.45" filter="url(#aylaGlow)" />
-            <ellipse cx="172" cy="118" rx="9" ry="5" fill="#FF4D8D" opacity="0.45" filter="url(#aylaGlow)" />
-            <circle cx="104" cy="122" r="2" fill="#00F2FE" opacity="0.8" />
-            <circle cx="176" cy="122" r="2" fill="#00F2FE" opacity="0.8" />
-
-            {/* Expressive Anime Eyes with Gaze Tracking & Blinking */}
-            {!isBlinking ? (
-              <g>
-                <ellipse cx="114" cy="104" rx="14" ry="16" fill="#FFFFFF" />
-                <g transform={`translate(${pupilX}, ${pupilY})`}>
-                  <ellipse cx="114" cy="104" rx="9.5" ry="12.5" fill="url(#girlEyeGrad)" filter="url(#aylaGlow)" />
-                  <ellipse cx="114" cy="104" rx="4.5" ry="6.5" fill="#02040A" />
-                  <circle cx="111" cy="100" r="3.5" fill="#FFFFFF" />
-                  <circle cx="116" cy="107" r="1.8" fill="#FFFFFF" />
-                </g>
-                <path d="M98 96 C106 88 122 88 130 96" stroke="#0B132B" strokeWidth="3.2" strokeLinecap="round" fill="none" />
-                <path d="M98 96 L94 91" stroke="#0B132B" strokeWidth="2.2" strokeLinecap="round" />
-
-                <ellipse cx="166" cy="104" rx="14" ry="16" fill="#FFFFFF" />
-                <g transform={`translate(${pupilX}, ${pupilY})`}>
-                  <ellipse cx="166" cy="104" rx="9.5" ry="12.5" fill="url(#girlEyeGrad)" filter="url(#aylaGlow)" />
-                  <ellipse cx="166" cy="104" rx="4.5" ry="6.5" fill="#02040A" />
-                  <circle cx="163" cy="100" r="3.5" fill="#FFFFFF" />
-                  <circle cx="168" cy="107" r="1.8" fill="#FFFFFF" />
-                </g>
-                <path d="M150 96 C158 88 174 88 182 96" stroke="#0B132B" strokeWidth="3.2" strokeLinecap="round" fill="none" />
-                <path d="M182 96 L186 91" stroke="#0B132B" strokeWidth="2.2" strokeLinecap="round" />
-              </g>
-            ) : (
-              <g>
-                <path d="M100 104 Q114 112 128 104" stroke="#0B132B" strokeWidth="3.5" strokeLinecap="round" fill="none" />
-                <path d="M152 104 Q166 112 180 104" stroke="#0B132B" strokeWidth="3.5" strokeLinecap="round" fill="none" />
-              </g>
+            {/* Dynamic Soundwave Equalizer Rings on Studio Microphone */}
+            {(isSpeaking || isListening) && (
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-end justify-center space-x-1 pointer-events-none z-10 px-4 py-1.5 rounded-full bg-space-950/80 border border-energy-teal/40 backdrop-blur-md shadow-lg">
+                <span className="font-mono text-[10px] font-bold text-energy-teal mr-1">
+                  {isSpeaking ? '🔊 BOL RAHI HOON' : '🎙️ SUN RAHI HOON'}
+                </span>
+                {audioJitter.map((h, idx) => (
+                  <span
+                    key={idx}
+                    className="w-1 bg-energy-cyan rounded-full transition-all duration-75"
+                    style={{ height: `${h}px` }}
+                  />
+                ))}
+              </div>
             )}
+          </div>
 
-            <circle cx="140" cy="120" r="1.6" fill="#E59877" />
+          {/* Broadcast Desk Footer with Title Plate */}
+          <div className="px-5 py-3 bg-gradient-to-r from-space-950 via-space-900 to-space-950 border-t border-slate-800 flex items-center justify-between">
+            <div>
+              <p className="font-sans text-xs font-bold text-white tracking-wide">
+                آئیلا (Ayla) — خودمختار AI معاون
+              </p>
+              <p className="font-mono text-[10px] text-energy-cyan/90">
+                Senior Systems & Full-Stack Architect Dispatcher
+              </p>
+            </div>
 
-            {/* Dynamic Lip-Sync Mouth with Soft Pink Lips */}
-            {mouthShape === 0 ? (
-              <path d="M132 136 Q140 142 148 136" stroke="#FF4D8D" strokeWidth="2.6" strokeLinecap="round" fill="none" />
-            ) : mouthShape === 1 ? (
-              <ellipse cx="140" cy="138" rx="6" ry="4" fill="#FF4D8D" />
-            ) : (
-              <path d="M132 135 Q140 146 148 135 Q140 140 132 135 Z" fill="#D15672" stroke="#FF4D8D" strokeWidth="1" />
-            )}
-
-            {/* Front Bangs & Cyber Headset */}
-            <path
-              d="M96 68 C115 50 165 50 184 68 C185 85 180 105 178 115 C170 95 160 85 150 82 C145 95 135 110 130 115 C125 100 118 85 105 85 C100 95 98 108 96 115 Z"
-              fill="url(#girlHairGrad)"
-            />
-
-            <path
-              d="M80 82 C90 40 190 40 200 82"
-              stroke="#0E1624"
-              strokeWidth="5"
-              fill="none"
-              strokeLinecap="round"
-            />
-            <path
-              d="M80 82 C90 40 190 40 200 82"
-              stroke="#00F2FE"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              filter="url(#aylaGlow)"
-            />
-
-            {/* Left Cat-Ear Equalizer */}
-            <ellipse cx="78" cy="85" rx="10" ry="16" fill="#04060A" stroke="#00F2FE" strokeWidth="2.5" />
-            <g transform="translate(73, 76)">
-              <rect x="0" y="4" width="2" height="10" rx="1" fill="#00F2FE" />
-              <rect x="3" y="1" width="2" height="14" rx="1" fill="#00F2FE" />
-              <rect x="6" y="3" width="2" height="11" rx="1" fill="#00F2FE" />
-            </g>
-
-            {/* Right Cat-Ear Equalizer & Boom Mic */}
-            <ellipse cx="202" cy="85" rx="10" ry="16" fill="#04060A" stroke="#00F2FE" strokeWidth="2.5" />
-            <path
-              d="M202 92 C196 115 175 135 156 138"
-              stroke="#00F2FE"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              fill="none"
-            />
-            <circle cx="154" cy="138" r="3.5" fill="#00F2FE" filter="url(#aylaGlow)">
-              <animate attributeName="r" values="3;4.8;3" dur="1.1s" repeatCount="indefinite" />
-            </circle>
-
-            {/* Sparkles around Dress */}
-            <polygon points="65,290 68,298 76,301 68,304 65,312 62,304 54,301 62,298" fill="#00F2FE" opacity="0.8" filter="url(#aylaGlow)" />
-            <polygon points="215,280 218,286 224,289 218,292 215,298 212,292 206,289 212,286" fill="#00FFE0" opacity="0.8" filter="url(#aylaGlow)" />
-          </svg>
-
-          {/* Dynamic Grounding Contact Shadow */}
-          <div
-            className="w-56 h-6 rounded-full pointer-events-none mt-1"
-            style={{
-              background: 'radial-gradient(ellipse at center, rgba(0, 242, 254, 0.8) 0%, rgba(121, 40, 202, 0.25) 50%, transparent 75%)',
-              filter: 'blur(8px)',
-              animation: 'shadowPulse 4.5s ease-in-out infinite',
-            }}
-          />
+            <div className="flex items-center space-x-1 text-energy-teal">
+              <Sparkles className="w-3.5 h-3.5 animate-spin" />
+              <span className="font-mono text-[10px] font-semibold">100% ONLINE</span>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Clean Teleportation Horizontal Strip (All Bulky Boxes, Modes & Speak Buttons Permanently Removed!) */}
-      <div className="flex flex-col items-center gap-2 mt-2 z-20 w-full max-w-xl">
+      <div className="flex flex-col items-center gap-2 mt-4 z-20 w-full max-w-xl">
         {/* Subtle Live Audio Status indicator */}
         <div className="flex items-center space-x-2 font-mono text-[11px] text-slate-400">
           <span className="relative flex h-2 w-2">
@@ -914,7 +555,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
           <span className="text-slate-300 font-semibold">
-            {isListening ? '🎙️ آٹومیٹک مائیک سن رہا ہے...' : isSpeaking ? '🔊 بول رہی ہوں...' : '🌸 آئیلا لائیو اسسٹنٹ (خودکار)'}
+            {isListening ? '🎙️ خودکار سن رہی ہوں (کوئی بٹن دبانے کی ضرورت نہیں)' : isSpeaking ? '🔊 بول رہی ہوں...' : '🌸 آئیلا آن لائن ہے — بس بولیں یا نیچے کلک کریں'}
           </span>
         </div>
 
@@ -951,17 +592,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             transform: translateY(0px) rotate(0deg);
           }
           50% {
-            transform: translateY(-16px) rotate(-1.5deg);
-          }
-        }
-        @keyframes shadowPulse {
-          0%, 100% {
-            transform: scale(1);
-            opacity: 0.75;
-          }
-          50% {
-            transform: scale(0.8);
-            opacity: 0.35;
+            transform: translateY(-12px) rotate(-1deg);
           }
         }
         @keyframes orbitFloat {
