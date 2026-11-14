@@ -211,6 +211,9 @@ export const ApiPlayground = () => {
 
   return (
     <section id="api-playground" className="py-24 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden">
+      {/* Target Aliases for 1-Click & Voice Navigation */}
+      <span id="api" className="sr-only" />
+      <span id="api-suite" className="sr-only" />
       {/* Background Ambient Glow */}
       <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[700px] h-[500px] bg-energy-teal/10 blur-[180px] pointer-events-none rounded-full" />
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[400px] bg-secondary-violet/10 blur-[190px] pointer-events-none rounded-full" />

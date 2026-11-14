@@ -58,16 +58,28 @@ const NAV_TARGETS = [
     label: 'Code',
     icon: Code2,
     color: '#38BDF8',
-    keywords: ['code', 'coding', 'inspector', 'algorithm', 'algorithms', 'typescript', 'sql', 'code dikhao', 'coding dikhao', 'کوڈ', 'الگورتھم', 'کوڈنگ'],
+    keywords: [
+      'code', 'coding', 'inspector', 'algorithm', 'algorithms', 'typescript', 'sql',
+      'code dikhao', 'coding dikhao', 'code par le jao', 'code per le jao', 'code pe le jao',
+      'code par chalo', 'code inspector', 'production code', 'code batao', 'code dekho',
+      'کوڈ', 'الگورتھم', 'کوڈنگ', 'کوڈ دکھاؤ', 'کوڈ پر لے جاؤ', 'کوڈ پر چلو', 'کود', 'کوڈ بتاؤ'
+    ],
     voiceConfirm: "جی! ہم پروڈکشن کوڈ انسپیکٹر پر آ گئے ہیں۔",
     romanConfirm: "Jee! Hum production code inspector par aa gaye hain.",
   },
   {
     id: 'api-playground',
+    alias: 'api',
     label: 'API Suite',
     icon: Zap,
     color: '#EC4899',
-    keywords: ['api', 'api suite', 'playground', 'endpoint', 'endpoints', 'api test', 'api dikhao', 'اے پی آئی', 'ٹیسٹ'],
+    keywords: [
+      'api', 'api suite', 'playground', 'endpoint', 'endpoints', 'api test', 'test suite',
+      'api dikhao', 'api suite dikhao', 'api par le jao', 'api per le jao', 'api pe le jao',
+      'api suite par le jao', 'api suite per le jao', 'api suite pe le jao', 'api par chalo',
+      'api batao', 'api suite batao', 'suite dikhao',
+      'اے پی آئی', 'ٹیسٹ', 'اے پی آئی سویٹ', 'سویٹ', 'پلے گراؤنڈ', 'اے پی آئی دکھاؤ', 'اے پی آئی پر لے جاؤ', 'ای پی آئی', 'اے پی آئی بتاؤ'
+    ],
     voiceConfirm: "جی! ہم لائیو API سویٹ پر آ گئے ہیں۔",
     romanConfirm: "Jee! Hum live API suite par aa gaye hain.",
   },
@@ -397,14 +409,23 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     }
   }, []);
 
-  // Multi-Strategy Teleport Navigation Function (Strictly Navigates & Confirms Arrival Only)
+  // Multi-Strategy Teleport Navigation Function (Navigates to Section AND Explains it immediately)
   const teleportTo = useCallback(
-    (targetId, voiceConfirmText, romanConfirmText = '') => {
+    (targetId, voiceConfirmText = '', romanConfirmText = '') => {
       // Update active section tracker
       currentSectionRef.current = targetId;
 
-      // Announce arrival verbally in Pakistani Urdu
-      speak(voiceConfirmText, romanConfirmText);
+      // Combine arrival confirmation with the section's comprehensive explanation
+      const explanation = SECTION_EXPLANATIONS[targetId] || SECTION_EXPLANATIONS['projects'];
+      const combinedUrdu = voiceConfirmText
+        ? `${voiceConfirmText} ${explanation?.urdu || ''}`.trim()
+        : (explanation?.urdu || '');
+      const combinedRoman = romanConfirmText
+        ? `${romanConfirmText} ${explanation?.roman || ''}`.trim()
+        : (explanation?.roman || '');
+
+      // Speak arrival confirmation + in-depth explanation verbally in Pakistani Urdu
+      speak(combinedUrdu, combinedRoman);
 
       // Perform smooth scroll with navbar offset
       const executeScroll = () => {
@@ -415,6 +436,12 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         }
         if (!el && (targetId === 'skills' || targetId === 'tech-sphere')) {
           el = document.getElementById('skills') || document.getElementById('tech-sphere');
+        }
+        if (!el && (targetId === 'api' || targetId === 'api-playground' || targetId === 'api-suite')) {
+          el = document.getElementById('api-playground') || document.getElementById('api') || document.getElementById('api-suite');
+        }
+        if (!el && (targetId === 'code' || targetId === 'code-inspector')) {
+          el = document.getElementById('code') || document.getElementById('code-inspector');
         }
         if (!el) {
           el = document.querySelector(`[data-section="${targetId}"]`);
@@ -512,27 +539,31 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             return;
           }
 
-          // 2. Check On-Demand Section Explanation (Only when user explicitly asks to explain)
+          // 2. Check On-Demand Section Explanation / Deep Dive Request (Teleports & Explains!)
           const explainWords = [
             'explain', 'explain karo', 'ye kya hai', 'is ke bare mein batao',
             'is section ko explain karo', 'ye kya kaam karta hai', 'detail batao',
-            'details', 'tell me about this', 'what is this', 'batao', 'تفصیل', 'وضاحت', 'سمجھاؤ'
+            'details', 'tell me about this', 'what is this', 'batao', 'تفصیل', 'وضاحت', 'سمجھاؤ', 'بتاؤ', 'بتاو'
           ];
           if (checkKeywordMatch(cleanTranscript, explainWords)) {
             lastActionTimestampRef.current = Date.now();
-            let targetSectionKey = currentSectionRef.current || 'hero';
+            let targetSectionKey = currentSectionRef.current || 'projects';
             if (cleanTranscript.includes('film') || cleanTranscript.includes('video') || cleanTranscript.includes('فلم')) targetSectionKey = 'film';
             else if (cleanTranscript.includes('system') || cleanTranscript.includes('project') || cleanTranscript.includes('سسٹم') || cleanTranscript.includes('پروجیکٹ')) targetSectionKey = 'projects';
             else if (cleanTranscript.includes('topology') || cleanTranscript.includes('architecture') || cleanTranscript.includes('ٹوپولوجی')) targetSectionKey = 'architecture';
-            else if (cleanTranscript.includes('code') || cleanTranscript.includes('coding') || cleanTranscript.includes('کوڈ')) targetSectionKey = 'code';
-            else if (cleanTranscript.includes('api') || cleanTranscript.includes('اے پی آئی')) targetSectionKey = 'api-playground';
+            else if (cleanTranscript.includes('code') || cleanTranscript.includes('coding') || cleanTranscript.includes('کوڈ') || cleanTranscript.includes('کود')) targetSectionKey = 'code';
+            else if (cleanTranscript.includes('api') || cleanTranscript.includes('suite') || cleanTranscript.includes('اے پی آئی') || cleanTranscript.includes('سویٹ')) targetSectionKey = 'api-playground';
             else if (cleanTranscript.includes('skill') || cleanTranscript.includes('اسکلز')) targetSectionKey = 'skills';
             else if (cleanTranscript.includes('matrix') || cleanTranscript.includes('3d') || cleanTranscript.includes('میٹرکس')) targetSectionKey = 'tech-sphere';
             else if (cleanTranscript.includes('terminal') || cleanTranscript.includes('cli') || cleanTranscript.includes('ٹرمینل')) targetSectionKey = 'terminal';
             else if (cleanTranscript.includes('contact') || cleanTranscript.includes('rabta') || cleanTranscript.includes('رابطہ')) targetSectionKey = 'contact';
 
-            const explanation = SECTION_EXPLANATIONS[targetSectionKey] || SECTION_EXPLANATIONS['projects'];
-            speak(explanation.urdu, explanation.roman);
+            const navTarget = NAV_TARGETS.find((t) => t.id === targetSectionKey || (t.alias && t.alias === targetSectionKey));
+            teleportTo(
+              targetSectionKey,
+              navTarget ? navTarget.voiceConfirm : "جی! ملاحظہ کیجیے۔",
+              navTarget ? navTarget.romanConfirm : "Jee! Mulahiza kijiye."
+            );
             return;
           }
 

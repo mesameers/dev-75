@@ -144,6 +144,8 @@ export const ProductionCodeInspector = () => {
       ref={sectionRef}
       className="py-24 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden"
     >
+      {/* Target Aliases for 1-Click & Voice Navigation */}
+      <span id="code-inspector" className="sr-only" />
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-12">
