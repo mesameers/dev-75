@@ -11,8 +11,10 @@ import {
   Compass,
   ArrowRight,
   Radio,
-  Sparkles
+  Sparkles,
+  Volume2
 } from 'lucide-react';
+import { fluteEngine } from '../utils/fluteEngine';
 
 // Navigation Targets for Direct Click & Voice Dispatch
 const NAV_TARGETS = [
@@ -163,16 +165,16 @@ const SECTION_EXPLANATIONS = {
   },
   hero: {
     label: 'Hero Section',
-    urdu: "یہ ہیرو سیکشن ہے جہاں سمیر حسین کا بنیادی تعارف، ریئل ٹائم میٹرکس اور میں خودمختار اسسٹنٹ موجود ہوں۔",
-    roman: "Yeh hero section hai jahan Sameer Hussain ka bunyadi taaruf, real-time matrix aur main autonomous assistant maujood hoon.",
+    urdu: "یہ ہیرو سیکشن ہے جہاں سمیر حسین کا بنیادی تعارف، ریئل ٹائم میٹرکس اور میں خودمختار اسسٹنٹ علینہ موجود ہوں۔",
+    roman: "Yeh hero section hai jahan Sameer Hussain ka bunyadi taaruf, real-time matrix aur main autonomous assistant Alina maujood hoon.",
   },
 };
 
-// Required Initial Greeting in Pakistani Urdu
-const INITIAL_GREETING_URDU = "خوش آمدید! میں سمیر حسین کی اسسٹنٹ ہوں۔ آپ کو اس پورٹ فولیو کے کون سے حصے پر لے کر جاؤں؟";
-const INITIAL_GREETING_ROMAN = "Khushamdeed! Main Sameer Hussain ki assistant hoon. Aap ko is portfolio ke kon se hisse per le kar jaaun?";
+// Required Initial Greeting in Pakistani Urdu for Alina
+const INITIAL_GREETING_URDU = "خوش آمدید! میں علینہ ہوں، سمیر حسین کی اسسٹنٹ۔ آپ کو اس پورٹ فولیو کے کون سے حصے پر لے کر جاؤں؟";
+const INITIAL_GREETING_ROMAN = "Khushamdeed! Main Alina hoon, Sameer Hussain ki assistant. Aap ko is portfolio ke kon se hisse per le kar jaaun?";
 
-// Comprehensive Conversational AI Knowledge Base
+// Comprehensive Conversational AI Knowledge Base for Alina
 const AI_KNOWLEDGE_BASE = [
   // 1. Detailed Portfolio Introduction (when user asks what is here / what it does)
   {
@@ -200,19 +202,19 @@ const AI_KNOWLEDGE_BASE = [
     urdu: "سمیر کو انٹرپرائز فل اسٹیک ڈویلپمنٹ، کلاؤڈ مائیکروسروسز اور ننانوے اعشاریہ نو نو فیصد اپ ٹائم سسٹمز کا وسیع تجربہ ہے۔",
     roman: "Sameer ko enterprise full-stack development, cloud microservices aur 99.99 percent uptime systems ka waseeh tajurba hai.",
   },
-  // 4. Ayla's Identity
+  // 4. Alina's Identity
   {
     intent: 'identity',
-    triggers: ['tum kaun ho', 'tum kon ho', 'aap kaun', 'who are you', 'what is your name', 'naam kya', 'تم کون ہو'],
-    urdu: "میں آئیلا ہوں، سمیر حسین کی خودمختار AI اسسٹنٹ۔ میں آپ کو پورٹ فولیو کے ہر سیکشن اور پروجیکٹ کی معلومات دے سکتی ہوں۔",
-    roman: "Main Ayla hoon, Sameer Hussain ki autonomous AI assistant. Main aap ko portfolio ke har section aur project ki maloomat de sakti hoon.",
+    triggers: ['tum kaun ho', 'tum kon ho', 'aap kaun', 'who are you', 'what is your name', 'naam kya', 'alina', 'علینہ', 'تم کون ہو'],
+    urdu: "میں علینہ ہوں، سمیر حسین کی خودمختار AI اسسٹنٹ۔ میں آپ کو پورٹ فولیو کے ہر سیکشن اور پروجیکٹ کی معلومات دے سکتی ہوں۔",
+    roman: "Main Alina hoon, Sameer Hussain ki autonomous AI assistant. Main aap ko portfolio ke har section aur project ki maloomat de sakti hoon.",
   },
   // 5. Greetings
   {
     intent: 'greeting',
     triggers: ['salam', 'assalam', 'asalam', 'hello', 'hi', 'hey', 'adaab', 'سلام'],
-    urdu: "وعلیکم السلام! میں آئیلا ہوں۔ فرمائیے میں سمیر کے پورٹ فولیو میں آپ کی کیا رہنمائی کروں؟",
-    roman: "Walaikum Assalam! Main Ayla hoon. Farmaiye main Sameer ke portfolio mein aap ki kya rehnumai karoon?",
+    urdu: "وعلیکم السلام! میں علینہ ہوں۔ فرمائیے میں سمیر کے پورٹ فولیو میں آپ کی کیا رہنمائی کروں؟",
+    roman: "Walaikum Assalam! Main Alina hoon. Farmaiye main Sameer ke portfolio mein aap ki kya rehnumai karoon?",
   },
   // 6. How are you
   {
@@ -244,6 +246,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
   const isSpeakingRef = useRef(false);
   const speechCooldownUntilRef = useRef(0);
   const isListeningRef = useRef(false);
+  const lastActionTimestampRef = useRef(0);
 
   // Active section tracking (Default: hero)
   const currentSectionRef = useRef('hero');
@@ -269,8 +272,11 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Natural Pakistani Urdu Speech Synthesis Engine with Rock-Solid Echo Protection
+  // Natural Pakistani Urdu Speech Synthesis Engine with Rock-Solid Echo Protection & Auto-Ducking
   const speak = useCallback((urduText, romanText = '', onComplete) => {
+    // 1. Immediately duck background flute music so user hears Alina clearly
+    fluteEngine.duck();
+
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       setIsSpeaking(true);
       isSpeakingRef.current = true;
@@ -278,6 +284,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       setTimeout(() => {
         setIsSpeaking(false);
         isSpeakingRef.current = false;
+        fluteEngine.unduck();
         if (onComplete) onComplete();
       }, 3000);
       return;
@@ -286,7 +293,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     try {
       window.speechSynthesis.cancel();
 
-      // PAUSE recognition while speaking to prevent self-voice echo loop
       isSpeakingRef.current = true;
       setIsSpeaking(true);
       speechCooldownUntilRef.current = Date.now() + 15000;
@@ -314,19 +320,22 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       const handleSpeechFinish = () => {
         setIsSpeaking(false);
         isSpeakingRef.current = false;
-        // 1.8 second grace period after speaking before mic listens again
-        speechCooldownUntilRef.current = Date.now() + 1800;
+        // 350ms quick grace period so mic becomes hot and listening immediately!
+        speechCooldownUntilRef.current = Date.now() + 350;
+
+        // Auto-restore background flute music when Alina finishes speaking
+        fluteEngine.unduck();
 
         if (onComplete) onComplete();
 
-        // Safely restart recognition after grace period
+        // Safely restart hot mic recognition
         setTimeout(() => {
           if (!isSpeakingRef.current && recognitionRef.current) {
             try {
               recognitionRef.current.start();
             } catch (e) {}
           }
-        }, 1900);
+        }, 400);
       };
 
       utterance.onend = handleSpeechFinish;
@@ -336,6 +345,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     } catch (e) {
       setIsSpeaking(false);
       isSpeakingRef.current = false;
+      fluteEngine.unduck();
       if (onComplete) onComplete();
     }
   }, []);
@@ -346,7 +356,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       // Update active section tracker
       currentSectionRef.current = targetId;
 
-      // Announce arrival verbally in Pakistani Urdu - DO NOT add unprompted questions or explanations!
+      // Announce arrival verbally in Pakistani Urdu
       speak(voiceConfirmText, romanConfirmText);
 
       // Perform smooth scroll with navbar offset
@@ -401,7 +411,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     [speak]
   );
 
-  // Automatic Speech Recognition (Zero Buttons, Pure Autonomous AI)
+  // High-Sensitivity Real-Time Speech Recognition (Triggers on 1st Time Instantly!)
   const initAutoVoiceRecognition = useCallback(() => {
     if (typeof window === 'undefined') return;
 
@@ -419,7 +429,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       recognitionRef.current = recognition;
       recognition.lang = 'en-US';
       recognition.continuous = true;
-      recognition.interimResults = false;
+      recognition.interimResults = true; // INSTANT LIVE RECOGNITION (Triggers on first syllable/word!)
 
       recognition.onstart = () => {
         setIsListening(true);
@@ -427,97 +437,107 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       };
 
       recognition.onresult = (event) => {
-        // STRICT ECHO FILTER: Never process mic audio if Ayla is speaking or within cooldown
+        // Echo Filter: Do not process mic input while Alina is speaking
         if (isSpeakingRef.current || Date.now() < speechCooldownUntilRef.current) {
           return;
         }
 
-        const lastIndex = event.results.length - 1;
-        const rawTranscript = event.results[lastIndex][0].transcript.toLowerCase();
-        const cleanTranscript = rawTranscript.replace(/[.,?!]/g, '').trim();
+        // Loop over recent results (both interim and final) for instant 1st-try recognition!
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const rawTranscript = event.results[i][0].transcript.toLowerCase();
+          const cleanTranscript = rawTranscript.replace(/[.,?!]/g, '').trim();
 
-        if (!cleanTranscript || cleanTranscript.length < 2) return;
+          if (!cleanTranscript || cleanTranscript.length < 2) continue;
 
-        // 1. Check Return-to-Top Requests (Only when user explicitly asks to go back/up)
-        const returnTopWords = [
-          'wapas upar', 'wapas chalo', 'upar le jao', 'upar chalo', 'back to top',
-          'upar jao', 'wapas le jao', 'hero par jao', 'top par jao', 'home par jao',
-          'wapas', 'upar', 'واپس', 'اوپر'
-        ];
-        if (returnTopWords.some((w) => cleanTranscript.includes(w))) {
-          teleportTo('hero', "جی چلیے! ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔", "Jee chaliye! Hum wapas upar hero section par aa gaye hain.");
-          return;
-        }
+          // As soon as user speaks, duck background flute music immediately
+          fluteEngine.duck();
 
-        // 2. Check On-Demand Section Explanation (Only when user explicitly asks to explain)
-        const explainWords = [
-          'explain', 'explain karo', 'ye kya hai', 'is ke bare mein batao',
-          'is section ko explain karo', 'ye kya kaam karta hai', 'detail batao',
-          'details', 'tell me about this', 'what is this', 'batao', 'تفصیل', 'وضاحت'
-        ];
-        if (explainWords.some((w) => cleanTranscript.includes(w))) {
-          // Check if specific section was named in the request
-          let targetSectionKey = currentSectionRef.current || 'hero';
-          if (cleanTranscript.includes('film') || cleanTranscript.includes('video')) targetSectionKey = 'film';
-          else if (cleanTranscript.includes('system') || cleanTranscript.includes('project')) targetSectionKey = 'projects';
-          else if (cleanTranscript.includes('topology') || cleanTranscript.includes('architecture')) targetSectionKey = 'architecture';
-          else if (cleanTranscript.includes('code') || cleanTranscript.includes('coding')) targetSectionKey = 'code';
-          else if (cleanTranscript.includes('api')) targetSectionKey = 'api-playground';
-          else if (cleanTranscript.includes('skill')) targetSectionKey = 'skills';
-          else if (cleanTranscript.includes('matrix') || cleanTranscript.includes('3d')) targetSectionKey = 'tech-sphere';
-          else if (cleanTranscript.includes('terminal') || cleanTranscript.includes('cli')) targetSectionKey = 'terminal';
-          else if (cleanTranscript.includes('contact') || cleanTranscript.includes('rabta')) targetSectionKey = 'contact';
+          // Debounce guard to avoid multiple triggers on interim frames
+          if (Date.now() - lastActionTimestampRef.current < 1200) {
+            continue;
+          }
 
-          const explanation = SECTION_EXPLANATIONS[targetSectionKey] || SECTION_EXPLANATIONS['projects'];
-          speak(explanation.urdu, explanation.roman);
-          return;
-        }
+          // 1. Check Return-to-Top Requests (Only when user explicitly asks to go back/up)
+          const returnTopWords = [
+            'wapas upar', 'wapas chalo', 'upar le jao', 'upar chalo', 'back to top',
+            'upar jao', 'wapas le jao', 'hero par jao', 'top par jao', 'home par jao',
+            'wapas', 'upar', 'واپس', 'اوپر'
+          ];
+          if (returnTopWords.some((w) => cleanTranscript.includes(w))) {
+            lastActionTimestampRef.current = Date.now();
+            teleportTo('hero', "جی چلیے! ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔", "Jee chaliye! Hum wapas upar hero section par aa gaye hain.");
+            return;
+          }
 
-        // 3. Check Specific Navigation Section Targets
-        const matchedNav = NAV_TARGETS.find((target) =>
-          target.keywords.some((kw) => cleanTranscript.includes(kw.toLowerCase()))
-        );
+          // 2. Check On-Demand Section Explanation (Only when user explicitly asks to explain)
+          const explainWords = [
+            'explain', 'explain karo', 'ye kya hai', 'is ke bare mein batao',
+            'is section ko explain karo', 'ye kya kaam karta hai', 'detail batao',
+            'details', 'tell me about this', 'what is this', 'batao', 'تفصیل', 'وضاحت'
+          ];
+          if (explainWords.some((w) => cleanTranscript.includes(w))) {
+            lastActionTimestampRef.current = Date.now();
+            let targetSectionKey = currentSectionRef.current || 'hero';
+            if (cleanTranscript.includes('film') || cleanTranscript.includes('video')) targetSectionKey = 'film';
+            else if (cleanTranscript.includes('system') || cleanTranscript.includes('project')) targetSectionKey = 'projects';
+            else if (cleanTranscript.includes('topology') || cleanTranscript.includes('architecture')) targetSectionKey = 'architecture';
+            else if (cleanTranscript.includes('code') || cleanTranscript.includes('coding')) targetSectionKey = 'code';
+            else if (cleanTranscript.includes('api')) targetSectionKey = 'api-playground';
+            else if (cleanTranscript.includes('skill')) targetSectionKey = 'skills';
+            else if (cleanTranscript.includes('matrix') || cleanTranscript.includes('3d')) targetSectionKey = 'tech-sphere';
+            else if (cleanTranscript.includes('terminal') || cleanTranscript.includes('cli')) targetSectionKey = 'terminal';
+            else if (cleanTranscript.includes('contact') || cleanTranscript.includes('rabta')) targetSectionKey = 'contact';
 
-        if (matchedNav) {
-          teleportTo(matchedNav.id, matchedNav.voiceConfirm, matchedNav.romanConfirm);
-          return;
-        }
+            const explanation = SECTION_EXPLANATIONS[targetSectionKey] || SECTION_EXPLANATIONS['projects'];
+            speak(explanation.urdu, explanation.roman);
+            return;
+          }
 
-        // 4. Check Conversational AI Knowledge Engine (Intro, Sameer, Experience, etc.)
-        const matchedKnowledge = AI_KNOWLEDGE_BASE.find((entry) =>
-          entry.triggers.some((trig) => cleanTranscript.includes(trig.toLowerCase()))
-        );
-
-        if (matchedKnowledge) {
-          speak(matchedKnowledge.urdu, matchedKnowledge.roman);
-          return;
-        }
-
-        // 5. Gentle Fallback without Random Auto-Jumps
-        if (cleanTranscript.length > 3) {
-          speak(
-            "معاف کیجیے گا، کیا آپ دوبارہ کہیں گے؟ آپ فلم، سسٹمز، کوڈ، ٹوپولوجی، یا پورٹ فولیو کا تعارف پوچھ سکتے ہیں۔",
-            "Maaf kijiye ga, kya aap dobara kahein ge? Aap film, systems, code, topology, ya portfolio ka intro pooch sakte hain."
+          // 3. Check Specific Navigation Section Targets (Instant 1st-try match)
+          const matchedNav = NAV_TARGETS.find((target) =>
+            target.keywords.some((kw) => cleanTranscript.includes(kw.toLowerCase()))
           );
+
+          if (matchedNav) {
+            lastActionTimestampRef.current = Date.now();
+            teleportTo(matchedNav.id, matchedNav.voiceConfirm, matchedNav.romanConfirm);
+            return;
+          }
+
+          // 4. Check Conversational AI Knowledge Engine (Intro, Sameer, Experience, Identity, etc.)
+          const matchedKnowledge = AI_KNOWLEDGE_BASE.find((entry) =>
+            entry.triggers.some((trig) => cleanTranscript.includes(trig.toLowerCase()))
+          );
+
+          if (matchedKnowledge) {
+            lastActionTimestampRef.current = Date.now();
+            speak(matchedKnowledge.urdu, matchedKnowledge.roman);
+            return;
+          }
         }
       };
 
       recognition.onerror = () => {
         setIsListening(false);
         isListeningRef.current = false;
+        // Resume flute music if interrupted by error
+        if (!isSpeakingRef.current) fluteEngine.unduck();
       };
 
       recognition.onend = () => {
         setIsListening(false);
         isListeningRef.current = false;
-        // Only restart if not speaking and cooldown passed
+        // Restore music if quiet
+        if (!isSpeakingRef.current) fluteEngine.unduck();
+
+        // Hot Mic auto-restart: keeps recognition hot and responsive immediately
         setTimeout(() => {
           if (!isSpeakingRef.current && Date.now() >= speechCooldownUntilRef.current && recognitionRef.current) {
             try {
               recognitionRef.current.start();
             } catch (e) {}
           }
-        }, 1200);
+        }, 300);
       };
 
       recognition.start();
@@ -527,9 +547,13 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
   // Automatic Welcome Greeting on Page Load / First User Gesture (Autoplay Policy Safe)
   useEffect(() => {
     const triggerWelcome = () => {
+      // Start ambient flute music
+      fluteEngine.start();
+
       if (hasSpokenWelcomeRef.current) return;
       hasSpokenWelcomeRef.current = true;
-      // Start voice recognition ONLY AFTER greeting has completely finished playing!
+
+      // Speak greeting, then initialize speech recognition
       speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN, () => {
         initAutoVoiceRecognition();
       });
@@ -553,6 +577,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
   // Avatar Click Handler
   const handleAvatarClick = () => {
+    fluteEngine.start();
     speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN, () => {
       initAutoVoiceRecognition();
     });
@@ -563,7 +588,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
   return (
     <div className="flex flex-col items-center relative w-full select-none">
-      {/* Main 3D Pixar News Presenter Studio Stage */}
+      {/* Main Ethereal Cosmic AI Stage (Alina) */}
       <div
         ref={containerRef}
         onMouseEnter={() => setIsHovered(true)}
@@ -576,27 +601,27 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           aspectRatio: '16/14',
           perspective: '1200px',
         }}
-        title="AYLA // DEV-75 AI CO-PILOT — Speak or click to navigate"
+        title="ALINA // DEV-75 AI CO-PILOT — Speak or click to navigate"
       >
-        {/* Deep Core Ambient Studio Spotlight Glow */}
+        {/* Deep Core Ambient Cyan Nebula Aurora Spotlight Glow */}
         <div
-          className={`absolute rounded-full blur-[80px] pointer-events-none transition-all duration-700 ${
+          className={`absolute rounded-full blur-[85px] pointer-events-none transition-all duration-700 ${
             isSpeaking
-              ? 'scale-125 opacity-90'
+              ? 'scale-130 opacity-95'
               : isHovered
-              ? 'scale-110 opacity-75'
-              : 'opacity-55'
+              ? 'scale-115 opacity-80'
+              : 'opacity-65'
           }`}
           style={{
-            width: '80%',
-            height: '80%',
-            background: 'radial-gradient(circle, #00F2FE 0%, #7928CA 45%, rgba(0, 242, 254, 0) 75%)',
+            width: '85%',
+            height: '85%',
+            background: 'radial-gradient(circle, #00F2FE 0%, #00FFE0 35%, #7928CA 65%, rgba(0, 242, 254, 0) 80%)',
           }}
         />
 
-        {/* 3D Pixar News Presenter Studio Stage Card */}
+        {/* Ethereal Cosmic AI Stage Card (Alina) */}
         <div
-          className="relative z-10 w-full rounded-3xl overflow-hidden border border-energy-teal/35 bg-space-900/90 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(0,242,254,0.2)] transition-transform duration-200 ease-out group-hover:border-energy-teal/70"
+          className="relative z-10 w-full rounded-3xl overflow-hidden border border-energy-teal/40 bg-space-900/90 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_40px_rgba(0,242,254,0.3)] transition-transform duration-200 ease-out group-hover:border-energy-teal/80"
           style={{
             transform: `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateZ(20px)`,
             animation: 'avatarLevitate 5s ease-in-out infinite',
@@ -606,44 +631,48 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           <div className="flex items-center justify-between px-4 py-2.5 bg-space-950/85 border-b border-slate-800/80">
             <div className="flex items-center space-x-2">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-energy-cyan opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-energy-teal" />
               </span>
               <span className="font-mono text-[10px] font-black text-white tracking-widest uppercase">
-                LIVE BROADCAST // DEV-75 STUDIO
+                ETHEREAL AI CORE // DEV-75 STUDIO
               </span>
             </div>
 
-            <div className="flex items-center space-x-1.5 font-mono text-[10px] text-slate-400">
-              <Radio className="w-3 h-3 text-energy-teal animate-pulse" />
-              <span>AYLA // CO-PILOT</span>
+            <div className="flex items-center space-x-1.5 font-mono text-[10px] text-energy-teal">
+              <Radio className="w-3 h-3 text-energy-cyan animate-pulse" />
+              <span>ALINA // CO-PILOT</span>
             </div>
           </div>
 
-          {/* High-Resolution 3D Pixar News Anchor Character Image (Clean & Pristine - Zero Misplaced Overlays) */}
-          <div className="relative w-full aspect-[16/10] overflow-hidden bg-space-950">
-            {/* The Main Presenter Character Container with Subtle Natural Hand & Head Motion while Speaking */}
+          {/* High-Resolution Ethereal Celestial AI Character Image (Alina) */}
+          <div className="relative w-full aspect-[16/11] overflow-hidden bg-space-950 flex items-center justify-center">
+            {/* The Main Presenter Character Container with Subtle Ethereal Pulse */}
             <div
-              className={`w-full h-full relative transition-transform duration-300 ${
+              className={`w-full h-full relative transition-transform duration-300 flex items-center justify-center ${
                 isSpeaking ? 'animate-presenterSpeakingGesture' : ''
               }`}
             >
               <img
-                src="/media/news_anchor.jpg"
-                alt="3D Pixar Style Female News Anchor"
-                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                src="/media/alina_avatar.jpg"
+                alt="Alina - Ethereal Cosmic AI Co-Pilot"
+                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              />
+
+              {/* Cyan Cosmic Sheen Overlay */}
+              <div
+                className={`absolute inset-0 bg-gradient-to-t from-space-950 via-transparent to-energy-cyan/15 pointer-events-none transition-opacity duration-500 ${
+                  isSpeaking ? 'opacity-90' : 'opacity-40'
+                }`}
               />
             </div>
-
-            {/* Ambient Studio Lighting Sheen Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-space-950 via-transparent to-transparent opacity-75 pointer-events-none" />
           </div>
 
           {/* Broadcast Desk Footer with Title Plate */}
           <div className="px-5 py-3 bg-gradient-to-r from-space-950 via-space-900 to-space-950 border-t border-slate-800 flex items-center justify-between">
             <div>
               <p className="font-mono text-xs font-bold text-white tracking-wider uppercase">
-                AYLA // DEV-75 CO-PILOT
+                ALINA // DEV-75 CO-PILOT
               </p>
               <p className="font-mono text-[10px] text-energy-teal font-medium">
                 Autonomous AI & Systems Navigator
@@ -668,10 +697,10 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           </span>
           <span className="text-slate-300 font-medium">
             {isSpeaking
-              ? 'Ayla Speaking...'
+              ? 'Alina Speaking...'
               : isListening
-              ? 'Listening Hands-Free (Speak anytime)'
-              : 'Ayla Online — Speak or click below'}
+              ? 'Listening (Instant Voice Active — Speak anytime)'
+              : 'Alina Online — Speak or click below'}
           </span>
         </div>
 

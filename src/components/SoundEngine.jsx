@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import { fluteEngine } from '../utils/fluteEngine';
 
 export const SoundEngine = () => {
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
@@ -54,10 +55,12 @@ export const SoundEngine = () => {
       droneGainRef.current.gain.linearRampToValueAtTime(0.05, audioCtxRef.current.currentTime + 1.5);
       setIsAudioEnabled(true);
       playBlip(640);
+      fluteEngine.start();
     } else {
       // Fade out
       droneGainRef.current.gain.linearRampToValueAtTime(0.0001, audioCtxRef.current.currentTime + 0.8);
       setIsAudioEnabled(false);
+      fluteEngine.stop();
     }
   };
 
