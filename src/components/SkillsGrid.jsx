@@ -59,7 +59,7 @@ export const SkillsGrid = () => {
     <section
       id="skills"
       ref={sectionRef}
-      className="py-28 px-6 bg-space-950 relative border-t border-slate-900 overflow-hidden"
+      className="py-28 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden"
     >
       {/* Background Glow */}
       <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-energy-teal/10 blur-[180px] pointer-events-none rounded-full" />

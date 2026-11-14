@@ -8,7 +8,7 @@ export const TestimonialsSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-24 px-6 bg-space-950 relative border-t border-slate-900 overflow-hidden"
+      className="py-24 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden"
     >
       <div className="max-w-5xl mx-auto relative z-10 text-center">
         {/* Header Indicator */}

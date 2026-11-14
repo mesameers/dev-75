@@ -9,6 +9,7 @@ import { ServicesSection } from './components/ServicesSection';
 import { ScopeEstimator } from './components/ScopeEstimator';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { InteractiveTerminal } from './components/InteractiveTerminal';
+import { CyberTickerBanner } from './components/CyberTickerBanner';
 import { ContactCTA } from './components/ContactCTA';
 import { Footer } from './components/Footer';
 import { ThreeCanvas3D } from './components/ThreeCanvas3D';
@@ -46,6 +47,10 @@ export function App() {
         <ScopeEstimator />
         <TestimonialsSection />
         <InteractiveTerminal />
+
+        {/* Dynamic 3D Infinite Stream Ticker (Bridges Terminal & Let's Talk) */}
+        <CyberTickerBanner />
+
         <ContactCTA />
       </main>
 

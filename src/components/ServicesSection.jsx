@@ -36,7 +36,7 @@ export const ServicesSection = () => {
     <section
       id="services"
       ref={sectionRef}
-      className="py-24 px-6 bg-space-950 relative border-t border-slate-900 overflow-hidden"
+      className="py-24 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}

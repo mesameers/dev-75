@@ -139,7 +139,7 @@ export const WatchTheFilm = () => {
   };
 
   return (
-    <section id="film" className="py-24 px-6 bg-space-950 relative border-t border-slate-900">
+    <section id="film" className="py-24 px-6 bg-transparent relative border-t border-slate-900/60">
       {/* Background Ambient Glow Behind Player */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[550px] bg-energy-teal/15 blur-[180px] pointer-events-none rounded-full" />
 

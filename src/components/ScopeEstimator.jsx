@@ -27,7 +27,7 @@ export const ScopeEstimator = () => {
   const estimatedWeeks = Math.max(2, Math.ceil(totalSprints * 1.5));
 
   return (
-    <section className="py-24 px-6 bg-space-950 relative border-t border-slate-900 overflow-hidden">
+    <section className="py-24 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden">
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-16">

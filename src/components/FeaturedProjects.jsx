@@ -90,7 +90,7 @@ export const FeaturedProjects = () => {
     <section
       id="projects"
       ref={sectionRef}
-      className="py-28 px-6 bg-space-950 relative border-t border-slate-900 overflow-hidden"
+      className="py-28 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden"
     >
       {/* Background Neon Spotlights */}
       <div className="absolute top-1/4 left-1/3 w-[700px] h-[700px] bg-energy-teal/10 blur-[200px] pointer-events-none rounded-full" />

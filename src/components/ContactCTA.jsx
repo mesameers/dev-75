@@ -10,7 +10,10 @@ import {
   ShieldCheck,
   Radio,
   Lock,
-  ExternalLink
+  ExternalLink,
+  Activity,
+  Clock,
+  Globe2
 } from 'lucide-react';
 import { GithubIcon } from './icons/GithubIcon';
 import { Contact3DNode } from './Contact3DNode';
@@ -71,7 +74,6 @@ export const ContactCTA = () => {
     setTimeout(() => {
       setTransmissionState('sent');
 
-      // Trigger user mail client with pre-filled subject and body
       const subject = encodeURIComponent(`[Transmission] Inquiry from ${formData.name || 'Visitor'} - ${formData.domain}`);
       const body = encodeURIComponent(
         `Sender Name: ${formData.name}\nSender Email: ${formData.email}\nDomain: ${formData.domain}\n\nMessage Payload:\n${formData.message}`
@@ -88,30 +90,61 @@ export const ContactCTA = () => {
     <section
       id="contact"
       ref={sectionRef}
-      className="py-24 px-6 bg-space-950 relative border-t border-slate-900 overflow-hidden"
+      className="py-24 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden"
     >
       {/* Background Deep Cosmic Gradients */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-gradient-to-t from-energy-teal/15 via-secondary-violet/10 to-transparent blur-[180px] pointer-events-none rounded-full" />
 
-      <div className="max-w-6xl mx-auto flex flex-col items-center relative z-10">
+      <div className="max-w-7xl mx-auto flex flex-col items-center relative z-10">
         {/* Monospace Indicator */}
         <div className="inline-flex items-center space-x-2 font-mono text-xs tracking-widest text-energy-teal bg-energy-teal/10 border border-energy-teal/30 px-4 py-1.5 rounded-full mb-6 shadow-[0_0_20px_rgba(0,242,254,0.25)]">
           <Radio className="w-3.5 h-3.5 text-energy-cyan animate-pulse" />
           <span>DIRECT QUANTUM LINK // SECURE DISPATCH</span>
         </div>
 
-        {/* Big Closing CTA Headline */}
-        <h2 className="text-5xl sm:text-7xl md:text-8xl font-black text-white tracking-tight leading-none mb-4 text-center">
-          LET'S{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-energy-teal via-white to-secondary-violet animate-gradient-x">
-            TALK.
-          </span>
-        </h2>
+        {/* 3-Column Header Deck: Left Floating Beacon, Center Headline, Right Floating SLA */}
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-10">
+          {/* Left Flank: 3D Quantum Carrier Beacon (Fills Left Red Box!) */}
+          <div className="hidden lg:flex lg:col-span-3 flex-col p-5 rounded-2xl bg-space-900/80 border border-slate-800/80 backdrop-blur-xl shadow-lg">
+            <div className="flex items-center space-x-2 font-mono text-xs text-energy-teal mb-2">
+              <Radio className="w-4 h-4 text-energy-cyan animate-pulse" />
+              <span className="font-bold">CARRIER_SIGNAL</span>
+            </div>
+            <div className="font-mono text-xl font-black text-white mb-1">1420.4 MHz</div>
+            <div className="font-mono text-xs text-emerald-400 font-semibold mb-3">● 99.8% STRENGTH</div>
+            <div className="flex items-center space-x-2 font-mono text-[11px] text-slate-400 pt-2 border-t border-slate-800">
+              <Globe2 className="w-3.5 h-3.5 text-slate-500" />
+              <span>ORBIT LEO // GLOBAL</span>
+            </div>
+          </div>
 
-        {/* Subtitle */}
-        <p className="text-slate-300 max-w-2xl text-center text-base sm:text-xl font-medium leading-relaxed mb-12">
-          Have an enterprise cloud platform, creative WebGL experience, or high-throughput API to engineer? Let's connect and build in orbit.
-        </p>
+          {/* Center Headline (6 cols) */}
+          <div className="lg:col-span-6 flex flex-col items-center text-center">
+            <h2 className="text-5xl sm:text-7xl md:text-8xl font-black text-white tracking-tight leading-none mb-3">
+              LET'S{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-energy-teal via-white to-secondary-violet animate-gradient-x">
+                TALK.
+              </span>
+            </h2>
+            <p className="text-slate-300 max-w-xl text-center text-sm sm:text-base font-medium leading-relaxed">
+              Have an enterprise cloud platform, creative WebGL experience, or high-throughput API to engineer? Let's connect and build in orbit.
+            </p>
+          </div>
+
+          {/* Right Flank: Real-Time Availability & SLA (Fills Right Red Box!) */}
+          <div className="hidden lg:flex lg:col-span-3 flex-col p-5 rounded-2xl bg-space-900/80 border border-slate-800/80 backdrop-blur-xl shadow-lg text-right">
+            <div className="flex items-center justify-end space-x-2 font-mono text-xs text-cyan-400 mb-2">
+              <span className="font-bold">DISPATCH_STATUS</span>
+              <Activity className="w-4 h-4 text-emerald-400 animate-pulse" />
+            </div>
+            <div className="font-mono text-xl font-black text-emerald-400 mb-1">AVAILABLE NOW</div>
+            <div className="font-mono text-xs text-slate-300 font-semibold mb-3">&lt; 2 HOUR RESPONSE SLA</div>
+            <div className="flex items-center justify-end space-x-2 font-mono text-[11px] text-slate-400 pt-2 border-t border-slate-800">
+              <Clock className="w-3.5 h-3.5 text-slate-500" />
+              <span>TIMEZONE: UTC+5 / REMOTE</span>
+            </div>
+          </div>
+        </div>
 
         {/* 3D Tilting Interactive Contact Console Container */}
         <div
