@@ -15,6 +15,7 @@ import {
   Volume2
 } from 'lucide-react';
 import { fluteEngine } from '../utils/fluteEngine';
+import alinaAvatarImg from '../assets/alina_entity.png';
 
 // Navigation Targets for Direct Click & Voice Dispatch
 const NAV_TARGETS = [
@@ -654,7 +655,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
               }`}
             >
               <img
-                src="/media/alina_avatar.jpg"
+                src={alinaAvatarImg}
                 alt="Alina - Ethereal Cosmic AI Co-Pilot"
                 className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
               />
