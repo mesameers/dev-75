@@ -90,8 +90,10 @@ export const FeaturedProjects = () => {
     <section
       id="projects"
       ref={sectionRef}
-      className="py-28 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden"
+      className="py-28 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden scroll-mt-20"
     >
+      {/* Dual Anchor Target for Systems navigation */}
+      <span id="systems" className="sr-only" />
       {/* Background Neon Spotlights */}
       <div className="absolute top-1/4 left-1/3 w-[700px] h-[700px] bg-energy-teal/10 blur-[200px] pointer-events-none rounded-full" />
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-secondary-violet/10 blur-[180px] pointer-events-none rounded-full" />

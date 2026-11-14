@@ -2,14 +2,9 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   Volume2,
   VolumeX,
-  MessageSquare,
   Sparkles,
   Mic,
-  Radio,
-  Shield,
   Zap,
-  Compass,
-  ArrowRight,
   Film,
   Layers,
   Code2,
@@ -17,16 +12,18 @@ import {
   Terminal,
   Mail,
   Activity,
-  Heart
+  Heart,
+  Compass,
+  ArrowRight
 } from 'lucide-react';
 
 const ORBITING_TECH = [
-  { label: 'React 18', angle: 0, radius: 210, tilt: 65, color: '#00F2FE' },
-  { label: 'Supabase', angle: 60, radius: 230, tilt: -45, color: '#10B981' },
-  { label: 'PostgreSQL', angle: 120, radius: 200, tilt: 55, color: '#38BDF8' },
-  { label: 'Node.js', angle: 180, radius: 225, tilt: -60, color: '#8B5CF6' },
-  { label: 'TypeScript', angle: 240, radius: 205, tilt: 40, color: '#00FFE0' },
-  { label: 'Remotion', angle: 300, radius: 235, tilt: -50, color: '#EC4899' },
+  { label: 'React 18', angle: 0, radius: 215, tilt: 65, color: '#00F2FE' },
+  { label: 'Supabase', angle: 60, radius: 235, tilt: -45, color: '#10B981' },
+  { label: 'PostgreSQL', angle: 120, radius: 210, tilt: 55, color: '#38BDF8' },
+  { label: 'Node.js', angle: 180, radius: 230, tilt: -60, color: '#8B5CF6' },
+  { label: 'TypeScript', angle: 240, radius: 215, tilt: 40, color: '#00FFE0' },
+  { label: 'Remotion', angle: 300, radius: 240, tilt: -50, color: '#EC4899' },
 ];
 
 const MODES = [
@@ -35,51 +32,57 @@ const MODES = [
     label: 'SHIELD',
     color: '#00F2FE',
     hairColor: '#00FFE0',
+    dressAccent: '#00F2FE',
     eyeColor: '#00F2FE',
-    tag: 'TACTICAL',
-    voiceLine: 'Tactical Shield active ho chuka hai! Tamam systems zero-trust security per verified hain.',
+    tag: 'SWEET SHIELD',
+    voiceLine: 'Ji! Main ne protective cyber shield on kar di hai. Ab tamam systems bilkul safe aur secure hain!',
+    urduSubtitle: 'جی! میں نے پروٹیکٹو سائبر شیلڈ آن کر دی ہے۔ اب تمام سسٹمز بالکل محفوظ ہیں!',
   },
   {
     id: 'overdrive',
-    label: 'OVERDRIVE',
+    label: 'HYPER',
     color: '#FF007A',
     hairColor: '#FF2A85',
+    dressAccent: '#FF007A',
     eyeColor: '#FFD700',
-    tag: 'HYPERDRIVE',
-    voiceLine: 'Overdrive mode on! Cloud cluster ab 50,000 requests per second handle kar raha hai.',
+    tag: 'HYPER MODE',
+    voiceLine: 'Yay! Hyperdrive mode on ho gaya! Ab humari speed super fast hai!',
+    urduSubtitle: 'زبردست! ہائپر ڈرائیو موڈ آن ہو گیا۔ اب ہماری اسپیڈ سپر فاسٹ ہے!',
   },
   {
     id: 'quantum',
     label: 'QUANTUM',
     color: '#8B5CF6',
     hairColor: '#A855F7',
+    dressAccent: '#8B5CF6',
     eyeColor: '#C084FC',
-    tag: 'STEALTH',
-    voiceLine: 'Quantum mode active! Global edge network par sub-15 millisecond latency locked hai.',
+    tag: 'QUANTUM GLOW',
+    voiceLine: 'Quantum mode active hai! Sub-15 millisecond latency ke sath sab kuch ready hai!',
+    urduSubtitle: 'کوانٹم موڈ آن ہے! سب کچھ سپر فاسٹ اور ریڈی ہے!',
   },
 ];
 
-// Urdu Dialogues for clicks
-const URDU_SPEECHES = [
+// Sweet, Polite & Feminine Urdu Dialogues for Ayla
+const AYLA_GIRL_SPEECHES = [
   {
-    urdu: "خوش آمدید! میں DEV-75 ہوں، سمیر حسین کی autonomous AI companion۔ سمیر کے portfolio میں آپ کا خیرمقدم ہے! نیچے ان کے architecture systems اور live API suite ضرور دیکھیں۔",
-    roman: "Khushamdeed! Main DEV-75 hoon, Sameer Hussain ki autonomous AI companion. Sameer ke portfolio mein aap ka swagat hai! Neechay unke architecture systems, live API suite, aur projects zaroor dekhein.",
+    urdu: "السلام علیکم! میں ہوں آئیلا، سمیر حسین کی AI ساتھی۔ سمیر کے پورٹ فولیو میں آپ کا دل سے خیرمقدم ہے! چلیے میں آپ کو سمیر کے زبردست سسٹمز اور پروجیکٹس دکھاتی ہوں۔",
+    roman: "Assalam-o-Alaikum! Main hoon Ayla, Sameer Hussain ki AI companion. Sameer ke portfolio mein aap ka dil se welcome hai! Chaliye main aap ko Sameer ke zabardast systems aur projects dikhati hoon.",
   },
   {
-    urdu: "سمیر حسین ایک Senior Full-Stack Developer اور Systems Architect ہیں جو hardened multi-tenant platforms اور 3D motion systems ڈیزائن کرتے ہیں۔",
-    roman: "Sameer Hussain aik Senior Full-Stack Developer aur Systems Architect hain jo hardened multi-tenant platforms aur 3D motion systems design karte hain.",
+    urdu: "سمیر حسین ایک بہت باصلاحیت سینئر فل اسٹیک ڈویلپر ہیں جو جدید کلاؤڈ سسٹمز اور تھری ڈی ویب ڈیزائن کرتے ہیں۔ کیا آپ ان کے سسٹمز دیکھنا چاہیں گے؟",
+    roman: "Sameer Hussain aik buhat talented Senior Full-Stack Developer hain jo advanced cloud systems aur 3D web design karte hain. Kya aap unke systems dekhna chahenge?",
   },
   {
-    urdu: "آپ مجھ سے مائیک کے ذریعے بات کر سکتے ہیں! بس مجھے کہیں کہ 'Projects دکھاؤ' یا 'API پر لے جاؤ' اور میں فوراً آپ کو وہاں لے جاؤں گی۔",
-    roman: "Aap mujh se mic ke zariye baat kar sakte hain! Bas mujhe kahein 'Projects dikhao' ya 'API per le jao' aur main foran aap ko wahan le jaungi.",
+    urdu: "آپ مجھ سے مائیک پر بات کر سکتی ہیں! بس پیار سے کہیے 'سسٹمز پر لے جاؤ' یا 'کوڈ دکھاؤ'، اور میں فوراً آپ کو وہاں لے چلوں گی۔",
+    roman: "Aap mujh se mic per baat kar sakte hain! Bas mujhe kahiye 'Systems per le jao' ya 'Code dikhao', aur main foran aap ko wahan le chalti hoon.",
   },
   {
-    urdu: "سمیر کے تمام سسٹمز 99.99 فیصد کلاؤڈ اپ ٹائم اور sub-15ms p99 latency پر چلتے ہیں۔ آپ لائیو API سوٹ کو ٹیسٹ بھی کر سکتے ہیں!",
-    roman: "Sameer ke tamam systems 99.99 percent cloud uptime aur sub-15ms latency per chaltay hain. Aap live API suite ko test bhi kar sakte hain!",
+    urdu: "سمیر کے تمام کلاؤڈ سسٹمز 99.99 فیصد اپ ٹائم پر چلتے ہیں۔ چلیے آئیے میں آپ کو لائیو API سویٹ ٹیسٹ کرواتی ہوں!",
+    roman: "Sameer ke tamam cloud systems 99.99 percent uptime per chaltay hain. Chaliye aaiye main aap ko live API suite test karwati hoon!",
   },
 ];
 
-// Complete Voice Navigation Map (Trained on Urdu, Roman Urdu & English + Phonetic Matchers)
+// Complete Voice & Teleport Navigation Targets with Full Phonetic Matching
 const NAV_TARGETS = [
   {
     id: 'film',
@@ -87,26 +90,34 @@ const NAV_TARGETS = [
     icon: Film,
     color: '#00F2FE',
     keywords: ['film', 'flim', 'filam', 'video', 'vedio', 'movie', 'cinema', 'watch', 'remotion', 'film dikhao', 'video dikhao', 'movie dikhao', 'film chalao', 'فلم', 'ویڈیو', 'سینما'],
-    voiceConfirm: "Theek hai! Aap ko 'Built in Orbit' film cinema per le kar ja rahi hoon.",
-    subtitleUrdu: "چلیے! 'Built in Orbit' فلم سنیما پر چلتے ہیں۔",
+    voiceConfirm: "Aray waah! 'Built in Orbit' film bohot pyaari hai, chaliye mil kar dekhtay hain!",
+    subtitleUrdu: "ارے واہ! 'Built in Orbit' فلم بہت پیاری ہے، چلیے مل کر دیکھتے ہیں!",
   },
   {
     id: 'projects',
-    label: 'Projects',
+    alias: 'systems',
+    label: 'Systems',
     icon: Layers,
     color: '#10B981',
-    keywords: ['project', 'projects', 'projeck', 'system', 'systems', 'featured', 'platform', 'work', 'kaam', 'kam', 'portfolio', 'projects dikhao', 'systems dikhao', 'project dikhao', 'kam dikhao', 'پروجیکٹ', 'پروجیکٹس', 'کام', 'سسٹم', 'سسٹمز'],
-    voiceConfirm: "Jee bilkul! Sameer ke Featured Engineering Systems open ho rahe hain.",
-    subtitleUrdu: "جی بالکل! سمیر کے Featured Engineering Systems پر پہنچ گئے ہیں۔",
+    keywords: [
+      'system', 'systems', 'sistem', 'sistems', 'sustam', 'sustams', 'sistim',
+      'system please', 'assistant', 'assistance',
+      'project', 'projects', 'projeck', 'projekts', 'featured', 'platform', 'work', 'kaam', 'kam', 'portfolio',
+      'system dikhao', 'systems dikhao', 'system per jao', 'systems per jao',
+      'system per lekar ja', 'systems per lekar ja', 'system dikha do', 'systems dikha do',
+      'سسٹم', 'سسٹمز', 'پروجیکٹ', 'پروجیکٹس', 'کام'
+    ],
+    voiceConfirm: "Ji zaroor! Chaliye main aap ko Sameer ke Featured Systems aur projects par le kar chalti hoon!",
+    subtitleUrdu: "جی ضرور! چلیے میں آپ کو سمیر کے سسٹمز اور پروجیکٹس پر لے چلتی ہوں!",
   },
   {
     id: 'architecture',
     label: 'Topology',
     icon: Activity,
     color: '#8B5CF6',
-    keywords: ['architecture', 'arkitecture', 'topology', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster', 'node', 'nodes', 'spike', 'architecture dikhao', 'topology dikhao', 'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ'],
-    voiceConfirm: "Theek hai! Microservices Mesh Topology aur live data flow par chalte hain.",
-    subtitleUrdu: "ٹھیک ہے! Microservices Mesh Topology لوڈ ہو رہی ہے۔",
+    keywords: ['architecture', 'arkitecture', 'topology', 'toplogy', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster', 'node', 'nodes', 'spike', 'architecture dikhao', 'topology dikhao', 'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ'],
+    voiceConfirm: "Chaliye! Microservices Mesh Topology aur cloud flow dekhte hain!",
+    subtitleUrdu: "چلیے! Microservices Mesh Topology اور کلاؤڈ فلو دیکھتے ہیں!",
   },
   {
     id: 'code',
@@ -114,8 +125,8 @@ const NAV_TARGETS = [
     icon: Code2,
     color: '#38BDF8',
     keywords: ['code', 'core', 'kood', 'coding', 'codes', 'kord', 'inspector', 'algorithms', 'algorithm', 'typescript', 'sql', 'physics', 'code dikhao', 'coding dikhao', 'core per', 'code per', 'core per lekar ja', 'code per lekar ja', 'کوڈ', 'الگورتھم', 'کوڈنگ'],
-    voiceConfirm: "Zaroor! Production Code Inspector aur core algorithms par chaltay hain.",
-    subtitleUrdu: "ضرور! Production Code Inspector اور الگورتھمز حاضر ہیں۔",
+    voiceConfirm: "Aap ko code dekhna hai? Zaroor, chaliye main aap ko Code Inspector per le chalti hoon!",
+    subtitleUrdu: "آپ کو کوڈ دیکھنا ہے؟ ضرور، چلیے میں آپ کو کوڈ انسپیکٹر پر لے چلتی ہوں!",
   },
   {
     id: 'api-playground',
@@ -123,8 +134,8 @@ const NAV_TARGETS = [
     icon: Zap,
     color: '#EC4899',
     keywords: ['api', 'epi', 'a p i', 'playground', 'endpoint', 'endpoints', 'test', 'suite', 'request', 'rest', 'api dikhao', 'api chalao', 'api test', 'اے پی آئی', 'اے پی ائی', 'ٹیسٹ', 'سویٹ'],
-    voiceConfirm: "Jee haan! Live Production API Playground khul raha hai.",
-    subtitleUrdu: "جی ہاں! لائیو Production API Playground کھل رہا ہے۔",
+    voiceConfirm: "Ji haan! Live API Playground open kar rahi hoon, aap test karein!",
+    subtitleUrdu: "جی ہاں! لائیو API Playground کھول رہی ہوں، آپ ٹیسٹ کریں!",
   },
   {
     id: 'skills',
@@ -132,8 +143,8 @@ const NAV_TARGETS = [
     icon: Cpu,
     color: '#06B6D4',
     keywords: ['skills', 'skill', 'tech', 'stack', 'technology', 'technologies', 'skills dikhao', 'skills per jao', 'stack dikhao', 'اسکلز', 'ٹیکنالوجی'],
-    voiceConfirm: "Jee haan! Sameer ke core technical skills grid par chalte hain.",
-    subtitleUrdu: "جی ہاں! سمیر کے تمام ٹیکنیکل اسکلز گرڈ حاضر ہیں۔",
+    voiceConfirm: "Ji! Sameer ke technical skills aur languages ki list حاضر hai!",
+    subtitleUrdu: "جی! سمیر کے تمام ٹیکنیکل اسکلز کی لسٹ حاضر ہے!",
   },
   {
     id: 'tech-sphere',
@@ -141,8 +152,8 @@ const NAV_TARGETS = [
     icon: Compass,
     color: '#F59E0B',
     keywords: ['matrix', 'sphere', '3d', 'globe', 'interactive', '3d dikhao', 'matrix dikhao', 'تھری ڈی', 'میٹرکس'],
-    voiceConfirm: "Chaliye! 3D Interactive Technology Matrix open kar rahi hoon.",
-    subtitleUrdu: "چلیے! 3D Interactive Technology Matrix کھل رہی ہے۔",
+    voiceConfirm: "Chaliye! 3D Interactive Matrix khol rahi hoon, aap ko bohot maza aayega!",
+    subtitleUrdu: "چلیے! 3D Interactive Matrix کھول رہی ہوں، آپ کو بہت مزہ آئے گا!",
   },
   {
     id: 'terminal',
@@ -150,8 +161,8 @@ const NAV_TARGETS = [
     icon: Terminal,
     color: '#A855F7',
     keywords: ['terminal', 'tarminus', 'cli', 'shell', 'bash', 'console', 'command', 'terminal dikhao', 'terminal kholo', 'cli dikhao', 'ٹرمینل', 'سی ایل آئی', 'شیل'],
-    voiceConfirm: "Affirmative! Orbit CLI Developer Terminal launch kar rahi hoon.",
-    subtitleUrdu: "آرڈر قبول! Orbit CLI ڈویلپر ٹرمینل لانچ کر رہی ہوں۔",
+    voiceConfirm: "Ji bilkul! Developer Terminal open kar rahi hoon!",
+    subtitleUrdu: "جی بالکل! ڈویلپر ٹرمینل اوپن کر رہی ہوں!",
   },
   {
     id: 'contact',
@@ -159,17 +170,17 @@ const NAV_TARGETS = [
     icon: Mail,
     color: '#00FFE0',
     keywords: ['contact', 'kontact', 'hire', 'talk', 'email', 'mail', 'connect', 'message', 'baat', 'rabta', 'contact dikhao', 'rabta karna hai', 'email dikhao', 'رابطہ', 'ای میل', 'بات'],
-    voiceConfirm: "Bilkul! Sameer Hussain ke Direct Contact Dispatch link par chalte hain.",
-    subtitleUrdu: "بالکل! سمیر حسین کے Direct Contact لنک پر پہنچ گئے ہیں۔",
+    voiceConfirm: "Aap Sameer se baat karna chahte hain? Main foran aap ko Contact form per le chalti hoon!",
+    subtitleUrdu: "آپ سمیر سے بات کرنا چاہتے ہیں؟ میں فوراً آپ کو رابطہ فارم پر لے چلتی ہوں!",
   },
   {
     id: 'hero',
-    label: 'Top / Hero',
+    label: 'Top',
     icon: ArrowRight,
     color: '#00F2FE',
     keywords: ['upar', 'top', 'hero', 'home', 'shuru', 'start', 'wapas', 'upar jao', 'main', 'اوپر', 'ہیرو', 'شروع'],
-    voiceConfirm: "Wapas Orbit Command Bridge par le ja rahi hoon.",
-    subtitleUrdu: "واپس اوپر Orbit Command Bridge پر آ گئے۔",
+    voiceConfirm: "Wapas upar Command Bridge per aa gaye hain!",
+    subtitleUrdu: "واپس اوپر ہیرو سیکشن پر آ گئے ہیں!",
   },
 ];
 
@@ -182,25 +193,24 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [activeMode, setActiveMode] = useState(MODES[0]);
   const [pulseRing, setPulseRing] = useState(false);
-  const [audioBars, setAudioBars] = useState([8, 14, 22, 16, 9]);
 
   // Animated Girl Facial Expressions
   const [isBlinking, setIsBlinking] = useState(false);
-  const [mouthShape, setMouthShape] = useState(0); // 0: closed smile, 1: small open, 2: wide open
+  const [mouthShape, setMouthShape] = useState(0); // 0: cute smile, 1: small talk, 2: wide expression
 
-  // Speech State
+  // Speech State (Sweet & Feminine)
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [speechTextUrdu, setSpeechTextUrdu] = useState("خوش آمدید! مجھے کلک کریں یا بتائیں کہ کہاں جانا ہے (جیسے 'API دکھاؤ' یا 'فلم چلاؤ')۔");
-  const [speechTextRoman, setSpeechTextRoman] = useState("Khushamdeed! Mujhe click karein ya batayein kahan jana hai (jaise 'API dikhao' ya 'Film dikhao')!");
+  const [speechTextUrdu, setSpeechTextUrdu] = useState("السلام علیکم! میں آئیلا ہوں، سمیر کی AI ساتھی۔ مجھے بتائیں کہ کہاں چلنا ہے!");
+  const [speechTextRoman, setSpeechTextRoman] = useState("Assalam-o-Alaikum! Main Ayla hoon, Sameer ki AI companion. Mujhe batayein kahan chalna hai!");
   const [speechIndex, setSpeechIndex] = useState(0);
 
   // Natural Blinking Interval
   useEffect(() => {
     const blinkInterval = setInterval(() => {
       setIsBlinking(true);
-      setTimeout(() => setIsBlinking(false), 160);
-    }, 3600);
+      setTimeout(() => setIsBlinking(false), 170);
+    }, 3800);
     return () => clearInterval(blinkInterval);
   }, []);
 
@@ -232,29 +242,14 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Audio equalizer bars
-  useEffect(() => {
-    const eqInterval = setInterval(() => {
-      const multiplier = isSpeaking ? 1.8 : isListening ? 1.4 : 1.0;
-      setAudioBars([
-        Math.floor((6 + Math.random() * 18) * multiplier),
-        Math.floor((10 + Math.random() * 20) * multiplier),
-        Math.floor((14 + Math.random() * 22) * multiplier),
-        Math.floor((8 + Math.random() * 19) * multiplier),
-        Math.floor((5 + Math.random() * 16) * multiplier),
-      ]);
-    }, isSpeaking ? 80 : 180);
-    return () => clearInterval(eqInterval);
-  }, [isSpeaking, isListening]);
-
-  // Speech Synthesis Core Function supporting Urdu / Roman Urdu / English
+  // Sweet Feminine Voice Synthesis Engine
   const speak = useCallback((textToSpeak, urduDisplay = '', romanDisplay = '') => {
     setSpeechTextUrdu(urduDisplay || textToSpeak);
     setSpeechTextRoman(romanDisplay || textToSpeak);
 
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       setIsSpeaking(true);
-      setTimeout(() => setIsSpeaking(false), 3800);
+      setTimeout(() => setIsSpeaking(false), 3600);
       return;
     }
 
@@ -264,15 +259,16 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
       const voices = window.speechSynthesis.getVoices();
 
-      // Look for Urdu, Hindi, or natural smooth female voice
+      // Look for smooth, sweet feminine voices
       const preferredVoice =
-        voices.find((v) => v.lang.includes('ur') || v.lang.includes('hi')) ||
-        voices.find((v) => v.lang.includes('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Zira'))) ||
+        voices.find((v) => (v.name.includes('Zira') || v.name.includes('Jenny') || v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Female') || v.name.includes('Natural'))) ||
+        voices.find((v) => (v.lang.includes('ur') || v.lang.includes('hi')) && !v.name.includes('Hemant')) ||
+        voices.find((v) => v.lang.startsWith('en') && v.name.toLowerCase().includes('female')) ||
         voices.find((v) => v.lang.startsWith('en'));
 
       if (preferredVoice) utterance.voice = preferredVoice;
-      utterance.pitch = 1.15; // Pleasant, friendly AI female tone
-      utterance.rate = 1.02;
+      utterance.pitch = 1.35; // Sweet, charming feminine pitch
+      utterance.rate = 0.98; // Gentle, clear cadence
 
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
@@ -285,21 +281,25 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     }
   }, []);
 
-  // Teleport Navigation Function with Multi-Strategy Scroll & Visual Glow Feedback
+  // Multi-Strategy Teleport Navigation Function (100% Reliable Scrolling)
   const teleportTo = useCallback(
     (targetId, voiceConfirmText, subtitleUrduText = '') => {
-      // 1. Announce verbally in Urdu & show live bilingual subtitles
+      // 1. Announce verbally in sweet feminine voice
       speak(voiceConfirmText, subtitleUrduText, voiceConfirmText);
 
-      // 2. Multi-strategy rock-solid navigation
+      // 2. Perform direct scroll with navbar offset
       const executeScroll = () => {
         let el = document.getElementById(targetId);
-        
-        // Intelligent section ID aliases fallback
+
+        // Aliases fallback (e.g. systems <-> projects, skills <-> tech-sphere)
+        if (!el && (targetId === 'systems' || targetId === 'projects')) {
+          el = document.getElementById('systems') || document.getElementById('projects');
+        }
+        if (!el && (targetId === 'skills' || targetId === 'tech-sphere')) {
+          el = document.getElementById('skills') || document.getElementById('tech-sphere');
+        }
         if (!el) {
-          if (targetId === 'skills') el = document.getElementById('tech-sphere');
-          else if (targetId === 'tech-sphere') el = document.getElementById('skills');
-          else if (targetId === 'architecture') el = document.getElementById('projects');
+          el = document.querySelector(`[data-section="${targetId}"]`);
         }
 
         if (!el) {
@@ -307,51 +307,47 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           return;
         }
 
-        // Calculate absolute top offset accounting for sticky navigation bar (85px)
         const rect = el.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
         const targetOffset = Math.max(0, rect.top + scrollTop - 85);
 
-        // Strategy A: Window scrollTo with smooth behavior
+        // A. Primary Window Scroll
         window.scrollTo({
           top: targetOffset,
           behavior: 'smooth',
         });
 
-        // Strategy B: Element scrollIntoView fallback
+        // B. Secondary Element scrollIntoView fallback
         try {
           el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } catch (e) {}
 
-        // Strategy C: Update URL anchor without jarring jump
+        // C. Update URL hash
         try {
           if (window.history && window.history.pushState) {
             window.history.pushState(null, '', `#${targetId}`);
-          } else {
-            window.location.hash = targetId;
           }
         } catch (e) {}
 
-        // Strategy D: Dynamic Cyber Visual Target Glow Highlight
+        // D. Visual Cyber Highlight Pulse on Arrival
         try {
           el.style.transition = 'box-shadow 0.6s ease, outline 0.6s ease';
-          el.style.outline = '2px solid rgba(0, 242, 254, 0.85)';
-          el.style.boxShadow = '0 0 45px rgba(0, 242, 254, 0.45)';
+          el.style.outline = '2px solid rgba(0, 242, 254, 0.9)';
+          el.style.boxShadow = '0 0 50px rgba(0, 242, 254, 0.5)';
           setTimeout(() => {
             el.style.outline = '';
             el.style.boxShadow = '';
-          }, 2400);
+          }, 2500);
         } catch (e) {}
       };
 
-      // Execute immediately and once again after 300ms to guarantee precision
       executeScroll();
       setTimeout(executeScroll, 320);
     },
     [speak]
   );
 
-  // Web Speech Recognition for Urdu & English Voice Commands (Phonetic & Fuzzy Matching)
+  // Web Speech Recognition with Intelligent Systems & Phonetic Matching
   const startVoiceCommand = useCallback(() => {
     if (typeof window === 'undefined') return;
 
@@ -368,14 +364,14 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
       const recognition = new SpeechRecognition();
       recognitionRef.current = recognition;
-      recognition.lang = 'en-US'; // Uses robust multilingual phonetic engine
+      recognition.lang = 'en-US';
       recognition.continuous = false;
       recognition.interimResults = false;
 
       recognition.onstart = () => {
         setIsListening(true);
-        setSpeechTextUrdu("🎙️ سن رہی ہوں... مجھے بتائیں: 'Code per lekar ja', 'Projects dikhao', 'API suite', یا 'Film'!");
-        setSpeechTextRoman("🎙️ Sun rahi hoon... Batayein: 'Code per lekar ja', 'Projects dikhao', 'API suite', ya 'Film'!");
+        setSpeechTextUrdu("🎙️ سن رہی ہوں... بتائیں: 'Systems dikhao', 'Code per lekar ja', یا 'Film'!");
+        setSpeechTextRoman("🎙️ Sun rahi hoon... Batayein: 'Systems dikhao', 'Code per lekar ja', ya 'Film'!");
       };
 
       recognition.onresult = (event) => {
@@ -384,21 +380,37 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         setIsListening(false);
         setSpeechTextRoman(`Sun liya: "${cleanTranscript}"`);
 
-        // 1. Direct Keyword & Phonetic Match in NAV_TARGETS
-        let matched = NAV_TARGETS.find((target) =>
-          target.keywords.some((kw) => cleanTranscript.includes(kw.toLowerCase()))
-        );
+        // Heuristic 1: Dedicated Check for "Systems" / "Projects"
+        const isSystemsQuery =
+          cleanTranscript.includes('system') ||
+          cleanTranscript.includes('sistem') ||
+          cleanTranscript.includes('sustam') ||
+          cleanTranscript.includes('sistim') ||
+          cleanTranscript.includes('assistant') ||
+          cleanTranscript.includes('assistance') ||
+          cleanTranscript.includes('project') ||
+          cleanTranscript.includes('kam') ||
+          cleanTranscript.includes('kaam') ||
+          cleanTranscript.includes('platform');
 
-        // 2. Extra Phonetic Heuristics (e.g. user saying "core per lekar ja" -> code)
+        let matched = null;
+        if (isSystemsQuery) {
+          matched = NAV_TARGETS.find((t) => t.id === 'projects');
+        }
+
+        // Heuristic 2: Check all keywords in NAV_TARGETS
         if (!matched) {
-          if (cleanTranscript.includes('core') || cleanTranscript.includes('kood') || cleanTranscript.includes('kord') || cleanTranscript.includes('cod')) {
+          matched = NAV_TARGETS.find((target) =>
+            target.keywords.some((kw) => cleanTranscript.includes(kw.toLowerCase()))
+          );
+        }
+
+        // Heuristic 3: Extra Phonetics
+        if (!matched) {
+          if (cleanTranscript.includes('core') || cleanTranscript.includes('kood') || cleanTranscript.includes('cod')) {
             matched = NAV_TARGETS.find((t) => t.id === 'code');
           } else if (cleanTranscript.includes('flim') || cleanTranscript.includes('filam') || cleanTranscript.includes('vedio')) {
             matched = NAV_TARGETS.find((t) => t.id === 'film');
-          } else if (cleanTranscript.includes('system') || cleanTranscript.includes('kam') || cleanTranscript.includes('kaam')) {
-            matched = NAV_TARGETS.find((t) => t.id === 'projects');
-          } else if (cleanTranscript.includes('mesh') || cleanTranscript.includes('cloud') || cleanTranscript.includes('topo')) {
-            matched = NAV_TARGETS.find((t) => t.id === 'architecture');
           } else if (cleanTranscript.includes('epi') || cleanTranscript.includes('play')) {
             matched = NAV_TARGETS.find((t) => t.id === 'api-playground');
           } else if (cleanTranscript.includes('sphere') || cleanTranscript.includes('matrix')) {
@@ -406,11 +418,10 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           }
         }
 
-        // 3. Fallback: If user said generic navigation phrase ("lekar ja", "dikhao", "chalo", "le jao", "portfolio")
+        // Heuristic 4: General Navigation Intent -> Default to Systems
         if (!matched) {
           const generalNavWords = ['lekar ja', 'le kar ja', 'le jao', 'dikhao', 'chalo', 'kholo', 'jana hai', 'go to', 'take me', 'show'];
-          const hasNavIntent = generalNavWords.some((word) => cleanTranscript.includes(word));
-          if (hasNavIntent) {
+          if (generalNavWords.some((word) => cleanTranscript.includes(word))) {
             matched = NAV_TARGETS.find((t) => t.id === 'projects');
           }
         }
@@ -419,156 +430,120 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           teleportTo(matched.id, matched.voiceConfirm, matched.subtitleUrdu);
         } else {
           speak(
-            `Main ne suna "${cleanTranscript}". Aap keh sakte hain 'Code per lekar ja', 'Projects dikhao', ya 'API suite'!`,
-            `سنا: "${cleanTranscript}". آپ کہہ سکتے ہیں 'Code per lekar ja' یا 'Projects dikhao'!`
+            `Main ne suna "${cleanTranscript}". Aap keh sakti hain 'Systems dikhao', 'Code per lekar ja', ya 'Film'!`,
+            `سنا: "${cleanTranscript}". آپ کہہ سکتے ہیں 'Systems dikhao' یا 'Code per lekar ja'!`
           );
         }
       };
 
-      recognition.onerror = () => {
-        setIsListening(false);
-      };
-
-      recognition.onend = () => {
-        setIsListening(false);
-      };
-
+      recognition.onerror = () => setIsListening(false);
+      recognition.onend = () => setIsListening(false);
       recognition.start();
     } catch (err) {
       setIsListening(false);
     }
   }, [speak, teleportTo]);
 
-  // Click on Avatar: Always speak Welcome & Tour first in Urdu!
+  // Click on Avatar: Sweet welcome greeting in feminine Urdu!
   const triggerNextSpeech = (e) => {
     if (e) e.stopPropagation();
 
     if (!hasSpokenFirstRef.current) {
       hasSpokenFirstRef.current = true;
       setSpeechIndex(0);
-      speak(URDU_SPEECHES[0].roman, URDU_SPEECHES[0].urdu, URDU_SPEECHES[0].roman);
+      speak(AYLA_GIRL_SPEECHES[0].roman, AYLA_GIRL_SPEECHES[0].urdu, AYLA_GIRL_SPEECHES[0].roman);
       return;
     }
 
-    const nextIndex = (speechIndex + 1) % URDU_SPEECHES.length;
+    const nextIndex = (speechIndex + 1) % AYLA_GIRL_SPEECHES.length;
     setSpeechIndex(nextIndex);
-    speak(URDU_SPEECHES[nextIndex].roman, URDU_SPEECHES[nextIndex].urdu, URDU_SPEECHES[nextIndex].roman);
+    speak(AYLA_GIRL_SPEECHES[nextIndex].roman, AYLA_GIRL_SPEECHES[nextIndex].urdu, AYLA_GIRL_SPEECHES[nextIndex].roman);
   };
 
   const switchMode = (mode) => {
     setActiveMode(mode);
     setPulseRing(true);
     setTimeout(() => setPulseRing(false), 1200);
-    speak(mode.voiceLine, mode.voiceLine, mode.voiceLine);
+    speak(mode.voiceLine, mode.urduSubtitle, mode.voiceLine);
   };
 
-  const handleAvatarClick = () => {
-    triggerNextSpeech();
-  };
-
-  const tiltX = mousePos.y * -14;
-  const tiltY = mousePos.x * 18;
+  const tiltX = mousePos.y * -12;
+  const tiltY = mousePos.x * 16;
   const pupilX = mousePos.x * 3.5;
   const pupilY = mousePos.y * 2.5;
 
   return (
-    <div className="flex flex-col items-center relative w-full">
-      {/* 0. Holographic Bilingual Urdu & English Speech Bubble */}
-      <div
-        className={`mb-5 w-full max-w-lg px-5 py-3.5 rounded-3xl bg-space-900/95 border backdrop-blur-2xl shadow-2xl transition-all duration-300 z-30 flex flex-col space-y-2 text-left ${
-          isSpeaking || isListening
-            ? 'scale-[1.02] border-energy-teal shadow-[0_0_35px_rgba(0,242,254,0.4)]'
-            : 'border-slate-800/90 opacity-95 hover:opacity-100'
-        }`}
-        style={{
-          borderColor: isSpeaking || isListening ? activeMode.color : undefined,
-        }}
-      >
-        {/* Top Status Header */}
-        <div className="flex items-center justify-between font-mono text-[11px] text-slate-400 pb-2 border-b border-slate-800/80">
-          <span className="font-bold flex items-center space-x-2" style={{ color: activeMode.color }}>
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: activeMode.color }} />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ backgroundColor: activeMode.color }} />
+    <div className="flex flex-col items-center relative w-full select-none">
+      {/* 0. Sleek Floating Holographic Subtitle Pill (Replaces the bulky dark card box!) */}
+      {(isSpeaking || isListening || isHovered) ? (
+        <div
+          className="mb-4 w-full max-w-md px-5 py-2.5 rounded-2xl bg-space-950/85 border backdrop-blur-xl shadow-2xl transition-all duration-300 z-30 flex flex-col space-y-1 text-center animate-fade-in"
+          style={{
+            borderColor: `${activeMode.color}80`,
+            boxShadow: `0 0 25px ${activeMode.color}35`,
+          }}
+        >
+          <div className="flex items-center justify-between font-mono text-[10px] text-slate-400 pb-1 border-b border-slate-800/80">
+            <span className="font-bold flex items-center space-x-1.5" style={{ color: activeMode.color }}>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: activeMode.color }} />
+                <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: activeMode.color }} />
+              </span>
+              <span>🌸 AYLA // AI COMPANION</span>
             </span>
-            <span>AYLA // DEV-75 AI COMPANION</span>
-          </span>
-          <span className="font-semibold text-energy-cyan flex items-center space-x-1">
-            <Volume2 className="w-3.5 h-3.5" />
-            <span>{isListening ? '🎙️ SUN RAHI HOON...' : isSpeaking ? '🔊 BOL RAHI HOON' : 'URDU / ENG VOICE'}</span>
-          </span>
-        </div>
+            <span className="text-energy-cyan flex items-center space-x-1 font-semibold">
+              <Volume2 className="w-3 h-3 animate-pulse" />
+              <span>{isListening ? '🎙️ SUN RAHI HOON...' : isSpeaking ? 'BOL RAHI HOON...' : 'ONLINE'}</span>
+            </span>
+          </div>
 
-        {/* Dynamic Spoken Text in Urdu Script & Roman Urdu */}
-        <div className="space-y-1">
-          <p className="font-sans text-sm sm:text-base text-white font-semibold leading-relaxed tracking-wide text-right" dir="rtl">
+          <p className="font-sans text-xs sm:text-sm text-white font-medium leading-relaxed tracking-wide text-right" dir="rtl">
             {speechTextUrdu}
           </p>
-          <p className="font-mono text-xs text-energy-cyan/90 leading-snug">
+          <p className="font-mono text-[11px] text-energy-cyan/90 leading-tight">
             "{speechTextRoman}"
           </p>
         </div>
-
-        {/* Quick Teleportation Command Chips (Trained on Portfolio Sections) */}
-        <div className="pt-2.5 border-t border-slate-800/80">
-          <div className="flex items-center justify-between font-mono text-[10px] text-slate-400 mb-1.5">
-            <span className="flex items-center space-x-1 text-energy-teal font-bold">
-              <Compass className="w-3.5 h-3.5 animate-spin" />
-              <span>KAHAN JANA HAI? (CLICK TO TELEPORT):</span>
-            </span>
-            <span className="text-slate-500 font-semibold">1-CLICK JUMP</span>
-          </div>
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1">
-            {NAV_TARGETS.map((tgt) => {
-              const Icon = tgt.icon;
-              return (
-                <button
-                  key={tgt.id}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    teleportTo(tgt.id, tgt.voiceConfirm, tgt.subtitleUrdu);
-                  }}
-                  className="px-3 py-1.5 rounded-xl bg-space-950 border border-slate-800 hover:border-energy-teal font-mono text-xs font-bold text-slate-200 hover:text-white flex items-center space-x-1.5 transition-all whitespace-nowrap active:scale-95 shadow-sm hover:scale-105"
-                  style={{
-                    borderColor: `${tgt.color}40`,
-                  }}
-                  title={`Teleport to ${tgt.label}`}
-                >
-                  <Icon className="w-3.5 h-3.5" style={{ color: tgt.color }} />
-                  <span>{tgt.label}</span>
-                </button>
-              );
-            })}
-          </div>
+      ) : (
+        /* Subtle Idle Pill Badge */
+        <div
+          onClick={triggerNextSpeech}
+          className="mb-3 px-4 py-1.5 rounded-full bg-space-950/70 border border-slate-800 hover:border-energy-teal/60 backdrop-blur-md font-mono text-[11px] text-slate-300 flex items-center space-x-2 cursor-pointer hover:scale-105 transition-all shadow-md group"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-energy-cyan opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-energy-teal" />
+          </span>
+          <span className="group-hover:text-energy-cyan transition-colors">🌸 AYLA SE BAAT KAREIN (CLICK ME)</span>
         </div>
-      </div>
+      )}
 
-      {/* Main 3D Animated Cyber AI Girl Avatar Canvas */}
+      {/* Main 3D Animated Cyber AI Girl Avatar Canvas with Complete Figure & Dress */}
       <div
         ref={containerRef}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={handleAvatarClick}
-        className={`relative flex items-center justify-center select-none cursor-pointer group ${className}`}
+        onClick={triggerNextSpeech}
+        className={`relative flex items-center justify-center cursor-pointer group ${className}`}
         style={{
           width: size,
-          height: size,
+          height: Math.round(size * 1.18),
           perspective: '1200px',
         }}
-        title="Mujhe click karein ya mic se batayein kahan jana hai!"
+        title="Main Ayla hoon! Mujhe click karein ya mic se batayein kahan jana hai!"
       >
         {/* 1. Deep Core Gravitational Quantum Nebula */}
         <div
           className={`absolute rounded-full blur-[90px] pointer-events-none transition-all duration-700 ${
             pulseRing || isSpeaking || isListening
-              ? 'scale-145 opacity-95'
+              ? 'scale-140 opacity-95'
               : isHovered
-              ? 'scale-125 opacity-85'
+              ? 'scale-120 opacity-85'
               : 'opacity-70'
           }`}
           style={{
-            width: size * 0.9,
-            height: size * 0.9,
+            width: size * 0.85,
+            height: size * 0.85,
             background:
               activeMode.id === 'overdrive'
                 ? 'radial-gradient(circle, #FF007A 0%, #FFD700 40%, #7928CA 70%, transparent 85%)'
@@ -585,393 +560,494 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             <div
               className="absolute rounded-full border-2 pointer-events-none animate-soundwave"
               style={{
-                width: size * 0.65,
-                height: size * 0.65,
+                width: size * 0.7,
+                height: size * 0.7,
                 borderColor: `${activeMode.color}80`,
               }}
             />
             <div
               className="absolute rounded-full border pointer-events-none animate-soundwave-delayed"
               style={{
-                width: size * 0.85,
-                height: size * 0.85,
+                width: size * 0.9,
+                height: size * 0.9,
                 borderColor: `${activeMode.color}40`,
               }}
             />
           </>
         )}
 
-        {/* 3. Outer 3D Gyroscopic Gimbal Rings with Satellites */}
-        {/* Ring 1 - Neon Horizon */}
+        {/* 3. Outer 3D Gyroscopic Gimbal Orbit Rings */}
         <div
-          className="absolute rounded-full border-2 pointer-events-none transition-colors duration-500"
+          className="absolute rounded-full border pointer-events-none transition-all duration-500"
           style={{
-            width: size * 1.15,
-            height: size * 1.15,
-            borderColor: `${activeMode.color}70`,
-            transform: `rotateX(68deg) rotateY(${tiltY * 0.4}deg) rotateZ(0deg)`,
-            animation: 'spinClockwise 14s linear infinite',
-            boxShadow: `0 0 30px ${activeMode.color}40, inset 0 0 25px ${activeMode.color}30`,
+            width: size * 0.98,
+            height: size * 0.98,
+            borderColor: `${activeMode.color}30`,
+            boxShadow: `0 0 30px ${activeMode.color}20`,
+            animation: 'spinClockwise 24s linear infinite',
           }}
-        >
-          <div
-            className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full shadow-lg animate-ping"
-            style={{ backgroundColor: activeMode.color }}
-          />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white" />
-          <div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3.5 h-3.5 rounded-full"
-            style={{ backgroundColor: activeMode.color }}
-          />
-        </div>
-
-        {/* Ring 2 - Electric Violet Orbital Ring */}
+        />
         <div
-          className="absolute rounded-full border border-secondary-violet/60 pointer-events-none"
+          className="absolute rounded-full border pointer-events-none transition-all duration-500"
           style={{
-            width: size * 1.25,
-            height: size * 1.25,
-            transform: `rotateX(-52deg) rotateY(38deg)`,
-            animation: 'spinCounterClockwise 20s linear infinite',
-            boxShadow: '0 0 35px rgba(139, 92, 246, 0.35)',
+            width: size * 0.88,
+            height: size * 0.88,
+            borderColor: `${activeMode.color}40`,
+            borderStyle: 'dashed',
+            animation: 'spinCounterClockwise 18s linear infinite',
           }}
-        >
-          <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-secondary-violet shadow-[0_0_20px_#8B5CF6]" />
-          <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-pink-500 shadow-[0_0_15px_#EC4899]" />
-        </div>
+        />
 
-        {/* 4. Orbiting 3D Glass Tech Satellites */}
+        {/* 4. Orbiting Floating Tech Badges */}
         {ORBITING_TECH.map((tech, i) => {
           const rad = (tech.angle * Math.PI) / 180;
-          const xOffset = Math.cos(rad) * (tech.radius * (size / 480));
-          const yOffset = Math.sin(rad) * (tech.radius * (size / 480) * 0.44);
+          const xOffset = Math.cos(rad) * (tech.radius * 0.95);
+          const yOffset = Math.sin(rad) * (tech.radius * 0.82);
 
           return (
             <div
               key={i}
-              className="absolute z-20 pointer-events-none sm:pointer-events-auto transition-transform hover:scale-130"
+              className="absolute z-20 pointer-events-none sm:pointer-events-auto transition-transform hover:scale-125"
               style={{
                 transform: `translate(${xOffset}px, ${yOffset}px)`,
                 animation: `orbitFloat 3.8s ease-in-out infinite ${i * 0.6}s`,
               }}
             >
               <div
-                className="px-3.5 py-1.5 rounded-full font-mono text-[11px] font-black tracking-wider bg-space-950/95 border backdrop-blur-xl shadow-xl flex items-center space-x-1.5 transition-all"
+                className="px-3 py-1 rounded-full font-mono text-[10px] font-bold tracking-wider bg-space-950/95 border backdrop-blur-xl shadow-lg flex items-center space-x-1.5 transition-all"
                 style={{
-                  borderColor: `${tech.color}80`,
+                  borderColor: `${tech.color}70`,
                   color: tech.color,
-                  boxShadow: `0 0 25px ${tech.color}45`,
+                  boxShadow: `0 0 15px ${tech.color}35`,
                 }}
               >
-                <span className="w-2 h-2 rounded-full bg-current animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
                 <span>{tech.label}</span>
               </div>
             </div>
           );
         })}
 
-        {/* 5. The 3D High-Fidelity Cyber AI Girl Character */}
+        {/* 5. Complete 3D Animated Cyber Anime Girl with Beautiful Dress */}
         <div
           className="relative z-10 flex flex-col items-center justify-center transition-transform duration-200 ease-out"
           style={{
-            transform: `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateZ(40px)`,
+            transform: `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateZ(35px)`,
             animation: 'avatarLevitate 4.5s ease-in-out infinite',
           }}
         >
-          {/* SVG Vector Cyber Anime Girl Vessel */}
+          {/* Complete Girl Full Figure Vector SVG */}
           <svg
-            width={size * 0.88}
-            height={size * 0.88}
-            viewBox="0 0 240 240"
+            width={size * 0.86}
+            height={Math.round(size * 1.15)}
+            viewBox="0 0 280 430"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="drop-shadow-[0_30px_60px_rgba(0,0,0,0.95)]"
+            className="drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)]"
           >
             <defs>
               {/* Skin Tone Gradient */}
-              <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FFF2E8" />
-                <stop offset="70%" stopColor="#FFE0CE" />
-                <stop offset="100%" stopColor="#F5C4AB" />
+              <linearGradient id="girlSkinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FFF4ED" />
+                <stop offset="65%" stopColor="#FFE3D3" />
+                <stop offset="100%" stopColor="#F7C6B0" />
               </linearGradient>
 
               {/* Glowing Hair Gradient */}
-              <linearGradient id="cyberHairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id="girlHairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor={activeMode.hairColor} />
                 <stop offset="45%" stopColor={activeMode.color} />
                 <stop offset="100%" stopColor="#7928CA" />
               </linearGradient>
 
               {/* Eye Iris Gradient */}
-              <radialGradient id="eyeIrisGrad" cx="50%" cy="50%" r="50%">
+              <radialGradient id="girlEyeGrad" cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stopColor="#FFFFFF" />
                 <stop offset="35%" stopColor={activeMode.eyeColor} />
                 <stop offset="85%" stopColor="#0B132B" />
                 <stop offset="100%" stopColor="#02040A" />
               </radialGradient>
 
-              {/* Cyber Jacket & Collar Gradient */}
-              <linearGradient id="jacketGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#1C2433" />
-                <stop offset="50%" stopColor="#0E1624" />
-                <stop offset="100%" stopColor="#050811" />
+              {/* Beautiful Dress Main Gradient (Deep Space Silk) */}
+              <linearGradient id="dressMainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#1B2234" />
+                <stop offset="40%" stopColor="#0E1424" />
+                <stop offset="80%" stopColor="#070B14" />
+                <stop offset="100%" stopColor="#02040A" />
+              </linearGradient>
+
+              {/* Dress Glowing Accent Gradient */}
+              <linearGradient id="dressAccentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor={activeMode.color} />
+                <stop offset="50%" stopColor="#7928CA" />
+                <stop offset="100%" stopColor={activeMode.dressAccent} />
+              </linearGradient>
+
+              {/* Translucent Ruffle Sleeves Gradient */}
+              <linearGradient id="ruffleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor={activeMode.color} stopOpacity="0.75" />
+                <stop offset="60%" stopColor="#7928CA" stopOpacity="0.45" />
+                <stop offset="100%" stopColor="#00FFE0" stopOpacity="0.15" />
               </linearGradient>
 
               {/* Glow Filter */}
-              <filter id="girlGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <filter id="aylaGlow" x="-30%" y="-30%" width="160%" height="160%">
                 <feGaussianBlur stdDeviation="5" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
             </defs>
 
-            {/* Back Hair Strands (Flowing behind shoulders) */}
+            {/* Back Flowing Hair Locks (Cascading down the shoulders and waist) */}
             <path
-              d="M65 85 C45 130 50 185 75 220 C90 195 95 160 88 120 Z"
-              fill="url(#cyberHairGrad)"
-              opacity="0.9"
+              d="M75 90 C35 150 40 240 65 310 C85 270 90 200 92 135 Z"
+              fill="url(#girlHairGrad)"
+              opacity="0.95"
             />
             <path
-              d="M175 85 C195 130 190 185 165 220 C150 195 145 160 152 120 Z"
-              fill="url(#cyberHairGrad)"
-              opacity="0.9"
+              d="M205 90 C245 150 240 240 215 310 C195 270 190 200 188 135 Z"
+              fill="url(#girlHairGrad)"
+              opacity="0.95"
             />
 
-            {/* Cyber Suit Torso & Collar */}
+            {/* Back Floating Anime Ribbon Bow Tails */}
             <path
-              d="M55 200 C55 170, 75 160, 120 160 C165 160, 185 170, 185 200 L195 240 C195 245, 45 245, 45 240 Z"
-              fill="url(#jacketGrad)"
+              d="M125 240 C110 270 95 330 85 365 C100 355 118 310 130 260 Z"
+              fill="url(#dressAccentGrad)"
+              opacity="0.8"
+            />
+            <path
+              d="M155 240 C170 270 185 330 195 365 C180 355 162 310 150 260 Z"
+              fill="url(#dressAccentGrad)"
+              opacity="0.8"
+            />
+
+            {/* ----------------- BEAUTIFUL DRESS SKIRT & GOWN (Expanded Flowing Silhouette) ----------------- */}
+            {/* 1. Deep Space Underskirt Layer */}
+            <path
+              d="M105 240 C90 270 60 320 40 395 C80 410 200 410 240 395 C220 320 190 270 175 240 Z"
+              fill="url(#dressMainGrad)"
               stroke={activeMode.color}
-              strokeWidth="2.5"
+              strokeWidth="1.5"
             />
 
-            {/* High-Tech Neon Collar Choker */}
+            {/* 2. Flowing Pleated Dress Folds & Shimmer Panels */}
             <path
-              d="M95 152 C105 158 135 158 145 152 L148 165 C135 172 105 172 92 165 Z"
-              fill="#060913"
+              d="M115 245 C95 290 70 345 55 400 C75 408 105 410 120 405 C115 350 118 290 125 245 Z"
+              fill="#121A2D"
+              opacity="0.8"
+            />
+            <path
+              d="M165 245 C185 290 210 345 225 400 C205 408 175 410 160 405 C165 350 162 290 155 245 Z"
+              fill="#121A2D"
+              opacity="0.8"
+            />
+            <path
+              d="M130 245 C125 300 120 360 115 408 C130 412 150 412 165 408 C160 360 155 300 150 245 Z"
+              fill="#19233C"
+              stroke={`${activeMode.color}40`}
+              strokeWidth="1"
+            />
+
+            {/* 3. Glowing Cyber Circuit Trims & Hemline on the Skirt */}
+            <path
+              d="M40 395 Q140 425 240 395"
+              stroke={activeMode.color}
+              strokeWidth="3"
+              fill="none"
+              filter="url(#aylaGlow)"
+            />
+            <path
+              d="M50 402 Q140 430 230 402"
+              stroke={activeMode.dressAccent}
+              strokeWidth="1.5"
+              fill="none"
+              strokeDasharray="4 4"
+            />
+
+            {/* Glowing Fiber-Optic Vertical Neon Pinstripes down the Dress */}
+            <path d="M120 250 Q105 320 85 390" stroke={activeMode.color} strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
+            <path d="M160 250 Q175 320 195 390" stroke={activeMode.color} strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
+            <path d="M140 250 L140 400" stroke={activeMode.color} strokeWidth="1.5" opacity="0.9" filter="url(#aylaGlow)" />
+
+            {/* 4. Elegant Cyber Corset Bodice (Feminine Cinched Waist & Sweetheart Cut) */}
+            <path
+              d="M100 178 C95 200 102 235 106 242 C115 246 165 246 174 242 C178 235 185 200 180 178 C165 185 150 185 140 180 C130 185 115 185 100 178 Z"
+              fill="url(#dressMainGrad)"
               stroke={activeMode.color}
               strokeWidth="2"
             />
-            {/* Glowing Heart/Crystal Center on Choker */}
-            <circle cx="120" cy="162" r="5" fill={activeMode.color} filter="url(#girlGlow)">
-              <animate attributeName="r" values="4;6;4" dur="1.4s" repeatCount="indefinite" />
+
+            {/* Corset Vertical Rib Boning Lines */}
+            <path d="M122 184 L124 243" stroke={`${activeMode.color}90`} strokeWidth="1.5" />
+            <path d="M158 184 L156 243" stroke={`${activeMode.color}90`} strokeWidth="1.5" />
+
+            {/* Glowing Center Quantum Heart / Power Brooch on Bodice */}
+            <circle cx="140" cy="205" r="5.5" fill={activeMode.color} filter="url(#aylaGlow)">
+              <animate attributeName="r" values="4.5;6.5;4.5" dur="1.3s" repeatCount="indefinite" />
             </circle>
 
-            {/* Slender Cyber Neck */}
+            {/* Cute Waist Ribbon & Bow */}
             <path
-              d="M102 125 L102 155 C110 160 130 160 138 155 L138 125 Z"
-              fill="url(#skinGrad)"
+              d="M104 238 C120 243 160 243 176 238 L176 245 C160 249 120 249 104 245 Z"
+              fill={activeMode.color}
+              filter="url(#aylaGlow)"
+            />
+            {/* Center Ribbon Knot */}
+            <circle cx="140" cy="242" r="4" fill="#FFFFFF" />
+
+            {/* ----------------- FEMININE SHOULDERS, ARMS & TRANSLUCENT RUFFLES ----------------- */}
+            {/* Slender Arms */}
+            <path
+              d="M98 182 C85 210 82 245 92 275 C97 274 102 268 100 260 C92 235 96 205 106 186 Z"
+              fill="url(#girlSkinGrad)"
+            />
+            <path
+              d="M182 182 C195 210 198 245 188 275 C183 274 178 268 180 260 C188 235 184 205 174 186 Z"
+              fill="url(#girlSkinGrad)"
             />
 
-            {/* Delicate Anime Girl Face Shape */}
+            {/* Translucent Off-Shoulder Cyber Ruffles */}
             <path
-              d="M75 85 C75 130, 95 148, 120 150 C145 148, 165 130, 165 85 C165 48, 145 42, 120 42 C95 42, 75 48, 75 85 Z"
-              fill="url(#skinGrad)"
+              d="M85 180 C80 195 95 205 106 195 C115 188 105 175 92 175 Z"
+              fill="url(#ruffleGrad)"
+              stroke={activeMode.color}
+              strokeWidth="1.5"
+            />
+            <path
+              d="M195 180 C200 195 185 205 174 195 C165 188 175 175 188 175 Z"
+              fill="url(#ruffleGrad)"
+              stroke={activeMode.color}
+              strokeWidth="1.5"
             />
 
-            {/* Soft Cheeks Cyber Blush */}
-            <ellipse cx="88" cy="108" rx="8" ry="4" fill="#FF4D8D" opacity="0.4" filter="url(#girlGlow)" />
-            <ellipse cx="152" cy="108" rx="8" ry="4" fill="#FF4D8D" opacity="0.4" filter="url(#girlGlow)" />
+            {/* Delicate Feminine Neck & Velvet Choker */}
+            <path
+              d="M125 142 L125 170 C132 174 148 174 155 170 L155 142 Z"
+              fill="url(#girlSkinGrad)"
+            />
+            {/* Velvet Cyber Choker */}
+            <path
+              d="M123 158 C130 162 150 162 157 158 L157 165 C150 168 130 168 123 165 Z"
+              fill="#060913"
+              stroke={activeMode.color}
+              strokeWidth="1.5"
+            />
+            <circle cx="140" cy="162" r="3.5" fill={activeMode.color} filter="url(#aylaGlow)" />
 
-            {/* Cyber Cheek Telemetry Circuit Marks */}
-            <path d="M80 115 L88 115 L92 120" stroke={activeMode.color} strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
-            <path d="M160 115 L152 115 L148 120" stroke={activeMode.color} strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+            {/* ----------------- CUTE ANIME FACE & EXPRESSIONS ----------------- */}
+            {/* Soft Feminine Jaw & Face */}
+            <path
+              d="M95 95 C95 138 115 156 140 158 C165 156 185 138 185 95 C185 58 165 52 140 52 C115 52 95 58 95 95 Z"
+              fill="url(#girlSkinGrad)"
+            />
 
-            {/* Anime Eyes with Cursor Tracking and Blinking */}
+            {/* Soft Rosy Kawaii Cheek Blush */}
+            <ellipse cx="108" cy="118" rx="9" ry="5" fill="#FF4D8D" opacity="0.45" filter="url(#aylaGlow)" />
+            <ellipse cx="172" cy="118" rx="9" ry="5" fill="#FF4D8D" opacity="0.45" filter="url(#aylaGlow)" />
+            {/* Cyber Cheek Heart Marks */}
+            <circle cx="104" cy="122" r="2" fill={activeMode.color} opacity="0.8" />
+            <circle cx="176" cy="122" r="2" fill={activeMode.color} opacity="0.8" />
+
+            {/* Expressive Anime Eyes with Gaze Tracking & Blinking */}
             {!isBlinking ? (
               <g>
                 {/* Left Eye Whites */}
-                <ellipse cx="94" cy="94" rx="14" ry="16" fill="#FFFFFF" />
-                {/* Left Iris & Pupil following mouse cursor */}
+                <ellipse cx="114" cy="104" rx="14" ry="16" fill="#FFFFFF" />
+                {/* Left Pupil with dynamic mouse gaze */}
                 <g transform={`translate(${pupilX}, ${pupilY})`}>
-                  <ellipse cx="94" cy="94" rx="9" ry="12" fill="url(#eyeIrisGrad)" filter="url(#girlGlow)" />
-                  <ellipse cx="94" cy="94" rx="4.5" ry="6.5" fill="#02040A" />
-                  {/* Catchlight Highlights */}
-                  <circle cx="91" cy="90" r="3" fill="#FFFFFF" />
-                  <circle cx="96" cy="97" r="1.5" fill="#FFFFFF" />
+                  <ellipse cx="114" cy="104" rx="9.5" ry="12.5" fill="url(#girlEyeGrad)" filter="url(#aylaGlow)" />
+                  <ellipse cx="114" cy="104" rx="4.5" ry="6.5" fill="#02040A" />
+                  {/* Glossy Catchlights */}
+                  <circle cx="111" cy="100" r="3.5" fill="#FFFFFF" />
+                  <circle cx="116" cy="107" r="1.8" fill="#FFFFFF" />
                 </g>
-                {/* Left Eyelashes */}
-                <path d="M78 86 C86 78 102 78 110 86" stroke="#0B132B" strokeWidth="3" strokeLinecap="round" fill="none" />
-                <path d="M78 86 L74 81" stroke="#0B132B" strokeWidth="2" strokeLinecap="round" />
+                {/* Left Eyelashes & Eyeliner */}
+                <path d="M98 96 C106 88 122 88 130 96" stroke="#0B132B" strokeWidth="3.2" strokeLinecap="round" fill="none" />
+                <path d="M98 96 L94 91" stroke="#0B132B" strokeWidth="2.2" strokeLinecap="round" />
 
                 {/* Right Eye Whites */}
-                <ellipse cx="146" cy="94" rx="14" ry="16" fill="#FFFFFF" />
-                {/* Right Iris & Pupil following mouse cursor */}
+                <ellipse cx="166" cy="104" rx="14" ry="16" fill="#FFFFFF" />
+                {/* Right Pupil with dynamic mouse gaze */}
                 <g transform={`translate(${pupilX}, ${pupilY})`}>
-                  <ellipse cx="146" cy="94" rx="9" ry="12" fill="url(#eyeIrisGrad)" filter="url(#girlGlow)" />
-                  <ellipse cx="146" cy="94" rx="4.5" ry="6.5" fill="#02040A" />
-                  {/* Catchlight Highlights */}
-                  <circle cx="143" cy="90" r="3" fill="#FFFFFF" />
-                  <circle cx="148" cy="97" r="1.5" fill="#FFFFFF" />
+                  <ellipse cx="166" cy="104" rx="9.5" ry="12.5" fill="url(#girlEyeGrad)" filter="url(#aylaGlow)" />
+                  <ellipse cx="166" cy="104" rx="4.5" ry="6.5" fill="#02040A" />
+                  {/* Glossy Catchlights */}
+                  <circle cx="163" cy="100" r="3.5" fill="#FFFFFF" />
+                  <circle cx="168" cy="107" r="1.8" fill="#FFFFFF" />
                 </g>
-                {/* Right Eyelashes */}
-                <path d="M130 86 C138 78 154 78 162 86" stroke="#0B132B" strokeWidth="3" strokeLinecap="round" fill="none" />
-                <path d="M162 86 L166 81" stroke="#0B132B" strokeWidth="2" strokeLinecap="round" />
+                {/* Right Eyelashes & Eyeliner */}
+                <path d="M150 96 C158 88 174 88 182 96" stroke="#0B132B" strokeWidth="3.2" strokeLinecap="round" fill="none" />
+                <path d="M182 96 L186 91" stroke="#0B132B" strokeWidth="2.2" strokeLinecap="round" />
               </g>
             ) : (
               /* Closed Blinking Eyes */
               <g>
-                <path d="M80 94 Q94 102 108 94" stroke="#0B132B" strokeWidth="3.5" strokeLinecap="round" fill="none" />
-                <path d="M132 94 Q146 102 160 94" stroke="#0B132B" strokeWidth="3.5" strokeLinecap="round" fill="none" />
+                <path d="M100 104 Q114 112 128 104" stroke="#0B132B" strokeWidth="3.5" strokeLinecap="round" fill="none" />
+                <path d="M152 104 Q166 112 180 104" stroke="#0B132B" strokeWidth="3.5" strokeLinecap="round" fill="none" />
               </g>
             )}
 
-            {/* Cute Anime Nose */}
-            <circle cx="120" cy="112" r="1.5" fill="#E59877" />
+            {/* Delicate Anime Nose */}
+            <circle cx="140" cy="120" r="1.6" fill="#E59877" />
 
-            {/* Animated Lip-Sync Mouth */}
+            {/* Dynamic Lip-Sync Mouth with Soft Pink Lips */}
             {mouthShape === 0 ? (
-              /* Soft Friendly Smile */
-              <path d="M112 128 Q120 134 128 128" stroke="#D15672" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+              /* Sweet Gentle Smile */
+              <path d="M132 136 Q140 142 148 136" stroke="#FF4D8D" strokeWidth="2.6" strokeLinecap="round" fill="none" />
             ) : mouthShape === 1 ? (
-              /* Small Open (Talking) */
-              <ellipse cx="120" cy="130" rx="6" ry="4" fill="#D15672" />
+              /* Small Open (Speaking sweetly) */
+              <ellipse cx="140" cy="138" rx="6" ry="4" fill="#FF4D8D" />
             ) : (
-              /* Wide Open (Singing / Emphasizing) */
-              <path d="M112 127 Q120 138 128 127 Q120 132 112 127 Z" fill="#D15672" stroke="#FF4D8D" strokeWidth="1" />
+              /* Expressive Open Talking Mouth */
+              <path d="M132 135 Q140 146 148 135 Q140 140 132 135 Z" fill="#D15672" stroke="#FF4D8D" strokeWidth="1" />
             )}
 
-            {/* Front Flowing Cyber Hair Bangs & Twin Tails */}
+            {/* ----------------- FRONT ANIME HAIR BANGS & CYBER HEADSET ----------------- */}
+            {/* Front Bangs (Side parting with glossy cyber styling) */}
             <path
-              d="M70 65 C85 45 155 45 170 65 C160 85 150 95 142 98 C140 85 130 82 120 85 C110 82 100 85 98 98 C90 95 80 85 70 65 Z"
-              fill="url(#cyberHairGrad)"
-            />
-            {/* Left Side Hair Strand */}
-            <path
-              d="M74 72 C68 100 70 130 82 145 C78 125 76 95 82 75 Z"
-              fill="url(#cyberHairGrad)"
-            />
-            {/* Right Side Hair Strand */}
-            <path
-              d="M166 72 C172 100 170 130 158 145 C162 125 164 95 158 75 Z"
-              fill="url(#cyberHairGrad)"
-            />
-            {/* Shiny Hair Highlights */}
-            <path
-              d="M85 58 C98 52 142 52 155 58"
-              stroke="#FFFFFF"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              opacity="0.65"
+              d="M96 68 C115 50 165 50 184 68 C185 85 180 105 178 115 C170 95 160 85 150 82 C145 95 135 110 130 115 C125 100 118 85 105 85 C100 95 98 108 96 115 Z"
+              fill="url(#girlHairGrad)"
             />
 
-            {/* Cybernetic Audio Headset with Glowing Equalizer */}
-            {/* Headset Arc Band */}
+            {/* Headset Headband */}
             <path
-              d="M62 82 C62 40 178 40 178 82"
-              stroke="#0B132B"
-              strokeWidth="6"
-              strokeLinecap="round"
+              d="M80 82 C90 40 190 40 200 82"
+              stroke="#0E1624"
+              strokeWidth="5"
               fill="none"
+              strokeLinecap="round"
             />
             <path
-              d="M66 82 C66 45 174 45 174 82"
+              d="M80 82 C90 40 190 40 200 82"
               stroke={activeMode.color}
               strokeWidth="2"
               fill="none"
-              filter="url(#girlGlow)"
+              strokeLinecap="round"
+              filter="url(#aylaGlow)"
             />
 
-            {/* Left Headset Earpiece */}
-            <ellipse cx="64" cy="94" rx="10" ry="16" fill="#04060A" stroke={activeMode.color} strokeWidth="2.5" />
-            {/* Headset Visualizer Bars (Bouncing to voice!) */}
-            <g transform="translate(58, 88)">
-              {audioBars.slice(0, 3).map((bar, idx) => (
-                <rect
-                  key={idx}
-                  x={idx * 4}
-                  y={12 - bar * 0.4}
-                  width="2.5"
-                  height={bar * 0.4}
-                  rx="1"
-                  fill={activeMode.color}
-                />
-              ))}
+            {/* Left Headset Cat-Ear Audio Node with Equalizer Bars */}
+            <ellipse cx="78" cy="85" rx="10" ry="16" fill="#04060A" stroke={activeMode.color} strokeWidth="2.5" />
+            <g transform="translate(73, 76)">
+              <rect x="0" y="4" width="2" height="10" rx="1" fill={activeMode.color} />
+              <rect x="3" y="1" width="2" height="14" rx="1" fill={activeMode.color} />
+              <rect x="6" y="3" width="2" height="11" rx="1" fill={activeMode.color} />
             </g>
 
-            {/* Right Headset Earpiece & Antenna Mic */}
-            <ellipse cx="176" cy="94" rx="10" ry="16" fill="#04060A" stroke={activeMode.color} strokeWidth="2.5" />
-            {/* Antenna Boom Mic extending toward mouth */}
+            {/* Right Headset Cat-Ear Audio Node & Antenna Boom Mic */}
+            <ellipse cx="202" cy="85" rx="10" ry="16" fill="#04060A" stroke={activeMode.color} strokeWidth="2.5" />
+            {/* Boom Mic curving toward sweet lips */}
             <path
-              d="M176 102 C170 120 150 132 134 130"
+              d="M202 92 C196 115 175 135 156 138"
               stroke={activeMode.color}
               strokeWidth="2.5"
               strokeLinecap="round"
               fill="none"
             />
-            <circle cx="132" cy="130" r="3.5" fill={activeMode.color} filter="url(#girlGlow)">
-              <animate attributeName="r" values="3;4.5;3" dur="1.1s" repeatCount="indefinite" />
+            <circle cx="154" cy="138" r="3.5" fill={activeMode.color} filter="url(#aylaGlow)">
+              <animate attributeName="r" values="3;4.8;3" dur="1.1s" repeatCount="indefinite" />
             </circle>
+
+            {/* Floating Sparkles around Dress */}
+            <polygon points="65,290 68,298 76,301 68,304 65,312 62,304 54,301 62,298" fill={activeMode.color} opacity="0.8" filter="url(#aylaGlow)" />
+            <polygon points="215,280 218,286 224,289 218,292 215,298 212,292 206,289 212,286" fill={activeMode.dressAccent} opacity="0.8" filter="url(#aylaGlow)" />
           </svg>
 
-          {/* Dynamic Softening Contact Shadow */}
+          {/* Dynamic Grounding Contact Shadow */}
           <div
-            className="w-56 h-7 rounded-full pointer-events-none mt-2"
+            className="w-56 h-6 rounded-full pointer-events-none mt-1"
             style={{
-              background: `radial-gradient(ellipse at center, ${activeMode.color}75 0%, rgba(121, 40, 202, 0.3) 45%, transparent 75%)`,
-              filter: 'blur(10px)',
+              background: `radial-gradient(ellipse at center, ${activeMode.color}80 0%, rgba(121, 40, 202, 0.25) 50%, transparent 75%)`,
+              filter: 'blur(8px)',
               animation: 'shadowPulse 4.5s ease-in-out infinite',
             }}
           />
         </div>
       </div>
 
-      {/* Cyber AI Girl Mode Chips & Urdu Voice Trigger Deck */}
-      <div className="flex flex-col sm:flex-row items-center gap-3 mt-4 z-20">
-        {/* Mode Chips */}
-        <div className="flex items-center space-x-2">
-          {MODES.map((mode) => (
-            <button
-              key={mode.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                switchMode(mode);
-              }}
-              className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center space-x-1.5 ${
-                activeMode.id === mode.id
-                  ? 'bg-space-900 border text-white shadow-lg scale-105'
-                  : 'bg-space-950/80 border border-slate-800 text-slate-400 hover:text-white'
-              }`}
-              style={{
-                borderColor: activeMode.id === mode.id ? mode.color : undefined,
-                boxShadow: activeMode.id === mode.id ? `0 0 15px ${mode.color}40` : undefined,
-              }}
-            >
-              <span
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: mode.color }}
-              />
-              <span>{mode.label}</span>
-            </button>
-          ))}
+      {/* Sleek Floating Action Deck (Modes, Voice Mic & 1-Click Teleportation Chips) */}
+      <div className="flex flex-col items-center gap-3 mt-4 z-20 w-full max-w-xl">
+        {/* Top Controls: Mode Switchers & Urdu Mic Trigger */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {/* Mode Chips */}
+          <div className="flex items-center space-x-1.5 p-1 rounded-xl bg-space-950/80 border border-slate-800">
+            {MODES.map((mode) => (
+              <button
+                key={mode.id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  switchMode(mode);
+                }}
+                className={`px-3 py-1 rounded-lg font-mono text-[11px] font-bold transition-all flex items-center space-x-1 ${
+                  activeMode.id === mode.id
+                    ? 'bg-space-900 border text-white shadow-md scale-105'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                style={{
+                  borderColor: activeMode.id === mode.id ? mode.color : 'transparent',
+                  color: activeMode.id === mode.id ? mode.color : undefined,
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: mode.color }} />
+                <span>{mode.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Main Urdu Voice Mic Button */}
+          <button
+            onClick={startVoiceCommand}
+            className={`flex items-center space-x-2 px-4 py-1.5 rounded-xl font-mono text-xs font-black border transition-all shadow-lg active:scale-95 ${
+              isListening
+                ? 'bg-rose-500 text-white border-rose-400 shadow-[0_0_25px_rgba(244,63,94,0.7)] animate-pulse scale-105'
+                : 'bg-space-900/90 hover:bg-space-850 border-slate-700 text-slate-200 hover:border-energy-teal hover:text-energy-cyan'
+            }`}
+            title="Click to speak (e.g. 'Systems dikhao', 'Code per lekar ja')"
+          >
+            <Mic className={`w-3.5 h-3.5 ${isListening ? 'animate-bounce text-white' : 'text-energy-teal'}`} />
+            <span>{isListening ? '🎙️ SUN RAHI HOON...' : '🎙️ AYLA SE BAAT KAREIN'}</span>
+          </button>
+
+          {/* Audio Dialogue Button */}
+          <button
+            onClick={triggerNextSpeech}
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-mono text-xs font-bold border transition-all active:scale-95 ${
+              isSpeaking
+                ? 'bg-energy-teal text-space-950 border-energy-cyan shadow-[0_0_20px_rgba(0,242,254,0.4)] animate-pulse'
+                : 'bg-space-950/80 border-slate-800 text-slate-400 hover:text-white'
+            }`}
+            title="Click to hear Ayla's sweet greeting"
+          >
+            <Volume2 className="w-3.5 h-3.5" />
+            <span>{isSpeaking ? 'BOL RAHI HOON...' : 'GREETING'}</span>
+          </button>
         </div>
 
-        {/* Live Voice Navigation Trigger Button */}
-        <button
-          onClick={startVoiceCommand}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-mono text-xs font-black border transition-all shadow-lg active:scale-95 ${
-            isListening
-              ? 'bg-rose-500 text-white border-rose-400 shadow-[0_0_25px_rgba(244,63,94,0.6)] animate-pulse scale-105'
-              : 'bg-space-900/90 hover:bg-space-850 border-slate-700 text-slate-200 hover:border-energy-teal hover:text-energy-cyan'
-          }`}
-          title="Click to speak (e.g. 'Projects dikhao', 'API suite per le jao')"
-        >
-          <Mic className={`w-4 h-4 ${isListening ? 'animate-bounce text-white' : 'text-energy-teal'}`} />
-          <span>{isListening ? '🎙️ SUN RAHI HOON (BOLIYE)...' : '🎙️ URDU VOICE COMMAND'}</span>
-        </button>
-
-        {/* Speak Dialogue Button */}
-        <button
-          onClick={triggerNextSpeech}
-          className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl font-mono text-xs font-bold border transition-all shadow-sm active:scale-95 ${
-            isSpeaking
-              ? 'bg-energy-teal text-space-950 border-energy-cyan shadow-[0_0_20px_rgba(0,242,254,0.4)] animate-pulse'
-              : 'bg-space-950/80 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
-          }`}
-          title="Click to hear welcome and tour speech"
-        >
-          <Volume2 className="w-3.5 h-3.5" />
-          <span>{isSpeaking ? 'BOL RAHI HOON...' : 'AYLA SE BAAT KAREIN'}</span>
-        </button>
+        {/* 1-Click Teleportation Horizontal Pills Strip */}
+        <div className="w-full flex items-center justify-center">
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1 px-2 max-w-full">
+            {NAV_TARGETS.map((tgt) => {
+              const Icon = tgt.icon;
+              return (
+                <button
+                  key={tgt.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    teleportTo(tgt.id, tgt.voiceConfirm, tgt.subtitleUrdu);
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-space-950/90 border border-slate-800/80 hover:border-energy-teal font-mono text-[11px] font-semibold text-slate-300 hover:text-white flex items-center space-x-1.5 transition-all whitespace-nowrap active:scale-95 shadow-sm hover:scale-105"
+                  style={{
+                    borderColor: `${tgt.color}35`,
+                  }}
+                  title={`Teleport to ${tgt.label}`}
+                >
+                  <Icon className="w-3 h-3" style={{ color: tgt.color }} />
+                  <span>{tgt.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       <style>{`
@@ -986,11 +1062,11 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         @keyframes shadowPulse {
           0%, 100% {
             transform: scale(1);
-            opacity: 0.65;
+            opacity: 0.75;
           }
           50% {
             transform: scale(0.8);
-            opacity: 0.3;
+            opacity: 0.35;
           }
         }
         @keyframes orbitFloat {
