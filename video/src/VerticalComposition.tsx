@@ -15,7 +15,7 @@ export const VerticalComposition: React.FC = () => {
   });
 
   // Burned-in caption progression
-  let activeCaption = 'Sameer Hussain â€” Full-Stack Developer & Creative Engineer';
+  let activeCaption = 'Sameer Hussain -- Full-Stack Developer & Creative Engineer';
   if (frame > 90 && frame <= 210) {
     activeCaption = 'Enterprise Multi-Campus Systems: 2,341 Active Sessions';
   } else if (frame > 210 && frame <= 330) {

@@ -162,39 +162,48 @@ export const ProductionCodeInspector = () => {
         {/* Tab Switcher & Code Box */}
         <div className="rounded-3xl bg-space-900/90 border border-slate-800 shadow-[0_30px_90px_rgba(0,0,0,0.85)] overflow-hidden backdrop-blur-2xl">
           {/* Top Tabs Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-4 bg-space-850 border-b border-slate-800">
-            {/* Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+          <div className="px-6 py-3.5 bg-space-850 border-b border-slate-800">
+            <div className="flex items-center gap-2.5 overflow-x-auto scrollbar-none py-1">
               {CODE_SNIPPETS.map((snippet) => (
                 <button
                   key={snippet.id}
                   onClick={() => setActiveSnippet(snippet)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-mono text-xs font-semibold transition-all ${
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-mono text-xs font-semibold whitespace-nowrap transition-all ${
                     activeSnippet.id === snippet.id
-                      ? 'bg-energy-teal text-space-950 font-bold shadow-[0_0_15px_rgba(0,242,254,0.3)] scale-105'
-                      : 'bg-space-950 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                      ? 'bg-energy-teal text-space-950 font-bold shadow-[0_0_15px_rgba(0,242,254,0.3)] scale-[1.02]'
+                      : 'bg-space-950/80 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
                   }`}
                 >
-                  <FileCode className="w-3.5 h-3.5" />
+                  <FileCode className="w-3.5 h-3.5 shrink-0" />
                   <span>{snippet.title}</span>
                 </button>
               ))}
             </div>
+          </div>
 
-            {/* Performance Benchmark & Copy Button */}
-            <div className="flex items-center space-x-3 font-mono text-xs">
-              <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20">
-                BENCHMARK: {activeSnippet.benchmark}
+          {/* Description & Utility Header Bar */}
+          <div className="px-6 py-3 bg-space-950/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+            <div className="flex items-center space-x-3 text-slate-400">
+              <span className="text-energy-teal font-semibold px-2 py-0.5 rounded bg-energy-teal/10 border border-energy-teal/20">
+                {activeSnippet.category}
+              </span>
+              <span className="hidden sm:inline text-slate-600">|</span>
+              <span className="hidden sm:inline text-slate-300">// {activeSnippet.desc}</span>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20 text-[11px]">
+                ⚡ BENCHMARK: {activeSnippet.benchmark}
               </span>
 
               <button
                 onClick={handleCopy}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-space-950 hover:bg-space-800 border border-slate-800 hover:border-energy-teal/50 text-slate-200 transition-all"
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-space-900 hover:bg-space-850 border border-slate-700 hover:border-energy-teal/50 text-slate-200 text-[11px] font-bold transition-all shadow-sm active:scale-95"
               >
                 {copied ? (
                   <>
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400 font-bold">Copied!</span>
+                    <span className="text-emerald-400">Copied!</span>
                   </>
                 ) : (
                   <>
@@ -204,12 +213,6 @@ export const ProductionCodeInspector = () => {
                 )}
               </button>
             </div>
-          </div>
-
-          {/* Description & Metadata Header */}
-          <div className="px-6 py-3 bg-space-950/70 border-b border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono text-slate-400">
-            <span>// {activeSnippet.desc}</span>
-            <span className="text-energy-teal font-semibold mt-1 sm:mt-0">{activeSnippet.category}</span>
           </div>
 
           {/* Code Viewer Container */}

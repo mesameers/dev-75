@@ -58,12 +58,12 @@ export const FinaleScene: React.FC<SceneProps> = ({ durationFrames }) => {
           {/* Contact & GitHub Coordinates Card */}
           <div className="flex items-center gap-6 font-mono text-lg text-slate-300 bg-space-900/90 border border-slate-700/80 px-8 py-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl">
             <div className="flex items-center space-x-2.5">
-              <span className="text-energy-teal">âœ‰</span>
+              <span className="text-energy-teal">✉</span>
               <span className="text-white font-semibold">mesameer762@gmail.com</span>
             </div>
             <span className="text-slate-600">|</span>
             <div className="flex items-center space-x-2.5">
-              <span className="text-secondary-violet">âŒƒ</span>
+              <span className="text-secondary-violet">⌘</span>
               <span className="text-white font-semibold">github.com/mesameers</span>
             </div>
           </div>

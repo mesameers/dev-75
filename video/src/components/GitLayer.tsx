@@ -107,7 +107,7 @@ export const GitLayer: React.FC<GitLayerProps> = ({ mode = 'ambient' }) => {
 
       {/* Top Right Coordinate HUD */}
       <div className="absolute top-10 right-12 font-mono text-[12px] tracking-widest text-slate-500/80">
-        [SYS_LAT: 33.7294Â° N // LON: 73.0931Â° E]
+        [SYS_LAT: 33.7294° N // LON: 73.0931° E]
       </div>
     </div>
   );

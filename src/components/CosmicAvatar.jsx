@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { Volume2, VolumeX, MessageSquare, Sparkles, Mic, Radio, Shield, Zap } from 'lucide-react';
 
 const ORBITING_TECH = [
   { label: 'React 18', angle: 0, radius: 200, tilt: 65, color: '#00F2FE' },
@@ -10,9 +11,37 @@ const ORBITING_TECH = [
 ];
 
 const MODES = [
-  { id: 'defense', label: 'SHIELD', color: '#00F2FE', visor: 'url(#visorNormal)', tag: 'TACTICAL' },
-  { id: 'overdrive', label: 'OVERDRIVE', color: '#FF007A', visor: 'url(#visorOverdrive)', tag: 'HYPERDRIVE' },
-  { id: 'quantum', label: 'QUANTUM', color: '#8B5CF6', visor: 'url(#visorQuantum)', tag: 'STEALTH' },
+  {
+    id: 'defense',
+    label: 'SHIELD',
+    color: '#00F2FE',
+    visor: 'url(#visorNormal)',
+    tag: 'TACTICAL',
+    voiceLine: 'Tactical Shield engaged. All systems verified with zero-trust RBAC and multi-tenant isolation.',
+  },
+  {
+    id: 'overdrive',
+    label: 'OVERDRIVE',
+    color: '#FF007A',
+    visor: 'url(#visorOverdrive)',
+    tag: 'HYPERDRIVE',
+    voiceLine: 'Hyperdrive Overdrive online! Scaling distributed cluster to 50,000 requests per second.',
+  },
+  {
+    id: 'quantum',
+    label: 'QUANTUM',
+    color: '#8B5CF6',
+    visor: 'url(#visorQuantum)',
+    tag: 'STEALTH',
+    voiceLine: 'Quantum mode active. Sub-15 millisecond latency across global edge cache.',
+  },
+];
+
+const EXTRA_SPEECHES = [
+  "Greetings! I am DEV-75, Sameer Hussain's autonomous companion. Welcome to his engineering portfolio.",
+  "Sameer specializes in hardened cloud architectures, high-performance APIs, and deterministic 3D motion.",
+  "Every system here is engineered for zero-trust security, sub-15 millisecond p99 latency, and 99.99 percent cloud uptime.",
+  "Explore the live API playground below to test production auth and sliding-window rate limiter algorithms.",
 ];
 
 export const CosmicAvatar = ({ size = 420, className = "" }) => {
@@ -23,6 +52,19 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
   const [pulseRing, setPulseRing] = useState(false);
   const [audioBars, setAudioBars] = useState([8, 14, 22, 16, 9]);
 
+  // Speech State
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [speechText, setSpeechText] = useState("Greetings! Click me or tap 'Hear DEV-75 Speak' to activate voice transmission.");
+  const [speechIndex, setSpeechIndex] = useState(0);
+  const [speechSupported, setSpeechSupported] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      setSpeechSupported(true);
+    }
+  }, []);
+
+  // Mouse tracking for 3D gyro tilt
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!containerRef.current) return;
@@ -38,48 +80,137 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Equalizer visualizer rhythm
+  // Equalizer visualizer rhythm: bounce more intensely when speaking
   useEffect(() => {
     const eqInterval = setInterval(() => {
+      const multiplier = isSpeaking ? 1.6 : 1.0;
       setAudioBars([
-        Math.floor(6 + Math.random() * 18),
-        Math.floor(10 + Math.random() * 20),
-        Math.floor(14 + Math.random() * 22),
-        Math.floor(8 + Math.random() * 19),
-        Math.floor(5 + Math.random() * 16),
+        Math.floor((6 + Math.random() * 18) * multiplier),
+        Math.floor((10 + Math.random() * 20) * multiplier),
+        Math.floor((14 + Math.random() * 22) * multiplier),
+        Math.floor((8 + Math.random() * 19) * multiplier),
+        Math.floor((5 + Math.random() * 16) * multiplier),
       ]);
-    }, 180);
+    }, isSpeaking ? 90 : 180);
     return () => clearInterval(eqInterval);
+  }, [isSpeaking]);
+
+  // Speech Synthesis Core Function
+  const speak = useCallback((text) => {
+    setSpeechText(text);
+
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      // Visual speech fallback
+      setIsSpeaking(true);
+      setTimeout(() => setIsSpeaking(false), 3800);
+      return;
+    }
+
+    try {
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voices = window.speechSynthesis.getVoices();
+
+      // Find high quality English voice
+      const preferred =
+        voices.find((v) => v.lang.includes('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Zira'))) ||
+        voices.find((v) => v.lang.startsWith('en'));
+
+      if (preferred) utterance.voice = preferred;
+      utterance.pitch = 1.06;
+      utterance.rate = 1.02;
+
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
+
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      setIsSpeaking(true);
+      setTimeout(() => setIsSpeaking(false), 3000);
+    }
   }, []);
+
+  const triggerNextSpeech = (e) => {
+    if (e) e.stopPropagation();
+    const nextIndex = (speechIndex + 1) % EXTRA_SPEECHES.length;
+    setSpeechIndex(nextIndex);
+    speak(EXTRA_SPEECHES[nextIndex]);
+  };
 
   const switchMode = (mode) => {
     setActiveMode(mode);
     setPulseRing(true);
     setTimeout(() => setPulseRing(false), 1200);
+    speak(mode.voiceLine);
+  };
+
+  const handleAvatarClick = () => {
+    triggerNextSpeech();
   };
 
   const tiltX = mousePos.y * -16;
   const tiltY = mousePos.x * 20;
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center relative">
+      {/* 0. Holographic Speech Subtitle Bubble (Renders above Avatar) */}
+      <div
+        className={`mb-4 max-w-sm sm:max-w-md px-4 py-2.5 rounded-2xl bg-space-900/95 border backdrop-blur-xl shadow-2xl transition-all duration-300 z-30 flex items-start space-x-3 text-left ${
+          isSpeaking
+            ? 'scale-105 border-energy-teal shadow-[0_0_30px_rgba(0,242,254,0.35)]'
+            : 'border-slate-800/90 opacity-90 hover:opacity-100'
+        }`}
+        style={{
+          borderColor: isSpeaking ? activeMode.color : undefined,
+        }}
+      >
+        <div className="relative flex h-3 w-3 shrink-0 mt-1">
+          {isSpeaking && (
+            <span
+              className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+              style={{ backgroundColor: activeMode.color }}
+            />
+          )}
+          <span
+            className="relative inline-flex rounded-full h-3 w-3"
+            style={{ backgroundColor: isSpeaking ? activeMode.color : '#64748B' }}
+          />
+        </div>
+
+        <div className="flex-1">
+          <div className="flex items-center justify-between font-mono text-[10px] text-slate-400 mb-1">
+            <span className="font-bold flex items-center space-x-1" style={{ color: activeMode.color }}>
+              <Volume2 className="w-3 h-3 animate-pulse" />
+              <span>DEV-75 // SYNTHESIZER</span>
+            </span>
+            <span className="text-slate-500 font-semibold">{isSpeaking ? 'TRANSMITTING' : 'LISTENING'}</span>
+          </div>
+          <p className="font-mono text-xs text-slate-200 leading-snug line-clamp-3">
+            "{speechText}"
+          </p>
+        </div>
+      </div>
+
+      {/* Main Avatar Canvas Area */}
       <div
         ref={containerRef}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={() => switchMode(activeMode.id === 'defense' ? MODES[1] : activeMode.id === 'overdrive' ? MODES[2] : MODES[0])}
+        onClick={handleAvatarClick}
         className={`relative flex items-center justify-center select-none cursor-pointer group ${className}`}
         style={{
           width: size,
           height: size,
           perspective: '1200px',
         }}
-        title="Click to cycle Cybernetic Combat Modes!"
+        title="Click to speak with DEV-75!"
       >
         {/* 1. Deep Core Gravitational Quantum Nebula */}
         <div
           className={`absolute rounded-full blur-[80px] pointer-events-none transition-all duration-700 ${
-            pulseRing
+            pulseRing || isSpeaking
               ? 'scale-140 opacity-95'
               : isHovered
               ? 'scale-120 opacity-85'
@@ -98,16 +229,26 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
           }}
         />
 
-        {/* 2. Interactive Shockwave Ring on Click */}
-        {pulseRing && (
-          <div
-            className="absolute rounded-full border-2 pointer-events-none animate-shockwave"
-            style={{
-              width: size * 0.7,
-              height: size * 0.7,
-              borderColor: activeMode.color,
-            }}
-          />
+        {/* 2. Interactive Soundwave Ripple Rings When Speaking */}
+        {isSpeaking && (
+          <>
+            <div
+              className="absolute rounded-full border-2 pointer-events-none animate-soundwave"
+              style={{
+                width: size * 0.6,
+                height: size * 0.6,
+                borderColor: `${activeMode.color}80`,
+              }}
+            />
+            <div
+              className="absolute rounded-full border pointer-events-none animate-soundwave-delayed"
+              style={{
+                width: size * 0.75,
+                height: size * 0.75,
+                borderColor: `${activeMode.color}40`,
+              }}
+            />
+          </>
         )}
 
         {/* 3. Outer 3D Gyroscopic Gimbal Rings with Satellites */}
@@ -248,135 +389,149 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
               </pattern>
 
               <filter id="hyperGlow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4" result="glow" />
-                <feMerge>
-                  <feMergeNode in="glow" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
             </defs>
 
-            {/* Rotating Gear Teeth Behind Helmet */}
-            <g className="animate-spin-slow" style={{ transformOrigin: '110px 100px' }}>
-              <circle cx="110" cy="100" r="74" stroke={activeMode.color} strokeWidth="1.5" strokeDasharray="6 8" opacity="0.6" />
-              {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, dIdx) => (
+            {/* Rotating Cyber Halo Gear Teeth */}
+            <g
+              transform="translate(110, 85)"
+              style={{
+                animation: 'gearRotate 24s linear infinite',
+                transformOrigin: '0px 0px',
+              }}
+            >
+              {[...Array(12)].map((_, idx) => {
+                const rot = idx * 30;
+                return (
+                  <rect
+                    key={idx}
+                    x="-3"
+                    y="-64"
+                    width="6"
+                    height="8"
+                    rx="1.5"
+                    fill={activeMode.color}
+                    opacity="0.75"
+                    transform={`rotate(${rot})`}
+                  />
+                );
+              })}
+              <circle cx="0" cy="0" r="60" stroke={activeMode.color} strokeWidth="1" strokeDasharray="4 6" fill="none" opacity="0.4" />
+            </g>
+
+            {/* Thruster Plumes on Shoulders */}
+            <g opacity="0.85">
+              <ellipse cx="60" cy="188" rx="8" ry="16" fill={activeMode.color} filter="url(#hyperGlow)">
+                <animate attributeName="ry" values="12;18;12" dur="0.8s" repeatCount="indefinite" />
+              </ellipse>
+              <ellipse cx="160" cy="188" rx="8" ry="16" fill={activeMode.color} filter="url(#hyperGlow)">
+                <animate attributeName="ry" values="12;18;12" dur="0.8s" repeatCount="indefinite" />
+              </ellipse>
+            </g>
+
+            {/* Torso Suit Armor Plates */}
+            <path
+              d="M48 195 C48 162, 68 152, 110 152 C152 152, 172 162, 172 195 L180 215 C180 220, 40 220, 40 215 Z"
+              fill="url(#armorPlates)"
+              stroke={activeMode.color}
+              strokeWidth="2.5"
+            />
+
+            {/* Chest Singularity Arc Reactor Core */}
+            <circle cx="110" cy="185" r="16" fill="#04060A" stroke={activeMode.color} strokeWidth="3" filter="url(#hyperGlow)" />
+            <circle cx="110" cy="185" r="11" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="3 3" />
+            <circle cx="110" cy="185" r="6" fill={activeMode.color}>
+              <animate attributeName="r" values="5;7.5;5" dur="1.4s" repeatCount="indefinite" />
+            </circle>
+
+            {/* Suit Cyber Harness Neon Straps */}
+            <line x1="72" y1="162" x2="96" y2="185" stroke={activeMode.color} strokeWidth="2.5" opacity="0.8" />
+            <line x1="148" y1="162" x2="124" y2="185" stroke={activeMode.color} strokeWidth="2.5" opacity="0.8" />
+
+            {/* Helmet Exterior Outer Armor Ring */}
+            <circle
+              cx="110"
+              cy="85"
+              r="58"
+              fill="url(#helmetGrad2)"
+              stroke={activeMode.color}
+              strokeWidth="3.5"
+              filter="url(#hyperGlow)"
+            />
+
+            {/* Outer Helmet Decorative Circuit Trim */}
+            <circle cx="110" cy="85" r="54" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="5 5" fill="none" />
+
+            {/* Helmet Visor Shroud Inner Cut */}
+            <ellipse cx="110" cy="86" rx="43" ry="33" fill="#020408" />
+
+            {/* High-Tech Glowing Cybernetic Visor Screen */}
+            <ellipse
+              cx="110"
+              cy="86"
+              rx="40"
+              ry="30"
+              fill={activeMode.visor}
+              className="transition-all duration-700"
+              filter="url(#hyperGlow)"
+            />
+
+            {/* Visor Hexagonal Cyber Mesh Overlay */}
+            <ellipse cx="110" cy="86" rx="40" ry="30" fill="url(#hexPattern)" opacity="0.45" />
+
+            {/* Audio Equalizer Frequency Bars on Visor (Bouncing to voice rhythm!) */}
+            <g transform="translate(94, 94)">
+              {audioBars.map((barHeight, idx) => (
                 <rect
-                  key={dIdx}
-                  x="108"
-                  y="23"
+                  key={idx}
+                  x={idx * 7}
+                  y={12 - barHeight * 0.5}
                   width="4"
-                  height="7"
-                  fill={activeMode.color}
-                  transform={`rotate(${deg} 110 100)`}
-                  opacity="0.75"
+                  height={barHeight * 0.5}
+                  rx="2"
+                  fill="#FFFFFF"
+                  opacity={isSpeaking ? 0.95 : 0.65}
                 />
               ))}
             </g>
 
-            {/* Shoulder Armor Plates */}
-            <path
-              d="M50 162 C50 138 80 132 110 132 C140 132 170 138 170 162 L180 196 C180 205 160 212 110 212 C60 212 40 205 40 196 Z"
-              fill="url(#armorPlates)"
-              stroke="#334155"
-              strokeWidth="2.5"
-            />
-
-            {/* Dual Hologram Shoulder Thrusters with Plasma Plumes */}
-            <g>
-              <rect x="22" y="172" width="16" height="12" rx="3" fill="#0A0F1D" stroke={activeMode.color} strokeWidth="1.5" />
-              <polygon points="24,184 30,206 36,184" fill={activeMode.color} opacity="0.85" filter="url(#hyperGlow)">
-                <animate attributeName="points" values="24,184 30,206 36,184; 24,184 30,214 36,184; 24,184 30,206 36,184" dur="0.8s" repeatCount="indefinite" />
-              </polygon>
-            </g>
-            <g>
-              <rect x="182" y="172" width="16" height="12" rx="3" fill="#0A0F1D" stroke={activeMode.color} strokeWidth="1.5" />
-              <polygon points="184,184 190,206 196,184" fill={activeMode.color} opacity="0.85" filter="url(#hyperGlow)">
-                <animate attributeName="points" values="184,184 190,206 196,184; 184,184 190,214 196,184; 184,184 190,206 196,184" dur="0.8s" repeatCount="indefinite" />
-              </polygon>
-            </g>
-
-            {/* Cyber Neck Ring */}
-            <ellipse cx="110" cy="138" rx="40" ry="12" fill="#060911" stroke={activeMode.color} strokeWidth="2" />
-
-            {/* Chest Arc Reactor Core */}
-            <circle cx="110" cy="172" r="15" fill="#04060A" stroke={activeMode.color} strokeWidth="2" />
-            <circle
-              cx="110"
-              cy="172"
-              r="8"
-              fill={activeMode.color}
-              filter="url(#hyperGlow)"
-            >
-              <animate attributeName="opacity" values="0.6;1;0.6" dur="1.4s" repeatCount="indefinite" />
-            </circle>
-
-            {/* Chest Energy Discharge Lines */}
-            <line x1="84" y1="162" x2="72" y2="188" stroke="#8B5CF6" strokeWidth="2.5" strokeLinecap="round" />
-            <line x1="136" y1="162" x2="148" y2="188" stroke={activeMode.color} strokeWidth="2.5" strokeLinecap="round" />
-
-            {/* Main Helmet Dome Shell */}
-            <ellipse cx="110" cy="94" rx="52" ry="56" fill="url(#helmetGrad2)" stroke="#475569" strokeWidth="3" />
-
-            {/* Cyber Ear Cups / Audio Equalizer Stations */}
-            <rect x="52" y="78" width="10" height="34" rx="4" fill="#090E17" stroke="#00F2FE" strokeWidth="1.5" />
-            <rect x="158" y="78" width="10" height="34" rx="4" fill="#090E17" stroke="#8B5CF6" strokeWidth="1.5" />
-
-            {/* Audio Equalizer Mini-Bars */}
-            {audioBars.map((h, idx) => (
-              <rect
-                key={`left-eq-${idx}`}
-                x={55}
-                y={95 - h / 2}
-                width="4"
-                height={h * 0.7}
-                rx="1"
-                fill={activeMode.color}
-              />
-            ))}
-
-            {/* Cyber Visor Shield with Metallic Curve */}
-            <path
-              d="M68 80 C68 68 86 58 110 58 C134 58 152 68 152 80 C152 108 140 124 110 124 C80 124 68 108 68 80 Z"
-              fill={activeMode.visor}
-              filter="url(#hyperGlow)"
-              opacity="0.96"
-            />
-
-            {/* Hexagonal HUD Texture Overlay on Visor */}
-            <path
-              d="M68 80 C68 68 86 58 110 58 C134 58 152 68 152 80 C152 108 140 124 110 124 C80 124 68 108 68 80 Z"
-              fill="url(#hexPattern)"
-              opacity="0.8"
-            />
-
-            {/* Animated Scanning Laser Sweep Line */}
+            {/* Animated Scanning Laser Sweep Line across Visor */}
             <line
               x1="74"
               y1="82"
               x2="146"
               y2="82"
               stroke="#FFFFFF"
-              strokeWidth="2"
-              opacity="0.95"
+              strokeWidth="1.8"
+              opacity="0.9"
               filter="url(#hyperGlow)"
             >
-              <animate attributeName="y1" values="68;118;68" dur="2.4s" repeatCount="indefinite" />
-              <animate attributeName="y2" values="68;118;68" dur="2.4s" repeatCount="indefinite" />
+              <animate attributeName="y1" values="68;104;68" dur={isSpeaking ? "1.2s" : "2.6s"} repeatCount="indefinite" />
+              <animate attributeName="y2" values="68;104;68" dur={isSpeaking ? "1.2s" : "2.6s"} repeatCount="indefinite" />
             </line>
 
+            {/* Visor Realistic Specular Glint Reflection */}
+            <path
+              d="M78 72 C88 65 106 62 118 62 C108 76 96 98 88 112 C82 108 78 98 78 72 Z"
+              fill="white"
+              opacity="0.32"
+            />
+
             {/* Targeting Crosshair on Visor */}
-            <circle cx={110 + mousePos.x * 14} cy={88 + mousePos.y * 12} r="10" stroke="rgba(255,255,255,0.75)" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-            <circle cx={110 + mousePos.x * 14} cy={88 + mousePos.y * 12} r="2.5" fill="#FFFFFF" />
+            <circle cx={110 + mousePos.x * 12} cy={82 + mousePos.y * 8} r="9" stroke="rgba(255,255,255,0.7)" strokeWidth="1" strokeDasharray="3 3" fill="none" />
+            <circle cx={110 + mousePos.x * 12} cy={82 + mousePos.y * 8} r="2" fill="#FFFFFF" />
 
             {/* Holographic Visor Monospace Code Text */}
-            <text x="94" y="90" fill="#04060A" fontSize="7.5" fontFamily="monospace" fontWeight="900" letterSpacing="0.9">
-              {activeMode.id === 'overdrive' ? "OVERDRIVE" : activeMode.id === 'quantum' ? "QUANTUM" : "<DEV-75/>"}
+            <text x="88" y="78" fill="#04060A" fontSize="7" fontFamily="monospace" fontWeight="900" letterSpacing="0.9">
+              {isSpeaking ? "SPEAKING..." : activeMode.id === 'overdrive' ? "OVERDRIVE" : "<DEV-75/>"}
             </text>
-            <text x="90" y="102" fill="#04060A" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.6">
-              {activeMode.id === 'overdrive' ? "100% ONLINE" : activeMode.id === 'quantum' ? "PHASE:ACTIVE" : "ORBIT:LIVE"}
+            <text x="88" y="88" fill="#04060A" fontSize="6" fontFamily="monospace" fontWeight="800" letterSpacing="0.6">
+              {isSpeaking ? "VOICE:ACTIVE" : "ORBIT:LIVE"}
             </text>
 
-            {/* Dual Communication Antenna Beacons with Signal Rings */}
+            {/* Dual Communication Antenna Beacons */}
             <line x1="94" y1="46" x2="84" y2="28" stroke="#00F2FE" strokeWidth="2.5" strokeLinecap="round" />
             <circle cx="83" cy="26" r="4" fill="#00FFE0" filter="url(#hyperGlow)">
               <animate attributeName="r" values="3.5;5.5;3.5" dur="1.1s" repeatCount="indefinite" />
@@ -400,32 +555,48 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
         </div>
       </div>
 
-      {/* Cybernetic Mode Selector Chips (Directly under Avatar) */}
-      <div className="flex items-center space-x-2 mt-4 z-20">
-        {MODES.map((mode) => (
-          <button
-            key={mode.id}
-            onClick={(e) => {
-              e.stopPropagation();
-              switchMode(mode);
-            }}
-            className={`px-3 py-1 rounded-xl font-mono text-[11px] font-bold transition-all flex items-center space-x-1.5 ${
-              activeMode.id === mode.id
-                ? 'bg-space-900 border text-white shadow-lg scale-105'
-                : 'bg-space-950/80 border border-slate-800 text-slate-400 hover:text-white'
-            }`}
-            style={{
-              borderColor: activeMode.id === mode.id ? mode.color : undefined,
-              boxShadow: activeMode.id === mode.id ? `0 0 15px ${mode.color}40` : undefined,
-            }}
-          >
-            <span
-              className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: mode.color }}
-            />
-            <span>{mode.label}</span>
-          </button>
-        ))}
+      {/* Cybernetic Mode Selector Chips & Voice Trigger Deck */}
+      <div className="flex flex-col sm:flex-row items-center gap-3 mt-4 z-20">
+        {/* Mode Chips */}
+        <div className="flex items-center space-x-2">
+          {MODES.map((mode) => (
+            <button
+              key={mode.id}
+              onClick={(e) => {
+                e.stopPropagation();
+                switchMode(mode);
+              }}
+              className={`px-3 py-1.5 rounded-xl font-mono text-[11px] font-bold transition-all flex items-center space-x-1.5 ${
+                activeMode.id === mode.id
+                  ? 'bg-space-900 border text-white shadow-lg scale-105'
+                  : 'bg-space-950/80 border border-slate-800 text-slate-400 hover:text-white'
+              }`}
+              style={{
+                borderColor: activeMode.id === mode.id ? mode.color : undefined,
+                boxShadow: activeMode.id === mode.id ? `0 0 15px ${mode.color}40` : undefined,
+              }}
+            >
+              <span
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: mode.color }}
+              />
+              <span>{mode.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Speak / Voice Assistant Action Button */}
+        <button
+          onClick={triggerNextSpeech}
+          className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-xl font-mono text-[11px] font-black border transition-all shadow-md active:scale-95 ${
+            isSpeaking
+              ? 'bg-energy-teal text-space-950 border-energy-cyan shadow-[0_0_20px_rgba(0,242,254,0.4)] animate-pulse'
+              : 'bg-space-900/90 hover:bg-space-850 border-slate-700 text-slate-200 hover:border-energy-teal hover:text-energy-cyan'
+          }`}
+        >
+          <Mic className={`w-3.5 h-3.5 ${isSpeaking ? 'text-space-950 fill-current' : 'text-energy-teal'}`} />
+          <span>{isSpeaking ? 'SPEAKING...' : 'HEAR DEV-75 SPEAK'}</span>
+        </button>
       </div>
 
       <style>{`
@@ -434,7 +605,7 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
             transform: translateY(0px) rotate(0deg);
           }
           50% {
-            transform: translateY(-18px) rotate(-1.5deg);
+            transform: translateY(-16px) rotate(-1.5deg);
           }
         }
         @keyframes shadowPulse {
@@ -446,6 +617,10 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
             transform: scale(0.8);
             opacity: 0.3;
           }
+        }
+        @keyframes gearRotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
         @keyframes orbitFloat {
           0%, 100% {
@@ -463,18 +638,21 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
           from { transform: rotateX(-52deg) rotateY(38deg) rotateZ(360deg); }
           to { transform: rotateX(-52deg) rotateY(38deg) rotateZ(0deg); }
         }
-        @keyframes shockwaveExpand {
+        @keyframes soundwaveExpand {
           0% {
-            transform: scale(0.5);
-            opacity: 1;
+            transform: scale(0.4);
+            opacity: 0.9;
           }
           100% {
-            transform: scale(2.2);
+            transform: scale(1.9);
             opacity: 0;
           }
         }
-        .animate-shockwave {
-          animation: shockwaveExpand 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        .animate-soundwave {
+          animation: soundwaveExpand 1.6s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+        }
+        .animate-soundwave-delayed {
+          animation: soundwaveExpand 1.6s cubic-bezier(0.1, 0.8, 0.3, 1) infinite 0.7s;
         }
       `}</style>
     </div>

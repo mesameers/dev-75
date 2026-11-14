@@ -156,35 +156,38 @@ export const Interactive3DTechSphere = () => {
         ctx.lineWidth = isSelected ? 3 : Math.max(1, 2 * node.scale);
         ctx.stroke();
 
-        // Tech Label
-        const fontSize = Math.max(10, Math.floor(13 * node.scale * (isSelected ? 1.2 : 1)));
-        ctx.font = `bold ${fontSize}px "JetBrains Mono", monospace`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
+        // Tech Label (Cull back-facing labels to prevent 3D collisions and visual overlap)
+        if (node.z >= -25) {
+          const fontSize = Math.max(10, Math.floor(13 * node.scale * (isSelected ? 1.2 : 1)));
+          ctx.font = `bold ${fontSize}px "JetBrains Mono", monospace`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
 
-        // Background label pill
-        const textWidth = ctx.measureText(node.name).width;
-        const pillPadX = 6 * node.scale;
-        const pillPadY = 3 * node.scale;
-        const pillY = node.py + size * 0.55;
+          // Background label pill
+          const textWidth = ctx.measureText(node.name).width;
+          const pillPadX = 6 * node.scale;
+          const pillPadY = 3 * node.scale;
+          const pillY = node.py + size * 0.55;
 
-        ctx.fillStyle = `rgba(5, 7, 11, ${node.alpha * 0.85})`;
-        ctx.strokeStyle = `${node.color}${Math.floor(node.alpha * 120).toString(16).padStart(2, '0')}`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.roundRect(
-          node.px - textWidth / 2 - pillPadX,
-          pillY,
-          textWidth + pillPadX * 2,
-          fontSize + pillPadY * 2,
-          4
-        );
-        ctx.fill();
-        ctx.stroke();
+          const depthAlpha = Math.min(1, Math.max(0.2, (node.z + 30) / 90));
+          ctx.fillStyle = `rgba(5, 7, 11, ${depthAlpha * 0.92})`;
+          ctx.strokeStyle = `${node.color}${Math.floor(depthAlpha * 180).toString(16).padStart(2, '0')}`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.roundRect(
+            node.px - textWidth / 2 - pillPadX,
+            pillY,
+            textWidth + pillPadX * 2,
+            fontSize + pillPadY * 2,
+            4
+          );
+          ctx.fill();
+          ctx.stroke();
 
-        // Text fill
-        ctx.fillStyle = isSelected ? '#00FFE0' : `rgba(240, 246, 252, ${Math.max(0.4, node.alpha)})`;
-        ctx.fillText(node.name, node.px, pillY + pillPadY);
+          // Text fill
+          ctx.fillStyle = isSelected ? '#00FFE0' : `rgba(240, 246, 252, ${depthAlpha})`;
+          ctx.fillText(node.name, node.px, pillY + pillPadY);
+        }
       }
 
       animId = requestAnimationFrame(render);

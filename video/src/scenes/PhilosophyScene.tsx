@@ -89,18 +89,18 @@ export const PhilosophyScene: React.FC<SceneProps> = ({ durationFrames }) => {
                 <div className="w-3 h-3 rounded-full bg-amber-500/80" />
                 <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
               </div>
-              <span className="text-xs text-slate-400">bash â€” sameer@orbit-node-01: ~/dev-75</span>
+              <span className="text-xs text-slate-400">bash - sameer@orbit-node-01: ~/dev-75</span>
               <span className="text-xs text-energy-teal">LIVE</span>
             </div>
 
             {/* Terminal Body */}
             <div className="p-6 space-y-2.5 text-slate-300">
               <div className="flex items-center space-x-2 text-energy-teal">
-                <span>â¯</span>
+                <span>&gt;</span>
                 <span className="text-white font-semibold">init-system --profile=production</span>
               </div>
               <p className="text-slate-400 text-xs">
-                [OK] Supabase relational cluster linked (16 schemas active)
+                [OK] PostgreSQL 16 cluster linked (zero-trust RLS active)
               </p>
               <p className="text-slate-400 text-xs">
                 [OK] Express REST middleware authenticated via RBAC tokens
@@ -109,8 +109,8 @@ export const PhilosophyScene: React.FC<SceneProps> = ({ durationFrames }) => {
                 [OK] Frame-locked deterministic renderer initialized at 30.0 fps
               </p>
               <div className="flex items-center space-x-2 text-energy-cyan pt-2">
-                <span>â—</span>
-                <span>Telemetry: 2,341 Active Sessions across 3 Campus Institutions</span>
+                <span>*</span>
+                <span>Telemetry: 12,400 Distributed Requests/sec across 6 Cloud Nodes</span>
               </div>
             </div>
           </div>

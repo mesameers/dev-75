@@ -22,10 +22,10 @@ export const Footer = () => {
           <a href="#contact" className="hover:text-energy-teal transition-colors">Contact</a>
         </div>
 
-        <div className="flex items-center space-x-2 text-slate-500">
+        <div className="flex items-center space-x-2 text-slate-500 font-mono text-xs">
           <span>Deterministic Motion via Remotion</span>
-          <span className="text-slate-700">â€¢</span>
-          <span>Â© {new Date().getFullYear()}</span>
+          <span className="text-slate-700">•</span>
+          <span>© {new Date().getFullYear()} Sameer Hussain</span>
         </div>
       </div>
     </footer>
