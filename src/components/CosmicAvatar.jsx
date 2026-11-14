@@ -241,6 +241,35 @@ const AI_KNOWLEDGE_BASE = [
   },
 ];
 
+// Bulletproof Bilingual & Phonetic Matcher for Pakistani Urdu + Roman Urdu + English
+const checkKeywordMatch = (transcript, keywords) => {
+  if (!transcript || !keywords || !keywords.length) return false;
+  const clean = transcript.trim().toLowerCase();
+
+  for (const kw of keywords) {
+    const target = kw.toLowerCase().trim();
+    if (!target) continue;
+
+    // 1. Direct equality
+    if (clean === target) return true;
+
+    // 2. Multi-word phrase matching
+    if (target.includes(' ') && clean.includes(target)) return true;
+
+    // 3. Urdu / Non-Latin Unicode character matching
+    const hasUnicode = /[\u0600-\u06FF]/.test(target);
+    if (hasUnicode) {
+      if (clean.includes(target)) return true;
+    } else {
+      // 4. Latin / English / Roman Urdu word matching (strictly bounded to prevent false substrings)
+      const escaped = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(^|[\\s.,!?؛،])${escaped}([\\s.,!?؛،]|$)`, 'i');
+      if (regex.test(clean)) return true;
+    }
+  }
+  return false;
+};
+
 export const CosmicAvatar = ({ size = 480, className = "" }) => {
   const containerRef = useRef(null);
   const recognitionRef = useRef(null);
@@ -249,6 +278,9 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
   const speechCooldownUntilRef = useRef(0);
   const isListeningRef = useRef(false);
   const lastActionTimestampRef = useRef(0);
+  const activeUtteranceRef = useRef(null);
+  const speechSafetyTimeoutRef = useRef(null);
+  const recognitionLangRef = useRef('ur-PK'); // Primary: Pakistani Urdu (with fallback)
 
   // Active section tracking (Default: hero)
   const currentSectionRef = useRef('hero');
@@ -282,13 +314,13 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       setIsSpeaking(true);
       isSpeakingRef.current = true;
-      speechCooldownUntilRef.current = Date.now() + 3000;
+      speechCooldownUntilRef.current = Date.now() + 2500;
       setTimeout(() => {
         setIsSpeaking(false);
         isSpeakingRef.current = false;
         fluteEngine.unduck();
         if (onComplete) onComplete();
-      }, 3000);
+      }, 2500);
       return;
     }
 
@@ -297,15 +329,13 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
       isSpeakingRef.current = true;
       setIsSpeaking(true);
-      speechCooldownUntilRef.current = Date.now() + 15000;
-
-      if (recognitionRef.current) {
-        try {
-          recognitionRef.current.abort();
-        } catch (e) {}
-      }
+      speechCooldownUntilRef.current = Date.now() + 5000;
 
       const utterance = new SpeechSynthesisUtterance(romanText || urduText);
+      // Retain global and ref handle to prevent Chrome V8 garbage collection bug
+      window.__alinaUtterance = utterance;
+      activeUtteranceRef.current = utterance;
+
       const voices = window.speechSynthesis.getVoices();
 
       // Natural female voice search
@@ -319,14 +349,25 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       utterance.pitch = 1.18; // Warm, polite feminine presenter tone
       utterance.rate = 0.88; // Normal, crystal-clear understandable cadence
 
+      let hasFinished = false;
       const handleSpeechFinish = () => {
+        if (hasFinished) return;
+        hasFinished = true;
+        if (speechSafetyTimeoutRef.current) {
+          clearTimeout(speechSafetyTimeoutRef.current);
+          speechSafetyTimeoutRef.current = null;
+        }
+
         setIsSpeaking(false);
         isSpeakingRef.current = false;
-        // 350ms quick grace period so mic becomes hot and listening immediately!
-        speechCooldownUntilRef.current = Date.now() + 350;
+        // 250ms quick grace period so mic becomes hot and listening immediately
+        speechCooldownUntilRef.current = Date.now() + 250;
 
         // Auto-restore background flute music when Alina finishes speaking
         fluteEngine.unduck();
+
+        window.__alinaUtterance = null;
+        activeUtteranceRef.current = null;
 
         if (onComplete) onComplete();
 
@@ -337,11 +378,15 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
               recognitionRef.current.start();
             } catch (e) {}
           }
-        }, 400);
+        }, 200);
       };
 
       utterance.onend = handleSpeechFinish;
       utterance.onerror = handleSpeechFinish;
+
+      // Watchdog Safety Timer: Force finish if browser SpeechSynthesis hangs or drops onend
+      const maxSpeechDuration = Math.max(3000, (romanText || urduText).length * 85 + 2000);
+      speechSafetyTimeoutRef.current = setTimeout(handleSpeechFinish, maxSpeechDuration);
 
       window.speechSynthesis.speak(utterance);
     } catch (e) {
@@ -425,7 +470,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
       const recognition = new SpeechRecognition();
       recognitionRef.current = recognition;
-      recognition.lang = 'en-US';
+      recognition.lang = recognitionLangRef.current || 'ur-PK';
       recognition.continuous = true;
       recognition.interimResults = true; // INSTANT LIVE RECOGNITION (Triggers on first syllable/word!)
 
@@ -450,8 +495,8 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           // As soon as user speaks, duck background flute music immediately
           fluteEngine.duck();
 
-          // Debounce guard to avoid multiple triggers on interim frames
-          if (Date.now() - lastActionTimestampRef.current < 1200) {
+          // Debounce guard to avoid multiple triggers on rapid interim frames
+          if (Date.now() - lastActionTimestampRef.current < 1100) {
             continue;
           }
 
@@ -459,9 +504,9 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           const returnTopWords = [
             'wapas upar', 'wapas chalo', 'upar le jao', 'upar chalo', 'back to top',
             'upar jao', 'wapas le jao', 'hero par jao', 'top par jao', 'home par jao',
-            'wapas', 'upar', 'واپس', 'اوپر'
+            'wapas', 'upar', 'واپس', 'اوپر', 'اوپر چلو', 'واپس چلو', 'اوپر لے جاؤ'
           ];
-          if (returnTopWords.some((w) => cleanTranscript.includes(w))) {
+          if (checkKeywordMatch(cleanTranscript, returnTopWords)) {
             lastActionTimestampRef.current = Date.now();
             teleportTo('hero', "جی چلیے! ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔", "Jee chaliye! Hum wapas upar hero section par aa gaye hain.");
             return;
@@ -471,36 +516,29 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           const explainWords = [
             'explain', 'explain karo', 'ye kya hai', 'is ke bare mein batao',
             'is section ko explain karo', 'ye kya kaam karta hai', 'detail batao',
-            'details', 'tell me about this', 'what is this', 'batao', 'تفصیل', 'وضاحت'
+            'details', 'tell me about this', 'what is this', 'batao', 'تفصیل', 'وضاحت', 'سمجھاؤ'
           ];
-          if (explainWords.some((w) => cleanTranscript.includes(w))) {
+          if (checkKeywordMatch(cleanTranscript, explainWords)) {
             lastActionTimestampRef.current = Date.now();
             let targetSectionKey = currentSectionRef.current || 'hero';
-            if (cleanTranscript.includes('film') || cleanTranscript.includes('video')) targetSectionKey = 'film';
-            else if (cleanTranscript.includes('system') || cleanTranscript.includes('project')) targetSectionKey = 'projects';
-            else if (cleanTranscript.includes('topology') || cleanTranscript.includes('architecture')) targetSectionKey = 'architecture';
-            else if (cleanTranscript.includes('code') || cleanTranscript.includes('coding')) targetSectionKey = 'code';
-            else if (cleanTranscript.includes('api')) targetSectionKey = 'api-playground';
-            else if (cleanTranscript.includes('skill')) targetSectionKey = 'skills';
-            else if (cleanTranscript.includes('matrix') || cleanTranscript.includes('3d')) targetSectionKey = 'tech-sphere';
-            else if (cleanTranscript.includes('terminal') || cleanTranscript.includes('cli')) targetSectionKey = 'terminal';
-            else if (cleanTranscript.includes('contact') || cleanTranscript.includes('rabta')) targetSectionKey = 'contact';
+            if (cleanTranscript.includes('film') || cleanTranscript.includes('video') || cleanTranscript.includes('فلم')) targetSectionKey = 'film';
+            else if (cleanTranscript.includes('system') || cleanTranscript.includes('project') || cleanTranscript.includes('سسٹم') || cleanTranscript.includes('پروجیکٹ')) targetSectionKey = 'projects';
+            else if (cleanTranscript.includes('topology') || cleanTranscript.includes('architecture') || cleanTranscript.includes('ٹوپولوجی')) targetSectionKey = 'architecture';
+            else if (cleanTranscript.includes('code') || cleanTranscript.includes('coding') || cleanTranscript.includes('کوڈ')) targetSectionKey = 'code';
+            else if (cleanTranscript.includes('api') || cleanTranscript.includes('اے پی آئی')) targetSectionKey = 'api-playground';
+            else if (cleanTranscript.includes('skill') || cleanTranscript.includes('اسکلز')) targetSectionKey = 'skills';
+            else if (cleanTranscript.includes('matrix') || cleanTranscript.includes('3d') || cleanTranscript.includes('میٹرکس')) targetSectionKey = 'tech-sphere';
+            else if (cleanTranscript.includes('terminal') || cleanTranscript.includes('cli') || cleanTranscript.includes('ٹرمینل')) targetSectionKey = 'terminal';
+            else if (cleanTranscript.includes('contact') || cleanTranscript.includes('rabta') || cleanTranscript.includes('رابطہ')) targetSectionKey = 'contact';
 
             const explanation = SECTION_EXPLANATIONS[targetSectionKey] || SECTION_EXPLANATIONS['projects'];
             speak(explanation.urdu, explanation.roman);
             return;
           }
 
-          // 3. Check Specific Navigation Section Targets (Accurate Intent & Word Boundary Match)
+          // 3. Check Specific Navigation Section Targets (Accurate Intent & Bilingual Word Match)
           const matchedNav = NAV_TARGETS.find((target) =>
-            target.keywords.some((kw) => {
-              const lowerKw = kw.toLowerCase();
-              if (lowerKw.length <= 4) {
-                const regex = new RegExp(`(^|\\s|\\b)${lowerKw}(\\s|\\b|$)`, 'i');
-                return regex.test(cleanTranscript);
-              }
-              return cleanTranscript.includes(lowerKw);
-            })
+            checkKeywordMatch(cleanTranscript, target.keywords)
           );
 
           if (matchedNav) {
@@ -511,7 +549,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
           // 4. Check Conversational AI Knowledge Engine (Intro, Sameer, Experience, Identity, etc.)
           const matchedKnowledge = AI_KNOWLEDGE_BASE.find((entry) =>
-            entry.triggers.some((trig) => cleanTranscript.includes(trig.toLowerCase()))
+            checkKeywordMatch(cleanTranscript, entry.triggers)
           );
 
           if (matchedKnowledge) {
@@ -522,32 +560,59 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         }
       };
 
-      recognition.onerror = () => {
+      recognition.onerror = (e) => {
         setIsListening(false);
         isListeningRef.current = false;
-        // Resume flute music if interrupted by error
+        // If Urdu language model not found on local OS, automatically switch to en-US fallback
+        if (e && e.error === 'language-not-supported' && recognitionLangRef.current !== 'en-US') {
+          recognitionLangRef.current = 'en-US';
+          try {
+            recognition.lang = 'en-US';
+            recognition.start();
+            return;
+          } catch (err) {}
+        }
         if (!isSpeakingRef.current) fluteEngine.unduck();
       };
 
       recognition.onend = () => {
         setIsListening(false);
         isListeningRef.current = false;
-        // Restore music if quiet
         if (!isSpeakingRef.current) fluteEngine.unduck();
 
-        // Hot Mic auto-restart: keeps recognition hot and responsive immediately
-        setTimeout(() => {
-          if (!isSpeakingRef.current && Date.now() >= speechCooldownUntilRef.current && recognitionRef.current) {
-            try {
-              recognitionRef.current.start();
-            } catch (e) {}
-          }
-        }, 300);
+        // Hot Mic auto-restart: keeps recognition hot and listening immediately
+        if (!isSpeakingRef.current && recognitionRef.current) {
+          setTimeout(() => {
+            if (!isSpeakingRef.current && recognitionRef.current) {
+              try {
+                recognitionRef.current.start();
+              } catch (e) {}
+            }
+          }, 200);
+        }
       };
 
       recognition.start();
     } catch (err) {}
   }, [speak, teleportTo]);
+
+  // Resilient Hot-Mic Supervisor (Heartbeat Engine): Guarantees microphone never dies
+  useEffect(() => {
+    const micSupervisor = setInterval(() => {
+      if (
+        typeof window !== 'undefined' &&
+        !isSpeakingRef.current &&
+        !isListeningRef.current &&
+        recognitionRef.current
+      ) {
+        try {
+          recognitionRef.current.start();
+        } catch (e) {}
+      }
+    }, 1200);
+
+    return () => clearInterval(micSupervisor);
+  }, []);
 
   // Automatic Welcome Greeting on Page Load / First User Gesture (Autoplay Policy Safe)
   useEffect(() => {
@@ -555,13 +620,14 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       // Start ambient flute music
       fluteEngine.start();
 
+      // Ensure microphone is actively listening on first user interaction
+      initAutoVoiceRecognition();
+
       if (hasSpokenWelcomeRef.current) return;
       hasSpokenWelcomeRef.current = true;
 
-      // Speak greeting, then initialize speech recognition
-      speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN, () => {
-        initAutoVoiceRecognition();
-      });
+      // Speak greeting
+      speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN);
     };
 
     try {
@@ -583,9 +649,25 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
   // Avatar Click Handler
   const handleAvatarClick = () => {
     fluteEngine.start();
-    speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN, () => {
+    initAutoVoiceRecognition();
+    speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN);
+  };
+
+  // Dedicated Mic Toggle / Re-activate Handler
+  const handleMicToggle = (e) => {
+    if (e) e.stopPropagation();
+    fluteEngine.start();
+    if (isListening) {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (err) {}
+      }
+      setIsListening(false);
+      isListeningRef.current = false;
+    } else {
       initAutoVoiceRecognition();
-    });
+    }
   };
 
   const tiltX = mousePos.y * -8;
@@ -693,21 +775,35 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       </div>
 
       {/* Clean Teleportation Horizontal Strip */}
-      <div className="flex flex-col items-center gap-2 mt-4 z-20 w-full max-w-xl px-2">
-        {/* Subtle Live Audio Status indicator */}
-        <div className="flex items-center space-x-2 font-mono text-[11px] text-slate-400">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-          </span>
-          <span className="text-slate-300 font-medium">
-            {isSpeaking
-              ? 'Alina Speaking...'
+      <div className="flex flex-col items-center gap-2.5 mt-4 z-20 w-full max-w-xl px-2">
+        {/* Interactive Live Audio & Listening Status HUD Button */}
+        <button
+          onClick={handleMicToggle}
+          className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-full border font-mono text-[11px] transition-all cursor-pointer shadow-sm active:scale-95 ${
+            isSpeaking
+              ? 'bg-amber-500/15 border-amber-500/50 text-amber-300'
               : isListening
-              ? 'Listening (Instant Voice Active — Speak anytime)'
-              : 'Alina Online — Speak or click below'}
+              ? 'bg-emerald-500/15 border-emerald-500/50 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
+              : 'bg-rose-500/15 border-rose-500/50 text-rose-300 hover:bg-rose-500/25'
+          }`}
+          title="Click to toggle or restart listening microphone"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${
+              isSpeaking ? 'bg-amber-400' : isListening ? 'bg-emerald-400' : 'bg-rose-400'
+            } opacity-75`} />
+            <span className={`relative inline-flex rounded-full h-2 w-2 ${
+              isSpeaking ? 'bg-amber-500' : isListening ? 'bg-emerald-500' : 'bg-rose-500'
+            }`} />
           </span>
-        </div>
+          <span className="font-semibold tracking-wide">
+            {isSpeaking
+              ? 'علینہ بول رہی ہے (Alina Speaking...)'
+              : isListening
+              ? 'علینہ سن رہی ہے — کچھ بھی بولیں (Mic Listening)'
+              : 'مائیک فعال کریں (Click to Speak)'}
+          </span>
+        </button>
 
         {/* 1-Click Teleportation Horizontal Pills */}
         <div className="w-full flex items-center justify-center">
