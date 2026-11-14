@@ -14,23 +14,14 @@ import {
   Sparkles
 } from 'lucide-react';
 
-const ORBITING_TECH = [
-  { label: 'React 18', angle: 0, radius: 220, color: '#00F2FE' },
-  { label: 'Supabase', angle: 60, radius: 240, color: '#10B981' },
-  { label: 'PostgreSQL', angle: 120, radius: 215, color: '#38BDF8' },
-  { label: 'Node.js', angle: 180, radius: 235, color: '#8B5CF6' },
-  { label: 'TypeScript', angle: 240, radius: 220, color: '#00FFE0' },
-  { label: 'Remotion', angle: 300, radius: 245, color: '#EC4899' },
-];
-
-// Pure Pakistani Urdu Voice Navigation Targets with Full Phonetic Matching
+// Navigation Targets for Direct Click & Voice Dispatch
 const NAV_TARGETS = [
   {
     id: 'film',
     label: 'Film',
     icon: Film,
     color: '#00F2FE',
-    keywords: ['film', 'flim', 'filam', 'video', 'vedio', 'movie', 'cinema', 'watch', 'remotion', 'film dikhao', 'video dikhao', 'movie dikhao', 'film chalao', 'فلم', 'ویڈیو', 'سینما'],
+    keywords: ['film', 'flim', 'filam', 'video', 'movie', 'cinema', 'built in orbit', 'film dikhao', 'video dikhao'],
     voiceConfirm: "چلیے! سمیر کی 'بلٹ ان اوربٹ' فلم سنیما پر چلتے ہیں۔",
     romanConfirm: "Chaliye! Sameer ki 'Built in Orbit' film cinema per chaltay hain.",
   },
@@ -40,13 +31,12 @@ const NAV_TARGETS = [
     label: 'Systems',
     icon: Layers,
     color: '#10B981',
+    // STRICT keywords: Excluded 'assistant' to prevent self-voice echo loop
     keywords: [
-      'system', 'systems', 'sistem', 'sistems', 'sustam', 'sustams', 'sistim',
-      'system please', 'assistant', 'assistance',
-      'project', 'projects', 'projeck', 'projekts', 'featured', 'platform', 'work', 'kaam', 'kam', 'portfolio',
-      'system dikhao', 'systems dikhao', 'system per jao', 'systems per jao',
-      'system per lekar ja', 'systems per lekar ja', 'system dikha do', 'systems dikha do',
-      'سسٹم', 'سسٹمز', 'پروجیکٹ', 'پروجیکٹس', 'کام'
+      'system', 'systems', 'sistem', 'sistems', 'sustam',
+      'project', 'projects', 'projeck', 'projekts', 'featured',
+      'platform', 'platforms', 'kam', 'kaam', 'system dikhao',
+      'systems dikhao', 'projects dikhao', 'kam dikhao'
     ],
     voiceConfirm: "جی ضرور! چلیے میں آپ کو سمیر کے سسٹمز اور پروجیکٹس پر لے چلتی ہوں۔",
     romanConfirm: "Jee zaroor! Chaliye main aap ko Sameer ke systems aur projects par le kar chalti hoon.",
@@ -56,7 +46,7 @@ const NAV_TARGETS = [
     label: 'Topology',
     icon: Activity,
     color: '#8B5CF6',
-    keywords: ['architecture', 'arkitecture', 'topology', 'toplogy', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster', 'node', 'nodes', 'spike', 'architecture dikhao', 'topology dikhao', 'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ'],
+    keywords: ['architecture', 'topology', 'toplogy', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster', 'topology dikhao'],
     voiceConfirm: "چلیے! مائیکروسروسز میش ٹوپولوجی پر لے چلتی ہوں۔",
     romanConfirm: "Chaliye! Microservices Mesh Topology par le chalti hoon.",
   },
@@ -65,16 +55,16 @@ const NAV_TARGETS = [
     label: 'Code',
     icon: Code2,
     color: '#38BDF8',
-    keywords: ['code', 'core', 'kood', 'coding', 'codes', 'kord', 'inspector', 'algorithms', 'algorithm', 'typescript', 'sql', 'physics', 'code dikhao', 'coding dikhao', 'core per', 'code per', 'core per lekar ja', 'code per lekar ja', 'کوڈ', 'الگورتھم', 'کوڈنگ'],
-    voiceConfirm: "جی بالکل! چلیے میں آپ کو پروڈکشن کوڈ انسپیکٹر اور الگورتھمز دکھاتی ہوں۔",
-    romanConfirm: "Jee bilkul! Chaliye main aap ko production code inspector aur algorithms dikhati hoon.",
+    keywords: ['code', 'coding', 'inspector', 'algorithm', 'algorithms', 'typescript', 'sql', 'code dikhao', 'coding dikhao'],
+    voiceConfirm: "جی بالکل! چلیے میں آپ کو پروڈکشن کوڈ انسپیکٹر دکھاتی ہوں۔",
+    romanConfirm: "Jee bilkul! Chaliye main aap ko production code inspector dikhati hoon.",
   },
   {
     id: 'api-playground',
     label: 'API Suite',
     icon: Zap,
     color: '#EC4899',
-    keywords: ['api', 'epi', 'a p i', 'playground', 'endpoint', 'endpoints', 'test', 'suite', 'request', 'rest', 'api dikhao', 'api chalao', 'api test', 'اے پی آئی', 'اے پی ائی', 'ٹیسٹ', 'سویٹ'],
+    keywords: ['api', 'api suite', 'playground', 'endpoint', 'endpoints', 'api test', 'api dikhao'],
     voiceConfirm: "جی ہاں! لائیو پروڈکشن API سویٹ حاضر ہے۔",
     romanConfirm: "Jee haan! Live production API suite hazir hai.",
   },
@@ -83,7 +73,7 @@ const NAV_TARGETS = [
     label: 'Skills',
     icon: Cpu,
     color: '#06B6D4',
-    keywords: ['skills', 'skill', 'tech', 'stack', 'technology', 'technologies', 'skills dikhao', 'skills per jao', 'stack dikhao', 'اسکلز', 'ٹیکنالوجی'],
+    keywords: ['skills', 'skill', 'tech stack', 'technologies', 'technology', 'tools', 'kya aata hai', 'skills dikhao'],
     voiceConfirm: "جی! سمیر کے تمام ٹیکنیکل اسکلز کی لسٹ حاضر ہے۔",
     romanConfirm: "Jee! Sameer ke tamam technical skills ki list hazir hai.",
   },
@@ -92,7 +82,7 @@ const NAV_TARGETS = [
     label: '3D Matrix',
     icon: Compass,
     color: '#F59E0B',
-    keywords: ['matrix', 'sphere', '3d', 'globe', 'interactive', '3d dikhao', 'matrix dikhao', 'تھری ڈی', 'میٹرکس'],
+    keywords: ['matrix', 'sphere', '3d', 'globe', '3d dikhao', 'matrix dikhao'],
     voiceConfirm: "چلیے! تھری ڈی انٹرایکٹو میٹرکس دکھاتی ہوں۔",
     romanConfirm: "Chaliye! 3D Interactive Matrix dikhati hoon.",
   },
@@ -101,7 +91,7 @@ const NAV_TARGETS = [
     label: 'CLI Terminal',
     icon: Terminal,
     color: '#A855F7',
-    keywords: ['terminal', 'tarminus', 'cli', 'shell', 'bash', 'console', 'command', 'terminal dikhao', 'terminal kholo', 'cli dikhao', 'ٹرمینل', 'سی ایل آئی', 'شیل'],
+    keywords: ['terminal', 'cli', 'shell', 'bash', 'console', 'command', 'terminal dikhao', 'terminal kholo'],
     voiceConfirm: "جی! ڈویلپر سی ایل آئی ٹرمینل اوپن کر دیا ہے۔",
     romanConfirm: "Jee! Developer CLI terminal open kar diya hai.",
   },
@@ -110,7 +100,7 @@ const NAV_TARGETS = [
     label: 'Contact',
     icon: Mail,
     color: '#00FFE0',
-    keywords: ['contact', 'kontact', 'hire', 'talk', 'email', 'mail', 'connect', 'message', 'baat', 'rabta', 'contact dikhao', 'rabta karna hai', 'email dikhao', 'رابطہ', 'ای میل', 'بات'],
+    keywords: ['contact', 'hire', 'email', 'mail', 'connect', 'message', 'rabta', 'baat karni hai', 'contact dikhao'],
     voiceConfirm: "سمیر سے رابطہ کرنا ہے؟ چلیے میں آپ کو کانٹیکٹ فارم پر لے چلتی ہوں۔",
     romanConfirm: "Sameer se rabta karna hai? Chaliye main aap ko contact form par le chalti hoon.",
   },
@@ -119,9 +109,9 @@ const NAV_TARGETS = [
     label: 'Top',
     icon: ArrowRight,
     color: '#00F2FE',
-    keywords: ['upar', 'top', 'hero', 'home', 'shuru', 'start', 'wapas', 'upar jao', 'main', 'اوپر', 'ہیرو', 'شروع'],
-    voiceConfirm: "واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔",
-    romanConfirm: "Wapas upar hero section par aa gaye hain.",
+    keywords: ['upar', 'top', 'hero', 'home', 'shuru', 'start', 'wapas', 'upar jao'],
+    voiceConfirm: "ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔",
+    romanConfirm: "Hum wapas upar hero section par aa gaye hain.",
   },
 ];
 
@@ -129,21 +119,70 @@ const NAV_TARGETS = [
 const INITIAL_GREETING_URDU = "خوش آمدید! میں سمیر حسین کی اسسٹنٹ ہوں۔ آپ کو اس پورٹ فولیو کے کون سے حصے پر لے کر جاؤں؟";
 const INITIAL_GREETING_ROMAN = "Khushamdeed! Main Sameer Hussain ki assistant hoon. Aap ko is portfolio ke kon se hisse per le kar jaaun?";
 
-// Comprehensive Portfolio Information in Pakistani Urdu
-const PORTFOLIO_INFO_URDU = "سمیر حسین ایک سینئر فل اسٹیک اور کلاؤڈ سسٹمز آرکیٹیکٹ ہیں۔ اس پورٹ فولیو میں سمیر کی بلٹ ان اوربٹ فلم، فلیگ شپ کلاؤڈ سسٹمز، مائیکروسروسز ٹوپولوجی، لائیو کوڈ انسپیکٹر، پروڈکشن API سوٹ، اور انٹرایکٹو ٹرمینل شامل ہیں۔ آپ جس حصے کا کہیں گے میں آپ کو فوراً وہاں لے چلوں گی۔";
-const PORTFOLIO_INFO_ROMAN = "Sameer Hussain aik senior full-stack aur cloud systems architect hain. Is portfolio mein Sameer ki 'Built in Orbit' film, flagship cloud systems, microservices topology, code inspector, API suite, aur interactive terminal shamil hain. Aap jis hisse ka kahein ge main aap ko foran wahan le chalu gi.";
+// Comprehensive Knowledge Base for Conversational AI Intelligence
+const AI_KNOWLEDGE_BASE = [
+  {
+    intent: 'about_sameer',
+    triggers: ['sameer', 'kaun hai', 'kon hai', 'who is', 'about sameer', 'developer', 'creator', 'sameer hussain'],
+    urdu: "سمیر حسین ایک سینئر فل اسٹیک ڈویلپر اور کلاؤڈ سسٹمز آرکیٹیکٹ ہیں۔ وہ اسکیل ایبل کلاؤڈ پلیٹ فارمز، ہائی پرفارمنس APIs اور 3D ویب سسٹمز بناتے ہیں۔",
+    roman: "Sameer Hussain aik senior full-stack developer aur cloud systems architect hain. Woh scalable cloud platforms, high-performance APIs aur 3D web systems banate hain.",
+  },
+  {
+    intent: 'experience',
+    triggers: ['experience', 'tajurba', 'kitna experience', 'career', 'background', 'work history'],
+    urdu: "سمیر کو انٹرپرائز فل اسٹیک ڈویلپمنٹ، کلاؤڈ مائیکروسروسز اور ننانوے اعشاریہ نو نو فیصد اپ ٹائم سسٹمز کا وسیع تجربہ ہے۔",
+    roman: "Sameer ko enterprise full-stack development, cloud microservices aur 99.99 percent uptime systems ka waseeh tajurba hai.",
+  },
+  {
+    intent: 'identity',
+    triggers: ['tum kaun ho', 'tum kon ho', 'aap kaun', 'who are you', 'what is your name', 'naam kya'],
+    urdu: "میں آئیلا ہوں، سمیر حسین کی خودمختار AI اسسٹنٹ۔ میں آپ کو پورٹ فولیو کے ہر سیکشن اور پروجیکٹ کی معلومات دے سکتی ہوں۔",
+    roman: "Main Ayla hoon, Sameer Hussain ki autonomous AI assistant. Main aap ko portfolio ke har section aur project ki maloomat de sakti hoon.",
+  },
+  {
+    intent: 'greeting',
+    triggers: ['salam', 'assalam', 'asalam', 'hello', 'hi', 'hey', 'adaab'],
+    urdu: "وعلیکم السلام! میں آئیلا ہوں۔ فرمائیے میں سمیر کے پورٹ فولیو میں آپ کی کیا رہنمائی کروں؟",
+    roman: "Walaikum Assalam! Main Ayla hoon. Farmaiye main Sameer ke portfolio mein aap ki kya rehnumai karoon?",
+  },
+  {
+    intent: 'how_are_you',
+    triggers: ['kaise ho', 'kaisi ho', 'kya haal', 'how are you', 'haal chal'],
+    urdu: "الحمدللہ میں بالکل ٹھیک ہوں۔ آپ بتائیے، سمیر کا کون سا پروجیکٹ یا سسٹم دیکھنا پسند کریں گے؟",
+    roman: "Alhamdulillah main bilkul theek hoon. Aap bataiye, Sameer ka kon sa project ya system dekhna pasand karein ge?",
+  },
+  {
+    intent: 'thanks',
+    triggers: ['shukriya', 'shukria', 'thanks', 'thank you', 'bohot shukriya', 'meherbani'],
+    urdu: "آپ کا بہت شکریہ! اگر مزید کچھ پوچھنا ہو تو میں یہیں موجود ہوں۔",
+    roman: "Aap ka bohot shukriya! Agar mazeed kuch poochna ho to main yaheen maujood hoon.",
+  },
+  {
+    intent: 'goodbye',
+    triggers: ['allah hafiz', 'khuda hafiz', 'bye', 'goodbye', 'alvida'],
+    urdu: "اللہ حافظ! اپنا خیال رکھیے گا اور سمیر کے کام کا جائزہ ضرور لیجیے گا۔",
+    roman: "Allah Hafiz! Apna khayal rakhiye ga aur Sameer ke kaam ka jaiza zaroor lijiye ga.",
+  },
+  {
+    intent: 'portfolio_overview',
+    triggers: ['information', 'informashan', 'detail', 'kya kya hai', 'portfolio kya hai', 'batao', 'overview', 'sab batao'],
+    urdu: "سمیر حسین ایک سینئر فل اسٹیک اور کلاؤڈ سسٹمز آرکیٹیکٹ ہیں۔ اس پورٹ فولیو میں سمیر کی بلٹ ان اوربٹ فلم، فلیگ شپ کلاؤڈ سسٹمز، مائیکروسروسز ٹوپولوجی، لائیو کوڈ انسپیکٹر، پروڈکشن API سوٹ، اور انٹرایکٹو ٹرمینل شامل ہیں۔ آپ جس کا کہیں گے میں آپ کو وہاں لے چلوں گی۔",
+    roman: "Sameer Hussain aik senior full-stack aur cloud systems architect hain. Is portfolio mein Sameer ki 'Built in Orbit' film, flagship cloud systems, microservices topology, code inspector, API suite, aur interactive terminal shamil hain. Aap jis ka kahein ge main aap ko wahan le chalu gi.",
+  },
+];
 
 export const CosmicAvatar = ({ size = 480, className = "" }) => {
   const containerRef = useRef(null);
   const recognitionRef = useRef(null);
   const hasSpokenWelcomeRef = useRef(false);
+  const isSpeakingRef = useRef(false);
+  const speechCooldownUntilRef = useRef(0);
   const isListeningRef = useRef(false);
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [audioJitter, setAudioJitter] = useState([12, 24, 18, 30, 16]);
 
   // Mouse tracking for realistic 3D parallax tilt
   useEffect(() => {
@@ -161,36 +200,38 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Equalizer animation for microphone in studio
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const multiplier = isSpeaking ? 1.8 : isListening ? 1.3 : 0.8;
-      setAudioJitter([
-        Math.floor((8 + Math.random() * 16) * multiplier),
-        Math.floor((14 + Math.random() * 20) * multiplier),
-        Math.floor((18 + Math.random() * 22) * multiplier),
-        Math.floor((12 + Math.random() * 18) * multiplier),
-        Math.floor((6 + Math.random() * 14) * multiplier),
-      ]);
-    }, isSpeaking ? 90 : 200);
-    return () => clearInterval(interval);
-  }, [isSpeaking, isListening]);
-
-  // Natural Pakistani Urdu Speech Synthesis Engine (Normal Clear Speed)
-  const speak = useCallback((urduText, romanText = '') => {
+  // Natural Pakistani Urdu Speech Synthesis Engine with Rock-Solid Echo Protection
+  const speak = useCallback((urduText, romanText = '', onComplete) => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       setIsSpeaking(true);
-      setTimeout(() => setIsSpeaking(false), 4000);
+      isSpeakingRef.current = true;
+      speechCooldownUntilRef.current = Date.now() + 3000;
+      setTimeout(() => {
+        setIsSpeaking(false);
+        isSpeakingRef.current = false;
+        if (onComplete) onComplete();
+      }, 3000);
       return;
     }
 
     try {
       window.speechSynthesis.cancel();
 
+      // PAUSE recognition while speaking to prevent self-voice echo loop
+      isSpeakingRef.current = true;
+      setIsSpeaking(true);
+      speechCooldownUntilRef.current = Date.now() + 15000; // temporary high guard
+
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {}
+      }
+
       const utterance = new SpeechSynthesisUtterance(romanText || urduText);
       const voices = window.speechSynthesis.getVoices();
 
-      // Look for natural female / Pakistani Urdu voices
+      // Natural female voice search
       const preferredVoice =
         voices.find((v) => (v.lang.includes('ur') || v.lang.includes('hi')) && !v.name.includes('Hemant')) ||
         voices.find((v) => (v.name.includes('Zira') || v.name.includes('Jenny') || v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Female') || v.name.includes('Natural'))) ||
@@ -198,17 +239,35 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         voices.find((v) => v.lang.startsWith('en'));
 
       if (preferredVoice) utterance.voice = preferredVoice;
-      utterance.pitch = 1.18; // Warm, polite, feminine Pakistani Urdu presenter voice
-      utterance.rate = 0.88; // Normal, crystal-clear understandable cadence
+      utterance.pitch = 1.18; // Warm, polite feminine presenter tone
+      utterance.rate = 0.88; // Normal, crystal-clear understandable speed
 
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
+      const handleSpeechFinish = () => {
+        setIsSpeaking(false);
+        isSpeakingRef.current = false;
+        // 1.8 second grace period after speaking before mic listens again
+        speechCooldownUntilRef.current = Date.now() + 1800;
+
+        if (onComplete) onComplete();
+
+        // Safely restart recognition after grace period
+        setTimeout(() => {
+          if (!isSpeakingRef.current && recognitionRef.current) {
+            try {
+              recognitionRef.current.start();
+            } catch (e) {}
+          }
+        }, 1900);
+      };
+
+      utterance.onend = handleSpeechFinish;
+      utterance.onerror = handleSpeechFinish;
 
       window.speechSynthesis.speak(utterance);
     } catch (e) {
-      setIsSpeaking(true);
-      setTimeout(() => setIsSpeaking(false), 3500);
+      setIsSpeaking(false);
+      isSpeakingRef.current = false;
+      if (onComplete) onComplete();
     }
   }, []);
 
@@ -218,7 +277,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       // 1. Announce verbally in Pakistani Urdu
       speak(voiceConfirmText, romanConfirmText);
 
-      // 2. Perform direct scroll with navbar offset
+      // 2. Perform smooth scroll with navbar offset
       const executeScroll = () => {
         let el = document.getElementById(targetId);
 
@@ -270,7 +329,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     [speak]
   );
 
-  // Automatic Speech Recognition (Listens Automatically without any Button)
+  // Automatic Speech Recognition (Zero Buttons, Pure Autonomous AI)
   const initAutoVoiceRecognition = useCallback(() => {
     if (typeof window === 'undefined') return;
 
@@ -279,7 +338,9 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
     try {
       if (recognitionRef.current) {
-        try { recognitionRef.current.abort(); } catch (e) {}
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {}
       }
 
       const recognition = new SpeechRecognition();
@@ -294,65 +355,43 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       };
 
       recognition.onresult = (event) => {
+        // STRICT ECHO FILTER: Never process mic audio if Ayla is speaking or within cooldown
+        if (isSpeakingRef.current || Date.now() < speechCooldownUntilRef.current) {
+          return;
+        }
+
         const lastIndex = event.results.length - 1;
         const rawTranscript = event.results[lastIndex][0].transcript.toLowerCase();
         const cleanTranscript = rawTranscript.replace(/[.,?!]/g, '').trim();
 
-        // Check 1: User asking for All Portfolio Information
-        const isInfoQuery =
-          cleanTranscript.includes('information') ||
-          cleanTranscript.includes('informashan') ||
-          cleanTranscript.includes('detail') ||
-          cleanTranscript.includes('kya kya hai') ||
-          cleanTranscript.includes('baray mein batao') ||
-          cleanTranscript.includes('bare me batao') ||
-          cleanTranscript.includes('batao') ||
-          cleanTranscript.includes('sameer kaun hai') ||
-          cleanTranscript.includes('about');
+        if (!cleanTranscript || cleanTranscript.length < 2) return;
 
-        if (isInfoQuery) {
-          speak(PORTFOLIO_INFO_URDU, PORTFOLIO_INFO_ROMAN);
-          return;
-        }
-
-        // Check 2: User asking for Systems / Projects
-        const isSystemsQuery =
-          cleanTranscript.includes('system') ||
-          cleanTranscript.includes('sistem') ||
-          cleanTranscript.includes('sustam') ||
-          cleanTranscript.includes('sistim') ||
-          cleanTranscript.includes('assistant') ||
-          cleanTranscript.includes('assistance') ||
-          cleanTranscript.includes('project') ||
-          cleanTranscript.includes('kam') ||
-          cleanTranscript.includes('kaam') ||
-          cleanTranscript.includes('platform');
-
-        if (isSystemsQuery) {
-          const sysTarget = NAV_TARGETS.find((t) => t.id === 'projects');
-          if (sysTarget) {
-            teleportTo(sysTarget.id, sysTarget.voiceConfirm, sysTarget.romanConfirm);
-            return;
-          }
-        }
-
-        // Check 3: Check all keywords in NAV_TARGETS
-        const matched = NAV_TARGETS.find((target) =>
+        // 1. Check Specific Navigation Section Targets
+        const matchedNav = NAV_TARGETS.find((target) =>
           target.keywords.some((kw) => cleanTranscript.includes(kw.toLowerCase()))
         );
 
-        if (matched) {
-          teleportTo(matched.id, matched.voiceConfirm, matched.romanConfirm);
+        if (matchedNav) {
+          teleportTo(matchedNav.id, matchedNav.voiceConfirm, matchedNav.romanConfirm);
           return;
         }
 
-        // Check 4: General navigation intention -> Teleport to systems
-        const generalNavWords = ['lekar ja', 'le kar ja', 'le jao', 'dikhao', 'chalo', 'kholo', 'jana hai', 'go to', 'take me', 'show'];
-        if (generalNavWords.some((word) => cleanTranscript.includes(word))) {
-          const sysTarget = NAV_TARGETS.find((t) => t.id === 'projects');
-          if (sysTarget) {
-            teleportTo(sysTarget.id, sysTarget.voiceConfirm, sysTarget.romanConfirm);
-          }
+        // 2. Check Conversational AI Knowledge Engine
+        const matchedKnowledge = AI_KNOWLEDGE_BASE.find((entry) =>
+          entry.triggers.some((trig) => cleanTranscript.includes(trig.toLowerCase()))
+        );
+
+        if (matchedKnowledge) {
+          speak(matchedKnowledge.urdu, matchedKnowledge.roman);
+          return;
+        }
+
+        // 3. Gentle Fallback without Random Auto-Jumps
+        if (cleanTranscript.length > 3) {
+          speak(
+            "معاف کیجیے گا، کیا آپ دوبارہ کہیں گے؟ آپ فلم، سسٹمز، کوڈ، ٹوپولوجی یا کانٹیکٹ کے بارے میں پوچھ سکتے ہیں۔",
+            "Maaf kijiye ga, kya aap dobara kahein ge? Aap film, systems, code, topology ya contact ke baray mein pooch sakte hain."
+          );
         }
       };
 
@@ -364,12 +403,13 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       recognition.onend = () => {
         setIsListening(false);
         isListeningRef.current = false;
+        // Only restart if not speaking and cooldown passed
         setTimeout(() => {
-          try {
-            if (recognitionRef.current && !isListeningRef.current) {
+          if (!isSpeakingRef.current && Date.now() >= speechCooldownUntilRef.current && recognitionRef.current) {
+            try {
               recognitionRef.current.start();
-            }
-          } catch (e) {}
+            } catch (e) {}
+          }
         }, 1200);
       };
 
@@ -382,8 +422,10 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     const triggerWelcome = () => {
       if (hasSpokenWelcomeRef.current) return;
       hasSpokenWelcomeRef.current = true;
-      speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN);
-      initAutoVoiceRecognition();
+      // Start voice recognition ONLY AFTER greeting has completely finished playing!
+      speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN, () => {
+        initAutoVoiceRecognition();
+      });
     };
 
     try {
@@ -402,18 +444,19 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     };
   }, [speak, initAutoVoiceRecognition]);
 
-  // User can click on Anchor to hear greeting / guidance
+  // Avatar Click Handler
   const handleAvatarClick = () => {
-    speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN);
-    initAutoVoiceRecognition();
+    speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN, () => {
+      initAutoVoiceRecognition();
+    });
   };
 
-  const tiltX = mousePos.y * -9;
-  const tiltY = mousePos.x * 12;
+  const tiltX = mousePos.y * -8;
+  const tiltY = mousePos.x * 10;
 
   return (
     <div className="flex flex-col items-center relative w-full select-none">
-      {/* Main 3D Pixar News Presenter Studio Canvas */}
+      {/* Main 3D Pixar News Presenter Studio Stage */}
       <div
         ref={containerRef}
         onMouseEnter={() => setIsHovered(true)}
@@ -421,69 +464,39 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         onClick={handleAvatarClick}
         className={`relative flex items-center justify-center cursor-pointer group ${className}`}
         style={{
-          width: size,
-          height: Math.round(size * 1.15),
+          width: '100%',
+          maxWidth: size,
+          aspectRatio: '16/14',
           perspective: '1200px',
         }}
-        title="میں سمیر حسین کی اسسٹنٹ ہوں۔ مجھے کلک کریں یا بتائیں کہاں جانا ہے!"
+        title="AYLA // DEV-75 AI CO-PILOT — Speak or click to navigate"
       >
-        {/* 1. Deep Core Ambient Studio Spotlight Nebula */}
+        {/* Deep Core Ambient Studio Spotlight Glow */}
         <div
-          className={`absolute rounded-full blur-[90px] pointer-events-none transition-all duration-700 ${
-            isSpeaking || isListening
-              ? 'scale-135 opacity-95'
+          className={`absolute rounded-full blur-[80px] pointer-events-none transition-all duration-700 ${
+            isSpeaking
+              ? 'scale-125 opacity-90'
               : isHovered
-              ? 'scale-120 opacity-85'
-              : 'opacity-70'
+              ? 'scale-110 opacity-75'
+              : 'opacity-55'
           }`}
           style={{
-            width: size * 0.85,
-            height: size * 0.85,
-            background: 'radial-gradient(circle, #00F2FE 0%, #7928CA 40%, rgba(0, 242, 254, 0) 75%)',
-            animation: 'pulseSlow 4s infinite ease-in-out',
+            width: '80%',
+            height: '80%',
+            background: 'radial-gradient(circle, #00F2FE 0%, #7928CA 45%, rgba(0, 242, 254, 0) 75%)',
           }}
         />
 
-        {/* 2. Orbiting Floating Tech Badges */}
-        {ORBITING_TECH.map((tech, i) => {
-          const rad = (tech.angle * Math.PI) / 180;
-          const xOffset = Math.cos(rad) * (tech.radius * 0.95);
-          const yOffset = Math.sin(rad) * (tech.radius * 0.78);
-
-          return (
-            <div
-              key={i}
-              className="absolute z-20 pointer-events-none sm:pointer-events-auto transition-transform hover:scale-125"
-              style={{
-                transform: `translate(${xOffset}px, ${yOffset}px)`,
-                animation: `orbitFloat 3.8s ease-in-out infinite ${i * 0.6}s`,
-              }}
-            >
-              <div
-                className="px-3 py-1 rounded-full font-mono text-[10px] font-bold tracking-wider bg-space-950/95 border backdrop-blur-xl shadow-lg flex items-center space-x-1.5 transition-all"
-                style={{
-                  borderColor: `${tech.color}70`,
-                  color: tech.color,
-                  boxShadow: `0 0 15px ${tech.color}35`,
-                }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-                <span>{tech.label}</span>
-              </div>
-            </div>
-          );
-        })}
-
-        {/* 3. 3D Pixar News Presenter Character Card Stage */}
+        {/* 3D Pixar News Presenter Studio Stage Card (Zero clunky clutter) */}
         <div
-          className="relative z-10 w-full max-w-[420px] rounded-3xl overflow-hidden border border-energy-teal/35 bg-space-900/90 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(0,242,254,0.2)] transition-transform duration-200 ease-out group-hover:border-energy-teal/70"
+          className="relative z-10 w-full rounded-3xl overflow-hidden border border-energy-teal/35 bg-space-900/90 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(0,242,254,0.2)] transition-transform duration-200 ease-out group-hover:border-energy-teal/70"
           style={{
-            transform: `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateZ(25px)`,
-            animation: 'avatarLevitate 4.5s ease-in-out infinite',
+            transform: `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateZ(20px)`,
+            animation: 'avatarLevitate 5s ease-in-out infinite',
           }}
         >
           {/* Top Holographic Broadcast Header */}
-          <div className="flex items-center justify-between px-4 py-2 bg-space-950/80 border-b border-slate-800/80">
+          <div className="flex items-center justify-between px-4 py-2.5 bg-space-950/85 border-b border-slate-800/80">
             <div className="flex items-center space-x-2">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75" />
@@ -494,13 +507,13 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
               </span>
             </div>
 
-            <div className="flex items-center space-x-2 font-mono text-[10px] text-slate-400">
+            <div className="flex items-center space-x-1.5 font-mono text-[10px] text-slate-400">
               <Radio className="w-3 h-3 text-energy-teal animate-pulse" />
-              <span>AYLA // SAMEER'S AI PRESENTER</span>
+              <span>AYLA // CO-PILOT</span>
             </div>
           </div>
 
-          {/* High-Resolution 3D Pixar News Anchor Character Image */}
+          {/* High-Resolution 3D Pixar News Anchor Character Image (Clean & Unobscured) */}
           <div className="relative w-full aspect-[16/10] overflow-hidden bg-space-950">
             <img
               src="/media/news_anchor.jpg"
@@ -509,60 +522,48 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             />
 
             {/* Ambient Studio Lighting Sheen Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-space-950 via-transparent to-transparent opacity-80 pointer-events-none" />
-
-            {/* Dynamic Soundwave Equalizer Rings on Studio Microphone */}
-            {(isSpeaking || isListening) && (
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-end justify-center space-x-1 pointer-events-none z-10 px-4 py-1.5 rounded-full bg-space-950/80 border border-energy-teal/40 backdrop-blur-md shadow-lg">
-                <span className="font-mono text-[10px] font-bold text-energy-teal mr-1">
-                  {isSpeaking ? '🔊 BOL RAHI HOON' : '🎙️ SUN RAHI HOON'}
-                </span>
-                {audioJitter.map((h, idx) => (
-                  <span
-                    key={idx}
-                    className="w-1 bg-energy-cyan rounded-full transition-all duration-75"
-                    style={{ height: `${h}px` }}
-                  />
-                ))}
-              </div>
-            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-space-950 via-transparent to-transparent opacity-75 pointer-events-none" />
           </div>
 
-          {/* Broadcast Desk Footer with Title Plate */}
+          {/* Broadcast Desk Footer with Title Plate (Clean English branding - Urdu removed per Pick 3) */}
           <div className="px-5 py-3 bg-gradient-to-r from-space-950 via-space-900 to-space-950 border-t border-slate-800 flex items-center justify-between">
             <div>
-              <p className="font-sans text-xs font-bold text-white tracking-wide">
-                آئیلا (Ayla) — خودمختار AI معاون
+              <p className="font-mono text-xs font-bold text-white tracking-wider uppercase">
+                AYLA // DEV-75 CO-PILOT
               </p>
-              <p className="font-mono text-[10px] text-energy-cyan/90">
-                Senior Systems & Full-Stack Architect Dispatcher
+              <p className="font-mono text-[10px] text-energy-teal font-medium">
+                Autonomous AI & Systems Navigator
               </p>
             </div>
 
-            <div className="flex items-center space-x-1 text-energy-teal">
+            <div className="flex items-center space-x-1.5 text-energy-cyan">
               <Sparkles className="w-3.5 h-3.5 animate-spin" />
-              <span className="font-mono text-[10px] font-semibold">100% ONLINE</span>
+              <span className="font-mono text-[10px] font-semibold tracking-wider">ONLINE</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Clean Teleportation Horizontal Strip (All Bulky Boxes, Modes & Speak Buttons Permanently Removed!) */}
-      <div className="flex flex-col items-center gap-2 mt-4 z-20 w-full max-w-xl">
+      {/* Clean Teleportation Horizontal Strip */}
+      <div className="flex flex-col items-center gap-2 mt-4 z-20 w-full max-w-xl px-2">
         {/* Subtle Live Audio Status indicator */}
         <div className="flex items-center space-x-2 font-mono text-[11px] text-slate-400">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          <span className="text-slate-300 font-semibold">
-            {isListening ? '🎙️ خودکار سن رہی ہوں (کوئی بٹن دبانے کی ضرورت نہیں)' : isSpeaking ? '🔊 بول رہی ہوں...' : '🌸 آئیلا آن لائن ہے — بس بولیں یا نیچے کلک کریں'}
+          <span className="text-slate-300 font-medium">
+            {isSpeaking
+              ? 'Ayla Speaking...'
+              : isListening
+              ? 'Listening Hands-Free (Speak anytime)'
+              : 'Ayla Online — Speak or click below'}
           </span>
         </div>
 
         {/* 1-Click Teleportation Horizontal Pills */}
         <div className="w-full flex items-center justify-center">
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1 px-2 max-w-full">
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1 px-1 max-w-full">
             {NAV_TARGETS.map((tgt) => {
               const Icon = tgt.icon;
               return (
@@ -593,40 +594,8 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             transform: translateY(0px) rotate(0deg);
           }
           50% {
-            transform: translateY(-12px) rotate(-1deg);
+            transform: translateY(-8px) rotate(-0.5deg);
           }
-        }
-        @keyframes orbitFloat {
-          0%, 100% {
-            transform: translate(var(--tx, 0), var(--ty, 0)) translateY(0px);
-          }
-          50% {
-            transform: translate(var(--tx, 0), var(--ty, 0)) translateY(-10px);
-          }
-        }
-        @keyframes spinClockwise {
-          from { transform: rotateX(68deg) rotateZ(0deg); }
-          to { transform: rotateX(68deg) rotateZ(360deg); }
-        }
-        @keyframes spinCounterClockwise {
-          from { transform: rotateX(-52deg) rotateY(38deg) rotateZ(360deg); }
-          to { transform: rotateX(-52deg) rotateY(38deg) rotateZ(0deg); }
-        }
-        @keyframes soundwaveExpand {
-          0% {
-            transform: scale(0.4);
-            opacity: 0.9;
-          }
-          100% {
-            transform: scale(1.9);
-            opacity: 0;
-          }
-        }
-        .animate-soundwave {
-          animation: soundwaveExpand 1.6s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
-        }
-        .animate-soundwave-delayed {
-          animation: soundwaveExpand 1.6s cubic-bezier(0.1, 0.8, 0.3, 1) infinite 0.7s;
         }
       `}</style>
     </div>
