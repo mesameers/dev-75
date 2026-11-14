@@ -2,6 +2,7 @@ import React from 'react';
 import { Film, ArrowRight, Code2, Database, Layers, Sparkles, Activity, Server, Cpu } from 'lucide-react';
 import { CosmicAvatar } from './CosmicAvatar';
 import { HeroTelemetryCard } from './HeroTelemetryCard';
+import { HeroSystemMatrix } from './HeroSystemMatrix';
 import { CyberScramble } from './CyberScramble';
 
 export const Hero = () => {
@@ -85,6 +86,9 @@ export const Hero = () => {
             </div>
           </div>
         </div>
+
+        {/* Real-Time Developer System & Performance Pulse Matrix */}
+        <HeroSystemMatrix />
 
         {/* Floating Capability Cards (Subtle Levitation Grid) */}
         <div className="w-full mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4">

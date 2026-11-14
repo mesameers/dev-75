@@ -103,9 +103,9 @@ export const ContactCTA = () => {
         </div>
 
         {/* 3-Column Header Deck: Left Floating Beacon, Center Headline, Right Floating SLA */}
-        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-10">
+        <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center mb-10">
           {/* Left Flank: 3D Quantum Carrier Beacon (Fills Left Red Box!) */}
-          <div className="hidden lg:flex lg:col-span-3 flex-col p-5 rounded-2xl bg-space-900/80 border border-slate-800/80 backdrop-blur-xl shadow-lg">
+          <div className="flex flex-col md:col-span-6 lg:col-span-3 p-5 rounded-2xl bg-space-900/80 border border-slate-800/80 backdrop-blur-xl shadow-lg">
             <div className="flex items-center space-x-2 font-mono text-xs text-energy-teal mb-2">
               <Radio className="w-4 h-4 text-energy-cyan animate-pulse" />
               <span className="font-bold">CARRIER_SIGNAL</span>
@@ -119,7 +119,7 @@ export const ContactCTA = () => {
           </div>
 
           {/* Center Headline (6 cols) */}
-          <div className="lg:col-span-6 flex flex-col items-center text-center">
+          <div className="md:col-span-12 lg:col-span-6 flex flex-col items-center text-center order-first lg:order-none">
             <h2 className="text-5xl sm:text-7xl md:text-8xl font-black text-white tracking-tight leading-none mb-3">
               LET'S{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-energy-teal via-white to-secondary-violet animate-gradient-x">
@@ -132,14 +132,14 @@ export const ContactCTA = () => {
           </div>
 
           {/* Right Flank: Real-Time Availability & SLA (Fills Right Red Box!) */}
-          <div className="hidden lg:flex lg:col-span-3 flex-col p-5 rounded-2xl bg-space-900/80 border border-slate-800/80 backdrop-blur-xl shadow-lg text-right">
-            <div className="flex items-center justify-end space-x-2 font-mono text-xs text-cyan-400 mb-2">
+          <div className="flex flex-col md:col-span-6 lg:col-span-3 p-5 rounded-2xl bg-space-900/80 border border-slate-800/80 backdrop-blur-xl shadow-lg text-left md:text-right">
+            <div className="flex items-center md:justify-end space-x-2 font-mono text-xs text-cyan-400 mb-2">
               <span className="font-bold">DISPATCH_STATUS</span>
               <Activity className="w-4 h-4 text-emerald-400 animate-pulse" />
             </div>
             <div className="font-mono text-xl font-black text-emerald-400 mb-1">AVAILABLE NOW</div>
             <div className="font-mono text-xs text-slate-300 font-semibold mb-3">&lt; 2 HOUR RESPONSE SLA</div>
-            <div className="flex items-center justify-end space-x-2 font-mono text-[11px] text-slate-400 pt-2 border-t border-slate-800">
+            <div className="flex items-center md:justify-end space-x-2 font-mono text-[11px] text-slate-400 pt-2 border-t border-slate-800">
               <Clock className="w-3.5 h-3.5 text-slate-500" />
               <span>TIMEZONE: UTC+5 / REMOTE</span>
             </div>

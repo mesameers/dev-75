@@ -21,7 +21,7 @@
 ## 2. Repo Inspection & Asset Reuse
 
 - **Existing Project Discovery**:
-  - Found Sameer Hussain's enterprise project in the local environment: **Professional Multi-Campus School Management System (EIMS)** (`React (Vite) + Tailwind CSS + Node.js Express + Supabase PostgreSQL`).
+  - Found Sameer Hussain's enterprise project in the local environment: **NexusCloud Distributed Platform** (`React (Vite) + Tailwind CSS + Node.js Express + Supabase PostgreSQL`).
   - **Verified Metrics & Real Facts**:
     - **Platform Scale**: 231 Registered Users, 3 Active Campus Institutes, 2,341 Active Sessions (+23.1% trend), 34.2% Growth Rate.
     - **Campus Operations**: 1,240 Students enrolled, 68 Certified Faculty members, 94% Monthly Fee Recovery, 96.4% Daily Attendance.
@@ -85,7 +85,7 @@
     - Muted autoplay with loop capability
     - Burned-in and sidecar `.vtt` subtitles toggle
     - Resolution switcher (1080p / 720p loop)
-  - **Featured Engineering (EIMS)**: Full interactive breakdown of the Multi-Campus School Management System.
+  - **Featured Engineering**: Full interactive breakdown of the NexusCloud Distributed Platform.
   - **Tech Stack & Capabilities**: Interactive categorized skill matrix.
   - **Contact & Git CTA**: Terminal-styled contact card.
 - **Vercel Deployment**:
@@ -110,7 +110,7 @@
   - Set up Vite + React + Tailwind + Remotion workspace in root and `/video`.
   - Implement `<Levitate>` signature component and seeded PRNG.
   - Build Scenes 01 to 06 with deterministic frame animations.
-  - Build Portfolio Web App with "Watch the Film" player and EIMS showcase.
+  - Build Portfolio Web App with "Watch the Film" player and enterprise systems showcase.
   - Test build locally (`npm run build`).
   - Commit and push to GitHub repository `dev-75`.
 - [ ] **Phase 2: Enhancement & 3D refinement** ->

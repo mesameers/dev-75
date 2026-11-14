@@ -37,6 +37,10 @@ export const Navbar = () => {
           <a href="#code" className="hover:text-energy-teal transition-colors">
             Code
           </a>
+          <a href="#api-playground" className="hover:text-energy-teal transition-colors flex items-center space-x-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>API Suite</span>
+          </a>
           <a href="#skills" className="hover:text-energy-teal transition-colors">
             Matrix
           </a>

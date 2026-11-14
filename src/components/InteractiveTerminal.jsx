@@ -95,9 +95,9 @@ export const InteractiveTerminal = () => {
         </div>
 
         {/* 3-Column Full-Width Command Center Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Column: Live Cluster Telemetry HUD (3 cols) */}
-          <div className="lg:col-span-3 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+          {/* Left Column: Live Cluster Telemetry HUD */}
+          <div className="md:col-span-6 lg:col-span-3 space-y-4">
             <div className="p-5 rounded-2xl bg-space-900/85 border border-slate-800 backdrop-blur-xl shadow-lg">
               <div className="flex items-center justify-between font-mono text-xs text-slate-400 mb-4 pb-2 border-b border-slate-800">
                 <span className="flex items-center space-x-1.5 text-energy-teal">
@@ -149,10 +149,10 @@ export const InteractiveTerminal = () => {
             </div>
           </div>
 
-          {/* Center Column: Interactive Terminal Console (6 cols) */}
+          {/* Center Column: Interactive Terminal Console */}
           <div
             onClick={() => inputRef.current?.focus()}
-            className="lg:col-span-6 rounded-2xl bg-space-900/90 border border-slate-800 shadow-[0_25px_70px_rgba(0,0,0,0.85)] overflow-hidden font-mono text-xs sm:text-sm cursor-text backdrop-blur-2xl"
+            className="md:col-span-12 lg:col-span-6 order-first lg:order-none rounded-2xl bg-space-900/90 border border-slate-800 shadow-[0_25px_70px_rgba(0,0,0,0.85)] overflow-hidden font-mono text-xs sm:text-sm cursor-text backdrop-blur-2xl"
           >
             {/* Top Bar */}
             <div className="flex items-center justify-between px-4 py-3 bg-space-850 border-b border-slate-800">
@@ -207,8 +207,8 @@ export const InteractiveTerminal = () => {
             </form>
           </div>
 
-          {/* Right Column: Quick Commands & Status Matrix (3 cols) */}
-          <div className="lg:col-span-3 space-y-4">
+          {/* Right Column: Quick Commands & Status Matrix */}
+          <div className="md:col-span-6 lg:col-span-3 space-y-4">
             <div className="p-5 rounded-2xl bg-space-900/85 border border-slate-800 backdrop-blur-xl shadow-lg">
               <div className="flex items-center justify-between font-mono text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
                 <span className="text-violet-400 font-bold">// QUICK EXECUTE</span>
