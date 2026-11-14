@@ -1,5 +1,23 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Volume2, VolumeX, MessageSquare, Sparkles, Mic, Radio, Shield, Zap } from 'lucide-react';
+import {
+  Volume2,
+  VolumeX,
+  MessageSquare,
+  Sparkles,
+  Mic,
+  Radio,
+  Shield,
+  Zap,
+  Compass,
+  ArrowRight,
+  Film,
+  Layers,
+  Code2,
+  Cpu,
+  Terminal,
+  Mail,
+  Activity
+} from 'lucide-react';
 
 const ORBITING_TECH = [
   { label: 'React 18', angle: 0, radius: 200, tilt: 65, color: '#00F2FE' },
@@ -44,9 +62,79 @@ const WELCOME_SPEECHES = [
   "Welcome! Take a look through Sameer's portfolio below to see hardened multi-tenant platforms, sub-15 millisecond latency architectures, and 99.99 percent cloud uptime SLAs."
 ];
 
+// Teleport Voice Navigation Map (Supports English & Roman Urdu voice triggers)
+const NAV_TARGETS = [
+  {
+    id: 'film',
+    label: 'Film',
+    icon: Film,
+    color: '#00F2FE',
+    keywords: ['film', 'video', 'watch', 'movie', 'cinema', 'remotion', 'film dikhao', 'video dikhao'],
+    voiceConfirm: 'Affirmative! Course plotted to Built in Orbit film cinema.',
+  },
+  {
+    id: 'projects',
+    label: 'Systems',
+    icon: Layers,
+    color: '#10B981',
+    keywords: ['projects', 'systems', 'featured', 'platform', 'work', 'project', 'projects dikhao'],
+    voiceConfirm: 'Course set for Featured Engineering Systems.',
+  },
+  {
+    id: 'architecture',
+    label: 'Topology',
+    icon: Activity,
+    color: '#8B5CF6',
+    keywords: ['architecture', 'topology', 'microservices', 'cloud', 'cluster', 'nodes', 'spike'],
+    voiceConfirm: 'Affirmative! Navigating to Microservices Mesh Topology.',
+  },
+  {
+    id: 'code',
+    label: 'Code',
+    icon: Code2,
+    color: '#38BDF8',
+    keywords: ['code', 'inspector', 'algorithms', 'typescript', 'sql', 'physics', 'code dikhao'],
+    voiceConfirm: 'Jump initiated. Inspecting Production Code Architectures.',
+  },
+  {
+    id: 'api-playground',
+    label: 'API Suite',
+    icon: Zap,
+    color: '#EC4899',
+    keywords: ['api', 'playground', 'endpoint', 'test', 'suite', 'request', 'api dikhao', 'api chalao'],
+    voiceConfirm: 'Opening Live Production API Suite and test runner.',
+  },
+  {
+    id: 'tech-sphere',
+    label: '3D Matrix',
+    icon: Compass,
+    color: '#F59E0B',
+    keywords: ['skills', 'tech', 'stack', 'matrix', 'sphere', '3d', 'skills dikhao', 'technologies'],
+    voiceConfirm: 'Entering the 3D Interactive Technology Matrix.',
+  },
+  {
+    id: 'terminal',
+    label: 'CLI',
+    icon: Terminal,
+    color: '#A855F7',
+    keywords: ['terminal', 'cli', 'shell', 'bash', 'command', 'terminal dikhao'],
+    voiceConfirm: 'Affirmative! Launching Orbit CLI Developer Shell.',
+  },
+  {
+    id: 'contact',
+    label: 'Contact',
+    icon: Mail,
+    color: '#00FFE0',
+    keywords: ['contact', 'hire', 'talk', 'email', 'connect', 'message', 'rabta', 'contact dikhao'],
+    voiceConfirm: 'Connecting you to Sameer Hussain Direct Dispatch Link.',
+  },
+];
+
 export const CosmicAvatar = ({ size = 420, className = "" }) => {
   const containerRef = useRef(null);
   const hasSpokenFirstRef = useRef(false);
+  const recognitionRef = useRef(null);
+
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [activeMode, setActiveMode] = useState(MODES[0]);
@@ -55,7 +143,8 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
 
   // Speech State
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [speechText, setSpeechText] = useState("👋 Welcome! Click me or tap 'Hear DEV-75 Speak' to explore Sameer's portfolio.");
+  const [isListening, setIsListening] = useState(false);
+  const [speechText, setSpeechText] = useState("👋 Welcome! Click me or tell me where to go (e.g., 'Go to API', 'Play film').");
   const [speechIndex, setSpeechIndex] = useState(0);
   const [speechSupported, setSpeechSupported] = useState(false);
 
@@ -84,7 +173,7 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
   // Equalizer visualizer rhythm: bounce more intensely when speaking
   useEffect(() => {
     const eqInterval = setInterval(() => {
-      const multiplier = isSpeaking ? 1.6 : 1.0;
+      const multiplier = isSpeaking ? 1.7 : isListening ? 1.4 : 1.0;
       setAudioBars([
         Math.floor((6 + Math.random() * 18) * multiplier),
         Math.floor((10 + Math.random() * 20) * multiplier),
@@ -92,9 +181,9 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
         Math.floor((8 + Math.random() * 19) * multiplier),
         Math.floor((5 + Math.random() * 16) * multiplier),
       ]);
-    }, isSpeaking ? 90 : 180);
+    }, isSpeaking ? 85 : 180);
     return () => clearInterval(eqInterval);
-  }, [isSpeaking]);
+  }, [isSpeaking, isListening]);
 
   // Speech Synthesis Core Function
   const speak = useCallback((text) => {
@@ -133,10 +222,84 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
     }
   }, []);
 
+  // Teleport Navigation Function (Smooth scroll to requested section)
+  const teleportTo = useCallback(
+    (targetId, voiceConfirmText) => {
+      const targetElement = document.getElementById(targetId);
+      if (!targetElement) return;
+
+      // 1. Announce verbally
+      speak(voiceConfirmText || `Navigating to ${targetId} now.`);
+
+      // 2. Smoothly scroll into view
+      setTimeout(() => {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 350);
+    },
+    [speak]
+  );
+
+  // Web Speech Recognition for Voice Commands
+  const startVoiceCommand = useCallback(() => {
+    if (typeof window === 'undefined') return;
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      speak("Voice recognition is not supported in this browser. You can click any teleport chip below!");
+      return;
+    }
+
+    try {
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+
+      const recognition = new SpeechRecognition();
+      recognitionRef.current = recognition;
+      recognition.lang = 'en-US';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        setSpeechText("🎙️ Listening... Tell me: 'Go to API', 'Play film', 'Show projects', or 'Open terminal'!");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        setIsListening(false);
+        setSpeechText(`Heard: "${transcript}"`);
+
+        // Find match in NAV_TARGETS
+        const matched = NAV_TARGETS.find((target) =>
+          target.keywords.some((kw) => transcript.includes(kw))
+        );
+
+        if (matched) {
+          teleportTo(matched.id, matched.voiceConfirm);
+        } else {
+          speak(`I heard "${transcript}". Say 'Go to API', 'Play film', or tap any quick chip below!`);
+        }
+      };
+
+      recognition.onerror = () => {
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } catch (err) {
+      setIsListening(false);
+    }
+  }, [speak, teleportTo]);
+
+  // Click on Avatar: Prioritize Welcome & Portfolio Tour first
   const triggerNextSpeech = (e) => {
     if (e) e.stopPropagation();
 
-    // If first time clicking, always speak the Welcome & Portfolio Exploration message first!
     if (!hasSpokenFirstRef.current) {
       hasSpokenFirstRef.current = true;
       setSpeechIndex(0);
@@ -165,41 +328,64 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
 
   return (
     <div className="flex flex-col items-center relative">
-      {/* 0. Holographic Speech Subtitle Bubble (Renders above Avatar) */}
+      {/* 0. Holographic Speech Subtitle Bubble & Voice Teleport Bar */}
       <div
-        className={`mb-4 max-w-sm sm:max-w-md px-4 py-2.5 rounded-2xl bg-space-900/95 border backdrop-blur-xl shadow-2xl transition-all duration-300 z-30 flex items-start space-x-3 text-left ${
-          isSpeaking
-            ? 'scale-105 border-energy-teal shadow-[0_0_30px_rgba(0,242,254,0.35)]'
-            : 'border-slate-800/90 opacity-90 hover:opacity-100'
+        className={`mb-4 w-full max-w-sm sm:max-w-md px-4 py-3 rounded-2xl bg-space-900/95 border backdrop-blur-xl shadow-2xl transition-all duration-300 z-30 flex flex-col space-y-2 text-left ${
+          isSpeaking || isListening
+            ? 'scale-[1.02] border-energy-teal shadow-[0_0_30px_rgba(0,242,254,0.35)]'
+            : 'border-slate-800/90 opacity-95 hover:opacity-100'
         }`}
         style={{
-          borderColor: isSpeaking ? activeMode.color : undefined,
+          borderColor: isSpeaking || isListening ? activeMode.color : undefined,
         }}
       >
-        <div className="relative flex h-3 w-3 shrink-0 mt-1">
-          {isSpeaking && (
-            <span
-              className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-              style={{ backgroundColor: activeMode.color }}
-            />
-          )}
-          <span
-            className="relative inline-flex rounded-full h-3 w-3"
-            style={{ backgroundColor: isSpeaking ? activeMode.color : '#64748B' }}
-          />
+        {/* Top Status Header */}
+        <div className="flex items-center justify-between font-mono text-[10px] text-slate-400 pb-1.5 border-b border-slate-800/80">
+          <span className="font-bold flex items-center space-x-1.5" style={{ color: activeMode.color }}>
+            <Volume2 className="w-3.5 h-3.5 animate-pulse" />
+            <span>DEV-75 // AUTONOMOUS NAVIGATOR</span>
+          </span>
+          <span className="font-semibold text-energy-cyan">
+            {isListening ? '🎙️ LISTENING...' : isSpeaking ? '🔊 TRANSMITTING' : 'ORBIT:READY'}
+          </span>
         </div>
 
-        <div className="flex-1">
-          <div className="flex items-center justify-between font-mono text-[10px] text-slate-400 mb-1">
-            <span className="font-bold flex items-center space-x-1" style={{ color: activeMode.color }}>
-              <Volume2 className="w-3 h-3 animate-pulse" />
-              <span>DEV-75 // SYNTHESIZER</span>
+        {/* Dynamic Spoken Subtitle Text */}
+        <p className="font-mono text-xs text-slate-200 leading-snug line-clamp-3">
+          "{speechText}"
+        </p>
+
+        {/* Quick Teleportation Command Chips */}
+        <div className="pt-2 border-t border-slate-800/80">
+          <div className="flex items-center justify-between font-mono text-[10px] text-slate-400 mb-1.5">
+            <span className="flex items-center space-x-1 text-energy-teal">
+              <Compass className="w-3 h-3 animate-spin" />
+              <span>TELL ME WHERE TO GO:</span>
             </span>
-            <span className="text-slate-500 font-semibold">{isSpeaking ? 'TRANSMITTING' : 'LISTENING'}</span>
+            <span className="text-slate-500">1-CLICK TELEPORT</span>
           </div>
-          <p className="font-mono text-xs text-slate-200 leading-snug line-clamp-3">
-            "{speechText}"
-          </p>
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5">
+            {NAV_TARGETS.map((tgt) => {
+              const Icon = tgt.icon;
+              return (
+                <button
+                  key={tgt.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    teleportTo(tgt.id, tgt.voiceConfirm);
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-space-950 border border-slate-800 hover:border-energy-teal font-mono text-[10px] font-bold text-slate-300 hover:text-white flex items-center space-x-1 transition-all whitespace-nowrap active:scale-95 shadow-sm"
+                  style={{
+                    borderColor: `${tgt.color}30`,
+                  }}
+                  title={`Teleport to ${tgt.label}`}
+                >
+                  <Icon className="w-3 h-3" style={{ color: tgt.color }} />
+                  <span>{tgt.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -215,12 +401,12 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
           height: size,
           perspective: '1200px',
         }}
-        title="Click to speak with DEV-75!"
+        title="Click me to hear DEV-75 speak, or use voice commands to navigate!"
       >
         {/* 1. Deep Core Gravitational Quantum Nebula */}
         <div
           className={`absolute rounded-full blur-[80px] pointer-events-none transition-all duration-700 ${
-            pulseRing || isSpeaking
+            pulseRing || isSpeaking || isListening
               ? 'scale-140 opacity-95'
               : isHovered
               ? 'scale-120 opacity-85'
@@ -239,8 +425,8 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
           }}
         />
 
-        {/* 2. Interactive Soundwave Ripple Rings When Speaking */}
-        {isSpeaking && (
+        {/* 2. Interactive Soundwave Ripple Rings When Speaking / Listening */}
+        {(isSpeaking || isListening) && (
           <>
             <div
               className="absolute rounded-full border-2 pointer-events-none animate-soundwave"
@@ -535,10 +721,10 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
 
             {/* Holographic Visor Monospace Code Text */}
             <text x="88" y="78" fill="#04060A" fontSize="7" fontFamily="monospace" fontWeight="900" letterSpacing="0.9">
-              {isSpeaking ? "SPEAKING..." : activeMode.id === 'overdrive' ? "OVERDRIVE" : "<DEV-75/>"}
+              {isSpeaking ? "SPEAKING..." : isListening ? "LISTENING" : activeMode.id === 'overdrive' ? "OVERDRIVE" : "<DEV-75/>"}
             </text>
             <text x="88" y="88" fill="#04060A" fontSize="6" fontFamily="monospace" fontWeight="800" letterSpacing="0.6">
-              {isSpeaking ? "VOICE:ACTIVE" : "ORBIT:LIVE"}
+              {isSpeaking ? "VOICE:ACTIVE" : isListening ? "MIC:ENGAGED" : "ORBIT:LIVE"}
             </text>
 
             {/* Dual Communication Antenna Beacons */}
@@ -595,17 +781,32 @@ export const CosmicAvatar = ({ size = 420, className = "" }) => {
           ))}
         </div>
 
-        {/* Speak / Voice Assistant Action Button */}
+        {/* Live Voice Navigation Trigger Button */}
         <button
-          onClick={triggerNextSpeech}
+          onClick={startVoiceCommand}
           className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-xl font-mono text-[11px] font-black border transition-all shadow-md active:scale-95 ${
-            isSpeaking
-              ? 'bg-energy-teal text-space-950 border-energy-cyan shadow-[0_0_20px_rgba(0,242,254,0.4)] animate-pulse'
+            isListening
+              ? 'bg-rose-500 text-white border-rose-400 shadow-[0_0_25px_rgba(244,63,94,0.6)] animate-pulse scale-105'
               : 'bg-space-900/90 hover:bg-space-850 border-slate-700 text-slate-200 hover:border-energy-teal hover:text-energy-cyan'
           }`}
+          title="Click to speak a voice command (e.g. 'Go to API', 'Play film')!"
         >
-          <Mic className={`w-3.5 h-3.5 ${isSpeaking ? 'text-space-950 fill-current' : 'text-energy-teal'}`} />
-          <span>{isSpeaking ? 'SPEAKING...' : 'HEAR DEV-75 SPEAK'}</span>
+          <Mic className={`w-3.5 h-3.5 ${isListening ? 'animate-bounce text-white' : 'text-energy-teal'}`} />
+          <span>{isListening ? 'LISTENING (SPEAK NOW)...' : '🎙️ VOICE NAVIGATOR'}</span>
+        </button>
+
+        {/* Speak Dialogue Button */}
+        <button
+          onClick={triggerNextSpeech}
+          className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl font-mono text-[11px] font-bold border transition-all shadow-sm active:scale-95 ${
+            isSpeaking
+              ? 'bg-energy-teal text-space-950 border-energy-cyan shadow-[0_0_20px_rgba(0,242,254,0.4)] animate-pulse'
+              : 'bg-space-950/80 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+          }`}
+          title="Click to hear welcome and capability voice lines"
+        >
+          <Volume2 className="w-3.5 h-3.5" />
+          <span>{isSpeaking ? 'SPEAKING...' : 'HEAR DEV-75'}</span>
         </button>
       </div>
 

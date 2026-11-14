@@ -40,7 +40,7 @@ export function App() {
         <WatchTheFilm />
         
         {/* Interactive 3D Technology Universe */}
-        <section className="py-20 px-6 max-w-7xl mx-auto">
+        <section id="tech-sphere" className="py-20 px-6 max-w-7xl mx-auto scroll-mt-24">
           <Interactive3DTechSphere />
         </section>
 
