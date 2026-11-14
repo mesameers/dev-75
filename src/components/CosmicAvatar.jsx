@@ -79,14 +79,14 @@ const URDU_SPEECHES = [
   },
 ];
 
-// Complete Voice Navigation Map (Trained on Urdu, Roman Urdu & English)
+// Complete Voice Navigation Map (Trained on Urdu, Roman Urdu & English + Phonetic Matchers)
 const NAV_TARGETS = [
   {
     id: 'film',
     label: 'Film',
     icon: Film,
     color: '#00F2FE',
-    keywords: ['film', 'video', 'watch', 'movie', 'cinema', 'remotion', 'film dikhao', 'video dikhao', 'movie dikhao', 'film chalao'],
+    keywords: ['film', 'flim', 'filam', 'video', 'vedio', 'movie', 'cinema', 'watch', 'remotion', 'film dikhao', 'video dikhao', 'movie dikhao', 'film chalao', 'فلم', 'ویڈیو', 'سینما'],
     voiceConfirm: "Theek hai! Aap ko 'Built in Orbit' film cinema per le kar ja rahi hoon.",
     subtitleUrdu: "چلیے! 'Built in Orbit' فلم سنیما پر چلتے ہیں۔",
   },
@@ -95,7 +95,7 @@ const NAV_TARGETS = [
     label: 'Projects',
     icon: Layers,
     color: '#10B981',
-    keywords: ['projects', 'systems', 'featured', 'platform', 'work', 'project', 'projects dikhao', 'systems dikhao', 'project dikhao', 'kam dikhao'],
+    keywords: ['project', 'projects', 'projeck', 'system', 'systems', 'featured', 'platform', 'work', 'kaam', 'kam', 'portfolio', 'projects dikhao', 'systems dikhao', 'project dikhao', 'kam dikhao', 'پروجیکٹ', 'پروجیکٹس', 'کام', 'سسٹم', 'سسٹمز'],
     voiceConfirm: "Jee bilkul! Sameer ke Featured Engineering Systems open ho rahe hain.",
     subtitleUrdu: "جی بالکل! سمیر کے Featured Engineering Systems پر پہنچ گئے ہیں۔",
   },
@@ -104,7 +104,7 @@ const NAV_TARGETS = [
     label: 'Topology',
     icon: Activity,
     color: '#8B5CF6',
-    keywords: ['architecture', 'topology', 'microservices', 'cloud', 'cluster', 'nodes', 'spike', 'architecture dikhao', 'topology dikhao'],
+    keywords: ['architecture', 'arkitecture', 'topology', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster', 'node', 'nodes', 'spike', 'architecture dikhao', 'topology dikhao', 'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ'],
     voiceConfirm: "Theek hai! Microservices Mesh Topology aur live data flow par chalte hain.",
     subtitleUrdu: "ٹھیک ہے! Microservices Mesh Topology لوڈ ہو رہی ہے۔",
   },
@@ -113,7 +113,7 @@ const NAV_TARGETS = [
     label: 'Code',
     icon: Code2,
     color: '#38BDF8',
-    keywords: ['code', 'inspector', 'algorithms', 'typescript', 'sql', 'physics', 'code dikhao', 'coding dikhao', 'algorithm'],
+    keywords: ['code', 'core', 'kood', 'coding', 'codes', 'kord', 'inspector', 'algorithms', 'algorithm', 'typescript', 'sql', 'physics', 'code dikhao', 'coding dikhao', 'core per', 'code per', 'core per lekar ja', 'code per lekar ja', 'کوڈ', 'الگورتھم', 'کوڈنگ'],
     voiceConfirm: "Zaroor! Production Code Inspector aur core algorithms par chaltay hain.",
     subtitleUrdu: "ضرور! Production Code Inspector اور الگورتھمز حاضر ہیں۔",
   },
@@ -122,16 +122,25 @@ const NAV_TARGETS = [
     label: 'API Suite',
     icon: Zap,
     color: '#EC4899',
-    keywords: ['api', 'playground', 'endpoint', 'test', 'suite', 'request', 'api dikhao', 'api chalao', 'api test'],
+    keywords: ['api', 'epi', 'a p i', 'playground', 'endpoint', 'endpoints', 'test', 'suite', 'request', 'rest', 'api dikhao', 'api chalao', 'api test', 'اے پی آئی', 'اے پی ائی', 'ٹیسٹ', 'سویٹ'],
     voiceConfirm: "Jee haan! Live Production API Playground khul raha hai.",
     subtitleUrdu: "جی ہاں! لائیو Production API Playground کھل رہا ہے۔",
+  },
+  {
+    id: 'skills',
+    label: 'Skills',
+    icon: Cpu,
+    color: '#06B6D4',
+    keywords: ['skills', 'skill', 'tech', 'stack', 'technology', 'technologies', 'skills dikhao', 'skills per jao', 'stack dikhao', 'اسکلز', 'ٹیکنالوجی'],
+    voiceConfirm: "Jee haan! Sameer ke core technical skills grid par chalte hain.",
+    subtitleUrdu: "جی ہاں! سمیر کے تمام ٹیکنیکل اسکلز گرڈ حاضر ہیں۔",
   },
   {
     id: 'tech-sphere',
     label: '3D Matrix',
     icon: Compass,
     color: '#F59E0B',
-    keywords: ['skills', 'tech', 'stack', 'matrix', 'sphere', '3d', 'skills dikhao', 'technologies', 'skills per jao', 'stack dikhao'],
+    keywords: ['matrix', 'sphere', '3d', 'globe', 'interactive', '3d dikhao', 'matrix dikhao', 'تھری ڈی', 'میٹرکس'],
     voiceConfirm: "Chaliye! 3D Interactive Technology Matrix open kar rahi hoon.",
     subtitleUrdu: "چلیے! 3D Interactive Technology Matrix کھل رہی ہے۔",
   },
@@ -140,7 +149,7 @@ const NAV_TARGETS = [
     label: 'CLI Terminal',
     icon: Terminal,
     color: '#A855F7',
-    keywords: ['terminal', 'cli', 'shell', 'bash', 'command', 'terminal dikhao', 'terminal kholo', 'cli dikhao'],
+    keywords: ['terminal', 'tarminus', 'cli', 'shell', 'bash', 'console', 'command', 'terminal dikhao', 'terminal kholo', 'cli dikhao', 'ٹرمینل', 'سی ایل آئی', 'شیل'],
     voiceConfirm: "Affirmative! Orbit CLI Developer Terminal launch kar rahi hoon.",
     subtitleUrdu: "آرڈر قبول! Orbit CLI ڈویلپر ٹرمینل لانچ کر رہی ہوں۔",
   },
@@ -149,7 +158,7 @@ const NAV_TARGETS = [
     label: 'Contact',
     icon: Mail,
     color: '#00FFE0',
-    keywords: ['contact', 'hire', 'talk', 'email', 'connect', 'message', 'rabta', 'contact dikhao', 'rabta karna hai', 'email dikhao'],
+    keywords: ['contact', 'kontact', 'hire', 'talk', 'email', 'mail', 'connect', 'message', 'baat', 'rabta', 'contact dikhao', 'rabta karna hai', 'email dikhao', 'رابطہ', 'ای میل', 'بات'],
     voiceConfirm: "Bilkul! Sameer Hussain ke Direct Contact Dispatch link par chalte hain.",
     subtitleUrdu: "بالکل! سمیر حسین کے Direct Contact لنک پر پہنچ گئے ہیں۔",
   },
@@ -158,7 +167,7 @@ const NAV_TARGETS = [
     label: 'Top / Hero',
     icon: ArrowRight,
     color: '#00F2FE',
-    keywords: ['upar', 'top', 'hero', 'home', 'shuru', 'wapas', 'upar jao', 'start'],
+    keywords: ['upar', 'top', 'hero', 'home', 'shuru', 'start', 'wapas', 'upar jao', 'main', 'اوپر', 'ہیرو', 'شروع'],
     voiceConfirm: "Wapas Orbit Command Bridge par le ja rahi hoon.",
     subtitleUrdu: "واپس اوپر Orbit Command Bridge پر آ گئے۔",
   },
@@ -276,24 +285,73 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     }
   }, []);
 
-  // Teleport Navigation Function
+  // Teleport Navigation Function with Multi-Strategy Scroll & Visual Glow Feedback
   const teleportTo = useCallback(
     (targetId, voiceConfirmText, subtitleUrduText = '') => {
-      const targetElement = document.getElementById(targetId);
-      if (!targetElement) return;
-
-      // 1. Announce verbally in Urdu
+      // 1. Announce verbally in Urdu & show live bilingual subtitles
       speak(voiceConfirmText, subtitleUrduText, voiceConfirmText);
 
-      // 2. Smoothly scroll into view
-      setTimeout(() => {
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 350);
+      // 2. Multi-strategy rock-solid navigation
+      const executeScroll = () => {
+        let el = document.getElementById(targetId);
+        
+        // Intelligent section ID aliases fallback
+        if (!el) {
+          if (targetId === 'skills') el = document.getElementById('tech-sphere');
+          else if (targetId === 'tech-sphere') el = document.getElementById('skills');
+          else if (targetId === 'architecture') el = document.getElementById('projects');
+        }
+
+        if (!el) {
+          console.warn(`Target section #${targetId} not found`);
+          return;
+        }
+
+        // Calculate absolute top offset accounting for sticky navigation bar (85px)
+        const rect = el.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const targetOffset = Math.max(0, rect.top + scrollTop - 85);
+
+        // Strategy A: Window scrollTo with smooth behavior
+        window.scrollTo({
+          top: targetOffset,
+          behavior: 'smooth',
+        });
+
+        // Strategy B: Element scrollIntoView fallback
+        try {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (e) {}
+
+        // Strategy C: Update URL anchor without jarring jump
+        try {
+          if (window.history && window.history.pushState) {
+            window.history.pushState(null, '', `#${targetId}`);
+          } else {
+            window.location.hash = targetId;
+          }
+        } catch (e) {}
+
+        // Strategy D: Dynamic Cyber Visual Target Glow Highlight
+        try {
+          el.style.transition = 'box-shadow 0.6s ease, outline 0.6s ease';
+          el.style.outline = '2px solid rgba(0, 242, 254, 0.85)';
+          el.style.boxShadow = '0 0 45px rgba(0, 242, 254, 0.45)';
+          setTimeout(() => {
+            el.style.outline = '';
+            el.style.boxShadow = '';
+          }, 2400);
+        } catch (e) {}
+      };
+
+      // Execute immediately and once again after 300ms to guarantee precision
+      executeScroll();
+      setTimeout(executeScroll, 320);
     },
     [speak]
   );
 
-  // Web Speech Recognition for Urdu & English Voice Commands
+  // Web Speech Recognition for Urdu & English Voice Commands (Phonetic & Fuzzy Matching)
   const startVoiceCommand = useCallback(() => {
     if (typeof window === 'undefined') return;
 
@@ -310,32 +368,59 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
       const recognition = new SpeechRecognition();
       recognitionRef.current = recognition;
-      recognition.lang = 'ur-PK'; // Primary Urdu recognition, falls back gracefully
+      recognition.lang = 'en-US'; // Uses robust multilingual phonetic engine
       recognition.continuous = false;
       recognition.interimResults = false;
 
       recognition.onstart = () => {
         setIsListening(true);
-        setSpeechTextUrdu("🎙️ سن رہی ہوں... مجھے بتائیں: 'API دکھاؤ'، 'فلم چلاؤ'، 'پروجیکٹس دکھاؤ'، یا 'ٹرمینل کھولو'!");
-        setSpeechTextRoman("🎙️ Sun rahi hoon... Batayein: 'API dikhao', 'Film dikhao', 'Projects dikhao', ya 'Terminal kholo'!");
+        setSpeechTextUrdu("🎙️ سن رہی ہوں... مجھے بتائیں: 'Code per lekar ja', 'Projects dikhao', 'API suite', یا 'Film'!");
+        setSpeechTextRoman("🎙️ Sun rahi hoon... Batayein: 'Code per lekar ja', 'Projects dikhao', 'API suite', ya 'Film'!");
       };
 
       recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
+        const rawTranscript = event.results[0][0].transcript.toLowerCase();
+        const cleanTranscript = rawTranscript.replace(/[.,?!]/g, '').trim();
         setIsListening(false);
-        setSpeechTextRoman(`Sun liya: "${transcript}"`);
+        setSpeechTextRoman(`Sun liya: "${cleanTranscript}"`);
 
-        // Find match in NAV_TARGETS
-        const matched = NAV_TARGETS.find((target) =>
-          target.keywords.some((kw) => transcript.includes(kw))
+        // 1. Direct Keyword & Phonetic Match in NAV_TARGETS
+        let matched = NAV_TARGETS.find((target) =>
+          target.keywords.some((kw) => cleanTranscript.includes(kw.toLowerCase()))
         );
+
+        // 2. Extra Phonetic Heuristics (e.g. user saying "core per lekar ja" -> code)
+        if (!matched) {
+          if (cleanTranscript.includes('core') || cleanTranscript.includes('kood') || cleanTranscript.includes('kord') || cleanTranscript.includes('cod')) {
+            matched = NAV_TARGETS.find((t) => t.id === 'code');
+          } else if (cleanTranscript.includes('flim') || cleanTranscript.includes('filam') || cleanTranscript.includes('vedio')) {
+            matched = NAV_TARGETS.find((t) => t.id === 'film');
+          } else if (cleanTranscript.includes('system') || cleanTranscript.includes('kam') || cleanTranscript.includes('kaam')) {
+            matched = NAV_TARGETS.find((t) => t.id === 'projects');
+          } else if (cleanTranscript.includes('mesh') || cleanTranscript.includes('cloud') || cleanTranscript.includes('topo')) {
+            matched = NAV_TARGETS.find((t) => t.id === 'architecture');
+          } else if (cleanTranscript.includes('epi') || cleanTranscript.includes('play')) {
+            matched = NAV_TARGETS.find((t) => t.id === 'api-playground');
+          } else if (cleanTranscript.includes('sphere') || cleanTranscript.includes('matrix')) {
+            matched = NAV_TARGETS.find((t) => t.id === 'tech-sphere');
+          }
+        }
+
+        // 3. Fallback: If user said generic navigation phrase ("lekar ja", "dikhao", "chalo", "le jao", "portfolio")
+        if (!matched) {
+          const generalNavWords = ['lekar ja', 'le kar ja', 'le jao', 'dikhao', 'chalo', 'kholo', 'jana hai', 'go to', 'take me', 'show'];
+          const hasNavIntent = generalNavWords.some((word) => cleanTranscript.includes(word));
+          if (hasNavIntent) {
+            matched = NAV_TARGETS.find((t) => t.id === 'projects');
+          }
+        }
 
         if (matched) {
           teleportTo(matched.id, matched.voiceConfirm, matched.subtitleUrdu);
         } else {
           speak(
-            `Main ne suna "${transcript}". Aap keh sakte hain 'Projects dikhao' ya 'API suite per le jao'!`,
-            `سنا: "${transcript}". آپ کہہ سکتے ہیں 'پروجیکٹس دکھاؤ' یا 'API دکھاؤ'!`
+            `Main ne suna "${cleanTranscript}". Aap keh sakte hain 'Code per lekar ja', 'Projects dikhao', ya 'API suite'!`,
+            `سنا: "${cleanTranscript}". آپ کہہ سکتے ہیں 'Code per lekar ja' یا 'Projects dikhao'!`
           );
         }
       };
