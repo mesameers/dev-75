@@ -35,10 +35,11 @@ const NAV_TARGETS = [
     icon: Layers,
     color: '#10B981',
     keywords: [
-      'system', 'systems', 'sistem', 'sistems', 'sustam',
+      'system', 'systems', 'sistem', 'sistems',
       'project', 'projects', 'projeck', 'projekts', 'featured',
-      'platform', 'platforms', 'kam', 'kaam', 'system dikhao',
-      'systems dikhao', 'projects dikhao', 'kam dikhao', 'سسٹم', 'سسٹمز', 'پروجیکٹ', 'کام'
+      'platform', 'platforms', 'system dikhao',
+      'systems dikhao', 'projects dikhao', 'projects par le jao', 'systems par le jao',
+      'سسٹم', 'سسٹمز', 'پروجیکٹ', 'پروجیکٹس'
     ],
     voiceConfirm: "جی! ہم سسٹمز اور پروجیکٹس سیکشن پر آ گئے ہیں۔",
     romanConfirm: "Jee! Hum systems aur projects section par aa gaye hain.",
@@ -386,10 +387,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         });
 
         try {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } catch (e) {}
-
-        try {
           if (window.history && window.history.pushState) {
             window.history.pushState(null, '', `#${targetId}`);
           }
@@ -494,9 +491,16 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             return;
           }
 
-          // 3. Check Specific Navigation Section Targets (Instant 1st-try match)
+          // 3. Check Specific Navigation Section Targets (Accurate Intent & Word Boundary Match)
           const matchedNav = NAV_TARGETS.find((target) =>
-            target.keywords.some((kw) => cleanTranscript.includes(kw.toLowerCase()))
+            target.keywords.some((kw) => {
+              const lowerKw = kw.toLowerCase();
+              if (lowerKw.length <= 4) {
+                const regex = new RegExp(`(^|\\s|\\b)${lowerKw}(\\s|\\b|$)`, 'i');
+                return regex.test(cleanTranscript);
+              }
+              return cleanTranscript.includes(lowerKw);
+            })
           );
 
           if (matchedNav) {

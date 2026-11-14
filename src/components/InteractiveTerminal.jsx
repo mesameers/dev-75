@@ -36,11 +36,19 @@ export const InteractiveTerminal = () => {
   const [cpuJitter, setCpuJitter] = useState(38);
   const [packetRate, setPacketRate] = useState(1420);
 
-  const bottomRef = useRef(null);
+  const terminalLogsRef = useRef(null);
   const inputRef = useRef(null);
+  const isFirstRender = useRef(true);
 
+  // Scroll ONLY the inner terminal box on new commands, NEVER scroll the browser window on page load
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (terminalLogsRef.current) {
+      terminalLogsRef.current.scrollTop = terminalLogsRef.current.scrollHeight;
+    }
   }, [history]);
 
   // Live telemetry jitter
@@ -169,7 +177,7 @@ export const InteractiveTerminal = () => {
             </div>
 
             {/* Terminal Logs */}
-            <div className="p-6 space-y-3 min-h-[300px] max-h-[360px] overflow-y-auto">
+            <div ref={terminalLogsRef} className="p-6 space-y-3 min-h-[300px] max-h-[360px] overflow-y-auto">
               {history.map((item, idx) => (
                 <div key={idx} className="leading-relaxed">
                   {item.type === 'input' ? (
@@ -184,7 +192,6 @@ export const InteractiveTerminal = () => {
                   )}
                 </div>
               ))}
-              <div ref={bottomRef} />
             </div>
 
             {/* Input Prompt Form */}

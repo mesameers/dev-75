@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { WatchTheFilm } from './components/WatchTheFilm';
@@ -20,6 +20,20 @@ import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 
 export function App() {
+  // Always enforce starting at the very top (Hero section) on initial page load
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+      window.scrollTo(0, 0);
+      
+      // If URL opened with a hash that could cause unwanted jump, smoothly clear it
+      if (window.location.hash) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    }
+  }, []);
   return (
     <div className="relative min-h-screen bg-space-950 text-slate-100 flex flex-col selection:bg-energy-teal/20 selection:text-energy-cyan overflow-x-hidden">
       {/* 1. Top Reading Scroll Progress Bar */}
