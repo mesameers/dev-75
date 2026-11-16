@@ -24,9 +24,11 @@ const NAV_TARGETS = [
     label: 'Film',
     icon: Film,
     color: '#00F2FE',
-    keywords: ['film', 'flim', 'filam', 'video', 'movie', 'cinema', 'built in orbit', 'film dikhao', 'video dikhao', 'فلم', 'ویڈیو', 'سینما'],
-    voiceConfirm: "جی! ہم فلم سیکشن پر آ گئے ہیں۔",
-    romanConfirm: "Jee! Hum film section par aa gaye hain.",
+    keywords: [
+      'film', 'flim', 'filam', 'video', 'movie', 'cinema', 'built in orbit',
+      'film dikhao', 'video dikhao', 'film par le jao', 'film par chalo', 'film per le jao',
+      'فلم', 'ویڈیو', 'سینما', 'فلم دکھاؤ', 'فلم پر لے جاؤ', 'فلم پر چلو'
+    ],
   },
   {
     id: 'projects',
@@ -39,22 +41,25 @@ const NAV_TARGETS = [
       'project', 'projects', 'projeck', 'projekts', 'featured',
       'platform', 'platforms', 'system dikhao',
       'systems dikhao', 'projects dikhao', 'projects par le jao', 'systems par le jao',
-      'سسٹم', 'سسٹمز', 'پروجیکٹ', 'پروجیکٹس'
+      'projects par chalo', 'systems par chalo', 'systems per le jao', 'projects per le jao',
+      'سسٹم', 'سسٹمز', 'پروجیکٹ', 'پروجیکٹس', 'پروجیکٹ دکھاؤ', 'سسٹم دکھاؤ', 'سسٹمز پر لے جاؤ', 'پروجیکٹس پر لے جاؤ'
     ],
-    voiceConfirm: "جی! ہم سسٹمز اور پروجیکٹس سیکشن پر آ گئے ہیں۔",
-    romanConfirm: "Jee! Hum systems aur projects section par aa gaye hain.",
   },
   {
     id: 'architecture',
+    alias: 'topology',
     label: 'Topology',
     icon: Activity,
     color: '#8B5CF6',
-    keywords: ['architecture', 'topology', 'toplogy', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster', 'topology dikhao', 'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ'],
-    voiceConfirm: "جی! ہم مائیکروسروسز ٹوپولوجی پر آ گئے ہیں۔",
-    romanConfirm: "Jee! Hum microservices topology par aa gaye hain.",
+    keywords: [
+      'architecture', 'topology', 'toplogy', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster',
+      'topology dikhao', 'architecture dikhao', 'topology par le jao', 'topology par chalo', 'topology per le jao',
+      'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ', 'ٹوپولوجی دکھاؤ', 'ٹوپولوجی پر لے جاؤ', 'ٹوپولوجی پر چلو'
+    ],
   },
   {
     id: 'code',
+    alias: 'code-inspector',
     label: 'Code',
     icon: Code2,
     color: '#38BDF8',
@@ -64,8 +69,6 @@ const NAV_TARGETS = [
       'code par chalo', 'code inspector', 'production code', 'code batao', 'code dekho',
       'کوڈ', 'الگورتھم', 'کوڈنگ', 'کوڈ دکھاؤ', 'کوڈ پر لے جاؤ', 'کوڈ پر چلو', 'کود', 'کوڈ بتاؤ'
     ],
-    voiceConfirm: "جی! ہم پروڈکشن کوڈ انسپیکٹر پر آ گئے ہیں۔",
-    romanConfirm: "Jee! Hum production code inspector par aa gaye hain.",
   },
   {
     id: 'api-playground',
@@ -80,107 +83,119 @@ const NAV_TARGETS = [
       'api batao', 'api suite batao', 'suite dikhao',
       'اے پی آئی', 'ٹیسٹ', 'اے پی آئی سویٹ', 'سویٹ', 'پلے گراؤنڈ', 'اے پی آئی دکھاؤ', 'اے پی آئی پر لے جاؤ', 'ای پی آئی', 'اے پی آئی بتاؤ'
     ],
-    voiceConfirm: "جی! ہم لائیو API سویٹ پر آ گئے ہیں۔",
-    romanConfirm: "Jee! Hum live API suite par aa gaye hain.",
   },
   {
     id: 'skills',
     label: 'Skills',
     icon: Cpu,
     color: '#06B6D4',
-    keywords: ['skills', 'skill', 'tech stack', 'technologies', 'technology', 'tools', 'kya aata hai', 'skills dikhao', 'اسکلز', 'ٹیکنالوجی'],
-    voiceConfirm: "جی! ہم ٹیکنیکل اسکلز سیکشن پر آ گئے ہیں۔",
-    romanConfirm: "Jee! Hum technical skills section par aa gaye hain.",
+    keywords: [
+      'skills', 'skill', 'tech stack', 'technologies', 'technology', 'tools', 'kya aata hai',
+      'skills dikhao', 'skills par le jao', 'skills par chalo', 'skills per le jao',
+      'اسکلز', 'ٹیکنالوجی', 'ہنر', 'اسکلز دکھاؤ', 'اسکلز پر لے جاؤ', 'اسکلز پر چلو'
+    ],
   },
   {
     id: 'tech-sphere',
+    alias: 'matrix',
     label: '3D Matrix',
     icon: Compass,
     color: '#F59E0B',
-    keywords: ['matrix', 'sphere', '3d', 'globe', '3d dikhao', 'matrix dikhao', 'تھری ڈی', 'میٹرکس'],
-    voiceConfirm: "جی! ہم تھری ڈی انٹرایکٹو میٹرکس پر آ گئے ہیں۔",
-    romanConfirm: "Jee! Hum 3D interactive matrix par aa gaye hain.",
+    keywords: [
+      'matrix', 'sphere', '3d', 'globe', '3d dikhao', 'matrix dikhao',
+      '3d par le jao', 'matrix par le jao', '3d matrix', 'matrix par chalo',
+      'تھری ڈی', 'میٹرکس', 'تھری ڈی دکھاؤ', 'میٹرکس پر لے جاؤ'
+    ],
   },
   {
     id: 'terminal',
+    alias: 'cli',
     label: 'CLI Terminal',
     icon: Terminal,
     color: '#A855F7',
-    keywords: ['terminal', 'cli', 'shell', 'bash', 'console', 'command', 'terminal dikhao', 'terminal kholo', 'ٹرمینل', 'سی ایل آئی'],
-    voiceConfirm: "جی! ہم ڈویلپر سی ایل آئی ٹرمینل پر آ گئے ہیں۔",
-    romanConfirm: "Jee! Hum developer CLI terminal par aa gaye hain.",
+    keywords: [
+      'terminal', 'cli', 'shell', 'bash', 'console', 'command',
+      'terminal dikhao', 'terminal kholo', 'terminal par le jao', 'terminal par chalo',
+      'ٹرمینل', 'سی ایل آئی', 'ٹرمینل دکھاؤ', 'ٹرمینل پر لے جاؤ', 'ٹرمینل پر چلو'
+    ],
   },
   {
     id: 'contact',
     label: 'Contact',
     icon: Mail,
     color: '#00FFE0',
-    keywords: ['contact', 'hire', 'email', 'mail', 'connect', 'message', 'rabta', 'baat karni hai', 'contact dikhao', 'رابطہ', 'ای میل'],
-    voiceConfirm: "جی! ہم کانٹیکٹ سیکشن پر آ گئے ہیں۔",
-    romanConfirm: "Jee! Hum contact section par aa gaye hain.",
+    keywords: [
+      'contact', 'hire', 'email', 'mail', 'connect', 'message', 'rabta', 'baat karni hai',
+      'contact dikhao', 'contact par le jao', 'contact par chalo', 'rabta karna hai',
+      'رابطہ', 'ای میل', 'رابطہ دکھاؤ', 'رابطہ پر لے جاؤ', 'رابطہ کرنا ہے'
+    ],
   },
   {
     id: 'hero',
+    alias: 'start',
     label: 'Top',
     icon: ArrowRight,
     color: '#00F2FE',
-    keywords: ['upar', 'top', 'hero', 'home', 'shuru', 'start', 'wapas', 'upar jao', 'wapas upar', 'wapas chalo', 'upar le jao', 'اوپر', 'ہیرو', 'شروع', 'واپس'],
-    voiceConfirm: "جی چلیے! ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔",
-    romanConfirm: "Jee chaliye! Hum wapas upar hero section par aa gaye hain.",
+    keywords: [
+      'upar', 'top', 'hero', 'home', 'shuru', 'start', 'wapas',
+      'upar jao', 'wapas upar', 'wapas chalo', 'upar le jao', 'start par jao', 'start par le jao',
+      'shuru mein jao', 'shuru par le jao', 'wapas start', 'wapas shuru',
+      'اوپر', 'ہیرو', 'شروع', 'واپس', 'شروع پر لے جاؤ', 'اوپر لے چلو', 'آغاز'
+    ],
   },
 ];
 
-// In-Depth Explanations for Each Section (Active ONLY when user asks to explain)
+// In-Depth Concise Explanations for Each Section (Arrival announcement + What it does + Prompt next action)
 const SECTION_EXPLANATIONS = {
   projects: {
     label: 'Systems & Projects',
-    urdu: "سمیر کے سسٹمز سیکشن میں انٹرپرائز کلاؤڈ پلیٹ فارمز شامل ہیں۔ یہ ہائی تھرو پٹ مائیکروسروسز، سب-15 ملی سیکنڈ ڈیٹا بیس کیشنگ، اور رئیل ٹائم ڈیٹا پروسیسنگ کے لیے بنائے گئے ہیں۔",
-    roman: "Sameer ke systems section mein enterprise cloud platforms shamil hain. Yeh high-throughput microservices, sub-15 millisecond database caching, aur real-time data processing ke liye banaye gaye hain.",
+    urdu: "جی! ہم سسٹمز اور پروجیکٹس پر آ گئے ہیں۔ یہاں سمیر کے کلاؤڈ سسٹمز اور اسکیل ایبل پلیٹ فارمز ہیں جو سب-15 ملی سیکنڈ ڈیٹا بیس اور 99.99 فیصد اپ ٹائم پر فعال ہیں۔ فرمائیے اب کہاں چلیں؟",
+    roman: "Jee! Hum systems aur projects par aa gaye hain. Yahan Sameer ke cloud systems aur scalable platforms hain jo sub-15 millisecond database aur 99.99 percent uptime par faal hain. Farmaiye ab kahan chalein?",
   },
   film: {
     label: 'Built in Orbit Film',
-    urdu: "بلٹ ان اوربٹ فلم سمیر کا فریم ایکوریٹ سنیما شوکیس ہے۔ یہ ری موشن اور ٹائپ اسکرپٹ پر 30 فریم فی سیکنڈ پر بنی ہے اور سمیر کے انجینئرنگ فلسفے کو پیش کرتی ہے۔",
-    roman: "'Built in Orbit' film Sameer ka frame-accurate cinema showcase hai. Yeh Remotion aur TypeScript par 30 frames per second par bani hai aur Sameer ke engineering philosophy ko pesh karti hai.",
+    urdu: "جی! ہم فلم سیکشن پر آ گئے ہیں۔ بلٹ ان اوربٹ فلم سمیر کا فریم ایکوریٹ سنیما شوکیس ہے جو ری موشن پر 30 فریم فی سیکنڈ پر بنا ہے۔ فرمائیے اب کہاں چلیں؟",
+    roman: "Jee! Hum film section par aa gaye hain. Built in Orbit film Sameer ka frame-accurate cinema showcase hai jo Remotion par 30 frames per second par bana hai. Farmaiye ab kahan chalein?",
   },
   architecture: {
     label: 'Microservices Topology',
-    urdu: "مائیکروسروسز ٹوپولوجی سمیر کے کلاؤڈ انفراسٹرکچر کا لائیو نیٹ ورک میش ہے۔ اس میں گلوبل ایج روٹنگ، زیرو ٹرسٹ سیکیورٹی اور ہائی اویلیبلٹی کلسٹرز شامل ہیں۔",
-    roman: "Microservices topology Sameer ke cloud infrastructure ka live network mesh hai. Is mein global edge routing, zero-trust security aur high availability clusters shamil hain.",
+    urdu: "جی! ہم مائیکروسروسز ٹوپولوجی پر آ گئے ہیں۔ یہ سمیر کے کلاؤڈ انفراسٹرکچر کا لائیو نیٹ ورک میش ہے جس میں گلوبل ایج روٹنگ اور زیرو ٹرسٹ سیکیورٹی فعال ہے۔ فرمائیے اب کہاں چلیں؟",
+    roman: "Jee! Hum microservices topology par aa gaye hain. Yeh Sameer ke cloud infrastructure ka live network mesh hai jis mein global edge routing aur zero-trust security faal hai. Farmaiye ab kahan chalein?",
   },
   code: {
     label: 'Code Inspector',
-    urdu: "پروڈکشن کوڈ انسپیکٹر میں سمیر کے ری ایکٹو الگورتھمز اور کلین ٹائپ اسکرپٹ و ایس کیو ایل کوڈ نمونے ہیں۔ آپ یہاں لائیو فنکشنز اور لاجک کا معائنہ کر سکتے ہیں۔",
-    roman: "Production code inspector mein Sameer ke reactive algorithms aur clean TypeScript wa SQL code samples hain. Aap yahan live functions aur logic ka muayana kar sakte hain.",
+    urdu: "جی! ہم پروڈکشن کوڈ انسپیکٹر پر آ گئے ہیں۔ یہاں سمیر کے ری ایکٹو الگورتھمز اور کلین ٹائپ اسکرپٹ کوڈ کے نمونے موجود ہیں جن کا آپ لائیو معائنہ کر سکتے ہیں۔ فرمائیے اب کہاں چلیں؟",
+    roman: "Jee! Hum production code inspector par aa gaye hain. Yahan Sameer ke reactive algorithms aur clean TypeScript code ke namoone maujood hain jin ka aap live muayana kar sakte hain. Farmaiye ab kahan chalein?",
   },
   'api-playground': {
     label: 'API Suite',
-    urdu: "لائیو API پلے گراؤنڈ پر آپ سمیر کے پروڈکشن مائیکروسروسز اینڈ پوائنٹس کو کال کر کے ریئل ٹائم رسپانس اور لیٹنسی ٹیسٹ کر سکتے ہیں۔",
-    roman: "Live API playground par aap Sameer ke production microservices endpoints ko call kar ke real-time response aur latency test kar sakte hain.",
+    urdu: "جی! ہم لائیو API سویٹ پر آ گئے ہیں۔ یہاں آپ سمیر کے پروڈکشن مائیکروسروسز اینڈ پوائنٹس کو کال کر کے ریئل ٹائم رسپانس اور لیٹنسی چیک کر سکتے ہیں۔ فرمائیے اب کہاں چلیں؟",
+    roman: "Jee! Hum live API suite par aa gaye hain. Yahan aap Sameer ke production microservices endpoints ko call kar ke real-time response aur latency check kar sakte hain. Farmaiye ab kahan chalein?",
   },
   skills: {
     label: 'Technical Skills',
-    urdu: "اسکلز میٹرکس سمیر کی کور ٹیکنالوجیز دکھاتا ہے جن میں ری ایکٹ 18، نیکسٹ جے ایس، نوڈ جے ایس، پوسٹگریس 16، ریڈس اور ڈاکر شامل ہیں۔",
-    roman: "Skills matrix Sameer ki core technologies dikhata hai jin mein React 18, Next.js, Node.js, PostgreSQL 16, Redis aur Docker shamil hain.",
+    urdu: "جی! ہم ٹیکنیکل اسکلز سیکشن پر آ گئے ہیں۔ اس میں ری ایکٹ 18، نیکسٹ جے ایس، نوڈ، پوسٹگریس اور ڈاکر سمیت سمیر کی تمام کور ٹیکنالوجیز شامل ہیں۔ فرمائیے اب کہاں چلیں؟",
+    roman: "Jee! Hum technical skills section par aa gaye hain. Is mein React 18, Next.js, Node, PostgreSQL aur Docker samet Sameer ki tamam core technologies shamil hain. Farmaiye ab kahan chalein?",
   },
   'tech-sphere': {
     label: '3D Matrix',
-    urdu: "تھری ڈی میٹرکس ویب جی ایل پر مبنی انٹرایکٹو پارٹیکل گلوب ہے جو سمیر کے فل اسٹیک اور موشن صلاحیتوں کو بصری طور پر ظاہر کرتا ہے۔",
-    roman: "3D matrix WebGL par mabni interactive particle globe hai jo Sameer ke full-stack aur motion capabilities ko visually display karta hai.",
+    urdu: "جی! ہم تھری ڈی انٹرایکٹو میٹرکس پر آ گئے ہیں۔ یہ ویب جی ایل پر مبنی پارٹیکل گلوب ہے جو سمیر کی 3D موشن اور گرافکس صلاحیتوں کو ظاہر کرتا ہے۔ فرمائیے اب کہاں چلیں؟",
+    roman: "Jee! Hum 3D interactive matrix par aa gaye hain. Yeh WebGL par mabni particle globe hai jo Sameer ki 3D motion aur graphics salahiyaton ko zahir karta hai. Farmaiye ab kahan chalein?",
   },
   terminal: {
     label: 'Developer CLI Terminal',
-    urdu: "ڈویلپر سی ایل آئی ٹرمینل کے ذریعے آپ کسٹم کمانڈز رن کر سکتے ہیں جیسے سسٹم انفو، اسکلز، پروجیکٹس اور کانٹیکٹ کمانڈز۔",
-    roman: "Developer CLI terminal ke zariye aap custom commands run kar sakte hain jaise system info, skills, projects aur contact commands.",
+    urdu: "جی! ہم ڈویلپر سی ایل آئی ٹرمینل پر آ گئے ہیں۔ یہاں آپ سمیر کے پورٹ فولیو کی تمام کسٹم کمانڈز اور سسٹم انفو لائیو رن کر سکتے ہیں۔ فرمائیے اب کہاں چلیں؟",
+    roman: "Jee! Hum developer CLI terminal par aa gaye hain. Yahan aap Sameer ke portfolio ki tamam custom commands aur system info live run kar sakte hain. Farmaiye ab kahan chalein?",
   },
   contact: {
     label: 'Contact Suite',
-    urdu: "کانٹیکٹ سیکشن سے آپ براہ راست سمیر کو پروجیکٹ کے لیے ہائر کر سکتے ہیں یا ای میل و لنکس کے ذریعے رابطہ قائم کر سکتے ہیں۔",
-    roman: "Contact section se aap barah-e-raast Sameer ko project ke liye hire kar sakte hain ya email aur links ke zariye rabta qaim kar sakte hain.",
+    urdu: "جی! ہم کانٹیکٹ سیکشن پر آ گئے ہیں۔ یہاں سے آپ سمیر کو نئے پروجیکٹ کے لیے ہائر کر سکتے ہیں یا ای میل کے ذریعے فوری رابطہ کر سکتے ہیں۔ فرمائیے اب کہاں چلیں؟",
+    roman: "Jee! Hum contact section par aa gaye hain. Yahan se aap Sameer ko naye project ke liye hire kar sakte hain ya email ke zariye fori rabta kar sakte hain. Farmaiye ab kahan chalein?",
   },
   hero: {
     label: 'Hero Section',
-    urdu: "یہ ہیرو سیکشن ہے جہاں سمیر حسین کا بنیادی تعارف، ریئل ٹائم میٹرکس اور میں خودمختار اسسٹنٹ علینہ موجود ہوں۔",
-    roman: "Yeh hero section hai jahan Sameer Hussain ka bunyadi taaruf, real-time matrix aur main autonomous assistant Alina maujood hoon.",
+    urdu: "جی چلیے! ہم واپس شروع یعنی ہیرو سیکشن پر آ گئے ہیں۔ یہاں سمیر حسین کا تعارف اور لائیو سسٹم میٹرکس موجود ہیں۔ فرمائیے اب کس سیکشن پر لے کر چلوں؟",
+    roman: "Jee chaliye! Hum wapas shuru yaani hero section par aa gaye hain. Yahan Sameer Hussain ka taaruf aur live system matrix maujood hain. Farmaiye ab kis section par le kar chaloon?",
   },
 };
 
@@ -411,28 +426,48 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
   // Multi-Strategy Teleport Navigation Function (Navigates to Section AND Explains it immediately)
   const teleportTo = useCallback(
-    (targetId, voiceConfirmText = '', romanConfirmText = '') => {
-      // Update active section tracker
+    (targetId) => {
+      // 1. Immediately cancel any ongoing speech so Alina responds to the new section instantly
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.cancel();
+        } catch (e) {}
+      }
+
+      // 2. Update active section tracker
       currentSectionRef.current = targetId;
 
-      // Combine arrival confirmation with the section's comprehensive explanation
+      // 3. Retrieve concise, natural explanation
       const explanation = SECTION_EXPLANATIONS[targetId] || SECTION_EXPLANATIONS['projects'];
-      const combinedUrdu = voiceConfirmText
-        ? `${voiceConfirmText} ${explanation?.urdu || ''}`.trim()
-        : (explanation?.urdu || '');
-      const combinedRoman = romanConfirmText
-        ? `${romanConfirmText} ${explanation?.roman || ''}`.trim()
-        : (explanation?.roman || '');
+      const speechUrdu = explanation?.urdu || "جی! ہم پہنچ گئے ہیں۔ فرمائیے اب کہاں چلیں؟";
+      const speechRoman = explanation?.roman || "Jee! Hum pohanch gaye hain. Farmaiye ab kahan chalein?";
 
-      // Speak arrival confirmation + in-depth explanation verbally in Pakistani Urdu
-      speak(combinedUrdu, combinedRoman);
+      // 4. Speak arrival confirmation + in-depth explanation verbally in Pakistani Urdu
+      speak(speechUrdu, speechRoman);
 
-      // Perform smooth scroll with navbar offset
+      // 5. Perform smooth scroll with navbar offset
       const executeScroll = () => {
+        // Return to start / top / hero
+        if (targetId === 'hero' || targetId === 'start' || targetId === 'top') {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+          try {
+            if (window.history && window.history.pushState) {
+              window.history.pushState(null, '', window.location.pathname);
+            }
+          } catch (e) {}
+          return;
+        }
+
         let el = document.getElementById(targetId);
 
         if (!el && (targetId === 'systems' || targetId === 'projects')) {
           el = document.getElementById('systems') || document.getElementById('projects');
+        }
+        if (!el && (targetId === 'architecture' || targetId === 'topology')) {
+          el = document.getElementById('architecture') || document.getElementById('topology');
         }
         if (!el && (targetId === 'skills' || targetId === 'tech-sphere')) {
           el = document.getElementById('skills') || document.getElementById('tech-sphere');
@@ -523,62 +558,37 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           fluteEngine.duck();
 
           // Debounce guard to avoid multiple triggers on rapid interim frames
-          if (Date.now() - lastActionTimestampRef.current < 1100) {
+          if (Date.now() - lastActionTimestampRef.current < 900) {
             continue;
           }
 
-          // 1. Check Return-to-Top Requests (Only when user explicitly asks to go back/up)
+          // 1. Check Return-to-Start / Top / Hero Requests (First Priority for returning!)
           const returnTopWords = [
+            'wapas start', 'start par', 'start pe', 'shuru par', 'shuru pe', 'wapas shuru',
             'wapas upar', 'wapas chalo', 'upar le jao', 'upar chalo', 'back to top',
             'upar jao', 'wapas le jao', 'hero par jao', 'top par jao', 'home par jao',
-            'wapas', 'upar', 'واپس', 'اوپر', 'اوپر چلو', 'واپس چلو', 'اوپر لے جاؤ'
+            'start par le jao', 'shuru mein le jao', 'wapas chalen', 'shuru se',
+            'واپس اوپر', 'اوپر لے جاؤ', 'واپس چلو', 'اوپر چلو', 'شروع پر', 'واپس شروع',
+            'اسٹارٹ پر', 'واپس اسٹارٹ', 'اوپر جاؤ', 'شروع میں لے جاؤ', 'واپس لے جاؤ'
           ];
           if (checkKeywordMatch(cleanTranscript, returnTopWords)) {
             lastActionTimestampRef.current = Date.now();
-            teleportTo('hero', "جی چلیے! ہم واپس اوپر ہیرو سیکشن پر آ گئے ہیں۔", "Jee chaliye! Hum wapas upar hero section par aa gaye hain.");
+            teleportTo('hero');
             return;
           }
 
-          // 2. Check On-Demand Section Explanation / Deep Dive Request (Teleports & Explains!)
-          const explainWords = [
-            'explain', 'explain karo', 'ye kya hai', 'is ke bare mein batao',
-            'is section ko explain karo', 'ye kya kaam karta hai', 'detail batao',
-            'details', 'tell me about this', 'what is this', 'batao', 'تفصیل', 'وضاحت', 'سمجھاؤ', 'بتاؤ', 'بتاو'
-          ];
-          if (checkKeywordMatch(cleanTranscript, explainWords)) {
-            lastActionTimestampRef.current = Date.now();
-            let targetSectionKey = currentSectionRef.current || 'projects';
-            if (cleanTranscript.includes('film') || cleanTranscript.includes('video') || cleanTranscript.includes('فلم')) targetSectionKey = 'film';
-            else if (cleanTranscript.includes('system') || cleanTranscript.includes('project') || cleanTranscript.includes('سسٹم') || cleanTranscript.includes('پروجیکٹ')) targetSectionKey = 'projects';
-            else if (cleanTranscript.includes('topology') || cleanTranscript.includes('architecture') || cleanTranscript.includes('ٹوپولوجی')) targetSectionKey = 'architecture';
-            else if (cleanTranscript.includes('code') || cleanTranscript.includes('coding') || cleanTranscript.includes('کوڈ') || cleanTranscript.includes('کود')) targetSectionKey = 'code';
-            else if (cleanTranscript.includes('api') || cleanTranscript.includes('suite') || cleanTranscript.includes('اے پی آئی') || cleanTranscript.includes('سویٹ')) targetSectionKey = 'api-playground';
-            else if (cleanTranscript.includes('skill') || cleanTranscript.includes('اسکلز')) targetSectionKey = 'skills';
-            else if (cleanTranscript.includes('matrix') || cleanTranscript.includes('3d') || cleanTranscript.includes('میٹرکس')) targetSectionKey = 'tech-sphere';
-            else if (cleanTranscript.includes('terminal') || cleanTranscript.includes('cli') || cleanTranscript.includes('ٹرمینل')) targetSectionKey = 'terminal';
-            else if (cleanTranscript.includes('contact') || cleanTranscript.includes('rabta') || cleanTranscript.includes('رابطہ')) targetSectionKey = 'contact';
-
-            const navTarget = NAV_TARGETS.find((t) => t.id === targetSectionKey || (t.alias && t.alias === targetSectionKey));
-            teleportTo(
-              targetSectionKey,
-              navTarget ? navTarget.voiceConfirm : "جی! ملاحظہ کیجیے۔",
-              navTarget ? navTarget.romanConfirm : "Jee! Mulahiza kijiye."
-            );
-            return;
-          }
-
-          // 3. Check Specific Navigation Section Targets (Accurate Intent & Bilingual Word Match)
+          // 2. Direct Section Navigation (Highest Priority for navigating to any specific section!)
           const matchedNav = NAV_TARGETS.find((target) =>
             checkKeywordMatch(cleanTranscript, target.keywords)
           );
 
           if (matchedNav) {
             lastActionTimestampRef.current = Date.now();
-            teleportTo(matchedNav.id, matchedNav.voiceConfirm, matchedNav.romanConfirm);
+            teleportTo(matchedNav.id);
             return;
           }
 
-          // 4. Check Conversational AI Knowledge Engine (Intro, Sameer, Experience, Identity, etc.)
+          // 3. Conversational AI Knowledge Engine (Portfolio Introduction, Sameer, Experience, Identity, etc.)
           const matchedKnowledge = AI_KNOWLEDGE_BASE.find((entry) =>
             checkKeywordMatch(cleanTranscript, entry.triggers)
           );
@@ -586,6 +596,20 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           if (matchedKnowledge) {
             lastActionTimestampRef.current = Date.now();
             speak(matchedKnowledge.urdu, matchedKnowledge.roman);
+            return;
+          }
+
+          // 4. On-Demand Explanation of Current Section (when user says "explain karo", "ye kya hai", "batao")
+          const explainWords = [
+            'explain', 'explain karo', 'ye kya hai', 'is ke bare mein batao',
+            'is section ko explain karo', 'ye kya kaam karta hai', 'detail batao',
+            'details', 'tell me about this', 'what is this', 'batao', 'تفصیل', 'وضاحت', 'سمجھاؤ', 'بتاؤ', 'بتاو'
+          ];
+          if (checkKeywordMatch(cleanTranscript, explainWords)) {
+            lastActionTimestampRef.current = Date.now();
+            const currentSec = currentSectionRef.current || 'hero';
+            const explanation = SECTION_EXPLANATIONS[currentSec] || SECTION_EXPLANATIONS['hero'];
+            speak(explanation.urdu, explanation.roman);
             return;
           }
         }
@@ -846,7 +870,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
                   key={tgt.id}
                   onClick={(e) => {
                     e.stopPropagation();
-                    teleportTo(tgt.id, tgt.voiceConfirm, tgt.romanConfirm);
+                    teleportTo(tgt.id);
                   }}
                   className="px-2.5 py-1 rounded-lg bg-space-950/90 border border-slate-800/80 hover:border-energy-teal font-mono text-[11px] font-semibold text-slate-300 hover:text-white flex items-center space-x-1.5 transition-all whitespace-nowrap active:scale-95 shadow-sm hover:scale-105"
                   style={{
