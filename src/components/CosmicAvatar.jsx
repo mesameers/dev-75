@@ -42,7 +42,12 @@ const NAV_TARGETS = [
       'platform', 'platforms', 'system dikhao',
       'systems dikhao', 'projects dikhao', 'projects par le jao', 'systems par le jao',
       'projects par chalo', 'systems par chalo', 'systems per le jao', 'projects per le jao',
-      'سسٹم', 'سسٹمز', 'پروجیکٹ', 'پروجیکٹس', 'پروجیکٹ دکھاؤ', 'سسٹم دکھاؤ', 'سسٹمز پر لے جاؤ', 'پروجیکٹس پر لے جاؤ'
+      'systems pr', 'systems pr le jao', 'systems pr chalo', 'system pr le jao', 'system pr chalo',
+      'projects pr', 'projects pr le jao', 'projects pr chalo', 'project pr le jao',
+      'systems dekhna hai', 'projects dekhna hai',
+      'سسٹم', 'سسٹمز', 'سیستم', 'سیستمز', 'پروجیکٹ', 'پروجیکٹس',
+      'پروجیکٹ دکھاؤ', 'سسٹم دکھاؤ', 'سسٹمز دکھاؤ', 'سسٹمز پر لے جاؤ', 'سسٹم پر لے جاؤ',
+      'پروجیکٹس پر لے جاؤ', 'پروجیکٹس دکھاؤ', 'سسٹمز پر چلو', 'سسٹم پر چلو', 'سسٹمز پر'
     ],
   },
   {
@@ -53,7 +58,7 @@ const NAV_TARGETS = [
     color: '#8B5CF6',
     keywords: [
       'architecture', 'topology', 'toplogy', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster',
-      'topology dikhao', 'architecture dikhao', 'topology par le jao', 'topology par chalo', 'topology per le jao',
+      'topology dikhao', 'architecture dikhao', 'topology par le jao', 'topology par chalo', 'topology per le jao', 'topology pr le jao', 'topology pr chalo',
       'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ', 'ٹوپولوجی دکھاؤ', 'ٹوپولوجی پر لے جاؤ', 'ٹوپولوجی پر چلو'
     ],
   },
@@ -64,10 +69,11 @@ const NAV_TARGETS = [
     icon: Code2,
     color: '#38BDF8',
     keywords: [
-      'code', 'coding', 'inspector', 'algorithm', 'algorithms', 'typescript', 'sql',
-      'code dikhao', 'coding dikhao', 'code par le jao', 'code per le jao', 'code pe le jao',
-      'code par chalo', 'code inspector', 'production code', 'code batao', 'code dekho',
-      'کوڈ', 'الگورتھم', 'کوڈنگ', 'کوڈ دکھاؤ', 'کوڈ پر لے جاؤ', 'کوڈ پر چلو', 'کود', 'کوڈ بتاؤ'
+      'code', 'coding', 'inspector', 'algorithm', 'algorithms', 'typescript', 'sql', 'production code', 'source code', 'kod', 'kood',
+      'code dikhao', 'code dekhao', 'coding dikhao', 'code par le jao', 'code per le jao', 'code pe le jao',
+      'code pr', 'code pr le jao', 'code pr chalo', 'coding pr', 'coding pr le jao',
+      'code par chalo', 'code inspector', 'code batao', 'code dekho', 'code dekhna hai',
+      'کوڈ', 'الگورتھم', 'کوڈنگ', 'کوڈ دکھاؤ', 'کوڈ دکھاو', 'کوڈ پر لے جاؤ', 'کوڈ پر چلو', 'کود', 'کوٹ', 'کووڈ', 'کوڈ بتاؤ', 'کوڈ پر', 'پروڈکشن کوڈ'
     ],
   },
   {
@@ -77,11 +83,13 @@ const NAV_TARGETS = [
     icon: Zap,
     color: '#EC4899',
     keywords: [
-      'api', 'api suite', 'playground', 'endpoint', 'endpoints', 'api test', 'test suite',
+      'api', 'apis', 'api suite', 'api-suite', 'playground', 'endpoint', 'endpoints', 'api test', 'test suite', 'api sweet', 'api suit',
       'api dikhao', 'api suite dikhao', 'api par le jao', 'api per le jao', 'api pe le jao',
+      'api pr', 'api pr le jao', 'api pr chalo', 'api suite pr', 'api suite pr le jao', 'api suite pr chalo',
       'api suite par le jao', 'api suite per le jao', 'api suite pe le jao', 'api par chalo',
-      'api batao', 'api suite batao', 'suite dikhao',
-      'اے پی آئی', 'ٹیسٹ', 'اے پی آئی سویٹ', 'سویٹ', 'پلے گراؤنڈ', 'اے پی آئی دکھاؤ', 'اے پی آئی پر لے جاؤ', 'ای پی آئی', 'اے پی آئی بتاؤ'
+      'api batao', 'api suite batao', 'suite dikhao', 'suite pr le jao', 'suite par le jao', 'api dekhna hai',
+      'اے پی آئی', 'اے پی ائی', 'ای پی آئی', 'ای پی ائی', 'ٹیسٹ', 'اے پی آئی سویٹ', 'سویٹ', 'سوئٹ', 'پلے گراؤنڈ',
+      'اے پی آئی دکھاؤ', 'اے پی آئی سویٹ دکھاؤ', 'اے پی آئی پر لے جاؤ', 'اے پی آئی سویٹ پر لے جاؤ', 'ای پی آئی سویٹ', 'اے پی آئی بتاؤ', 'اے پی آئی پر چلو'
     ],
   },
   {
@@ -280,19 +288,13 @@ const checkKeywordMatch = (transcript, keywords) => {
     // 1. Direct equality
     if (clean === target) return true;
 
-    // 2. Multi-word phrase matching
-    if (target.includes(' ') && clean.includes(target)) return true;
+    // 2. Direct string inclusion (covers Urdu script phrases and multi-word English/Roman)
+    if (clean.includes(target)) return true;
 
-    // 3. Urdu / Non-Latin Unicode character matching
-    const hasUnicode = /[\u0600-\u06FF]/.test(target);
-    if (hasUnicode) {
-      if (clean.includes(target)) return true;
-    } else {
-      // 4. Latin / English / Roman Urdu word matching (strictly bounded to prevent false substrings)
-      const escaped = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const regex = new RegExp(`(^|[\\s.,!?؛،])${escaped}([\\s.,!?؛،]|$)`, 'i');
-      if (regex.test(clean)) return true;
-    }
+    // 3. Word boundary regex for single words
+    const escaped = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(^|[\\s.,!?؛،_])${escaped}([\\s.,!?؛،_]|$)`, 'i');
+    if (regex.test(clean)) return true;
   }
   return false;
 };
@@ -300,7 +302,6 @@ const checkKeywordMatch = (transcript, keywords) => {
 export const CosmicAvatar = ({ size = 480, className = "" }) => {
   const containerRef = useRef(null);
   const recognitionRef = useRef(null);
-  const hasSpokenWelcomeRef = useRef(false);
   const isSpeakingRef = useRef(false);
   const speechCooldownUntilRef = useRef(0);
   const isListeningRef = useRef(false);
@@ -316,6 +317,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [liveFeedback, setLiveFeedback] = useState('');
 
   // Mouse tracking for realistic 3D parallax tilt
   useEffect(() => {
@@ -433,19 +435,58 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           window.speechSynthesis.cancel();
         } catch (e) {}
       }
+      isSpeakingRef.current = false;
+      setIsSpeaking(false);
+      speechCooldownUntilRef.current = 0;
 
       // 2. Update active section tracker
       currentSectionRef.current = targetId;
 
       // 3. Retrieve concise, natural explanation
       const explanation = SECTION_EXPLANATIONS[targetId] || SECTION_EXPLANATIONS['projects'];
+      const sectionName = explanation?.label || targetId;
+      setLiveFeedback(`جا رہے ہیں: ${sectionName} ➜`);
+      setTimeout(() => setLiveFeedback(''), 3500);
+
       const speechUrdu = explanation?.urdu || "جی! ہم پہنچ گئے ہیں۔ فرمائیے اب کہاں چلیں؟";
       const speechRoman = explanation?.roman || "Jee! Hum pohanch gaye hain. Farmaiye ab kahan chalein?";
 
       // 4. Speak arrival confirmation + in-depth explanation verbally in Pakistani Urdu
       speak(speechUrdu, speechRoman);
 
-      // 5. Perform smooth scroll with navbar offset
+      // 5. Robust Section Element Finder
+      const getTargetElement = (id) => {
+        if (id === 'projects' || id === 'systems') {
+          return document.getElementById('projects') || document.querySelector('section#projects') || document.getElementById('systems');
+        }
+        if (id === 'code' || id === 'code-inspector') {
+          return document.getElementById('code') || document.querySelector('section#code') || document.getElementById('code-inspector');
+        }
+        if (id === 'api-playground' || id === 'api' || id === 'api-suite') {
+          return document.getElementById('api-playground') || document.querySelector('section#api-playground') || document.getElementById('api');
+        }
+        if (id === 'architecture' || id === 'topology') {
+          return document.getElementById('architecture') || document.querySelector('section#architecture') || document.getElementById('topology');
+        }
+        if (id === 'skills') {
+          return document.getElementById('skills') || document.querySelector('section#skills');
+        }
+        if (id === 'tech-sphere' || id === 'matrix') {
+          return document.getElementById('tech-sphere') || document.querySelector('section#tech-sphere');
+        }
+        if (id === 'terminal' || id === 'cli') {
+          return document.getElementById('terminal') || document.querySelector('section#terminal');
+        }
+        if (id === 'contact') {
+          return document.getElementById('contact') || document.querySelector('section#contact');
+        }
+        if (id === 'film') {
+          return document.getElementById('film') || document.querySelector('section#film');
+        }
+        return document.getElementById(id) || document.querySelector(`[data-section="${id}"]`);
+      };
+
+      // 6. Perform smooth scroll with navbar offset
       const executeScroll = () => {
         // Return to start / top / hero
         if (targetId === 'hero' || targetId === 'start' || targetId === 'top') {
@@ -461,27 +502,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           return;
         }
 
-        let el = document.getElementById(targetId);
-
-        if (!el && (targetId === 'systems' || targetId === 'projects')) {
-          el = document.getElementById('systems') || document.getElementById('projects');
-        }
-        if (!el && (targetId === 'architecture' || targetId === 'topology')) {
-          el = document.getElementById('architecture') || document.getElementById('topology');
-        }
-        if (!el && (targetId === 'skills' || targetId === 'tech-sphere')) {
-          el = document.getElementById('skills') || document.getElementById('tech-sphere');
-        }
-        if (!el && (targetId === 'api' || targetId === 'api-playground' || targetId === 'api-suite')) {
-          el = document.getElementById('api-playground') || document.getElementById('api') || document.getElementById('api-suite');
-        }
-        if (!el && (targetId === 'code' || targetId === 'code-inspector')) {
-          el = document.getElementById('code') || document.getElementById('code-inspector');
-        }
-        if (!el) {
-          el = document.querySelector(`[data-section="${targetId}"]`);
-        }
-
+        const el = getTargetElement(targetId);
         if (!el) return;
 
         const rect = el.getBoundingClientRect();
@@ -492,6 +513,12 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           top: targetOffset,
           behavior: 'smooth',
         });
+
+        if (el.scrollIntoView) {
+          try {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } catch (e) {}
+        }
 
         try {
           if (window.history && window.history.pushState) {
@@ -511,7 +538,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       };
 
       executeScroll();
-      setTimeout(executeScroll, 320);
+      setTimeout(executeScroll, 250);
     },
     [speak]
   );
@@ -542,11 +569,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       };
 
       recognition.onresult = (event) => {
-        // Echo Filter: Do not process mic input while Alina is speaking
-        if (isSpeakingRef.current || Date.now() < speechCooldownUntilRef.current) {
-          return;
-        }
-
         // Loop over recent results (both interim and final) for instant 1st-try recognition!
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           const rawTranscript = event.results[i][0].transcript.toLowerCase();
@@ -557,19 +579,15 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           // As soon as user speaks, duck background flute music immediately
           fluteEngine.duck();
 
-          // Debounce guard to avoid multiple triggers on rapid interim frames
-          if (Date.now() - lastActionTimestampRef.current < 900) {
-            continue;
-          }
-
-          // 1. Check Return-to-Start / Top / Hero Requests (First Priority for returning!)
+          // 1. Check Return-to-Start / Top / Hero Requests (Highest Priority for returning!)
           const returnTopWords = [
             'wapas start', 'start par', 'start pe', 'shuru par', 'shuru pe', 'wapas shuru',
             'wapas upar', 'wapas chalo', 'upar le jao', 'upar chalo', 'back to top',
             'upar jao', 'wapas le jao', 'hero par jao', 'top par jao', 'home par jao',
             'start par le jao', 'shuru mein le jao', 'wapas chalen', 'shuru se',
+            'start pr', 'start pr le jao', 'start pr chalo', 'wapas pr', 'wapas', 'upar', 'shuru',
             'واپس اوپر', 'اوپر لے جاؤ', 'واپس چلو', 'اوپر چلو', 'شروع پر', 'واپس شروع',
-            'اسٹارٹ پر', 'واپس اسٹارٹ', 'اوپر جاؤ', 'شروع میں لے جاؤ', 'واپس لے جاؤ'
+            'اسٹارٹ پر', 'واپس اسٹارٹ', 'اوپر جاؤ', 'شروع میں لے جاؤ', 'واپس لے جاؤ', 'شروع', 'واپس'
           ];
           if (checkKeywordMatch(cleanTranscript, returnTopWords)) {
             lastActionTimestampRef.current = Date.now();
@@ -583,9 +601,23 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           );
 
           if (matchedNav) {
+            // Echo guard: if Alina is already speaking her explanation of THIS same section, ignore echo
+            if (isSpeakingRef.current && currentSectionRef.current === matchedNav.id) {
+              continue;
+            }
             lastActionTimestampRef.current = Date.now();
             teleportTo(matchedNav.id);
             return;
+          }
+
+          // If Alina is speaking and input was not a navigation command, ignore ambient voice
+          if (isSpeakingRef.current || Date.now() < speechCooldownUntilRef.current) {
+            continue;
+          }
+
+          // Debounce guard for knowledge and conversational queries
+          if (Date.now() - lastActionTimestampRef.current < 700) {
+            continue;
           }
 
           // 3. Conversational AI Knowledge Engine (Portfolio Introduction, Sameer, Experience, Identity, etc.)
@@ -618,16 +650,19 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       recognition.onerror = (e) => {
         setIsListening(false);
         isListeningRef.current = false;
+        if (!isSpeakingRef.current) fluteEngine.unduck();
+
         // If Urdu language model not found on local OS, automatically switch to en-US fallback
         if (e && e.error === 'language-not-supported' && recognitionLangRef.current !== 'en-US') {
           recognitionLangRef.current = 'en-US';
-          try {
-            recognition.lang = 'en-US';
-            recognition.start();
-            return;
-          } catch (err) {}
         }
-        if (!isSpeakingRef.current) fluteEngine.unduck();
+
+        // Resilient restart after brief pause
+        setTimeout(() => {
+          if (!isSpeakingRef.current) {
+            initAutoVoiceRecognition();
+          }
+        }, 300);
       };
 
       recognition.onend = () => {
@@ -636,15 +671,11 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
         if (!isSpeakingRef.current) fluteEngine.unduck();
 
         // Hot Mic auto-restart: keeps recognition hot and listening immediately
-        if (!isSpeakingRef.current && recognitionRef.current) {
-          setTimeout(() => {
-            if (!isSpeakingRef.current && recognitionRef.current) {
-              try {
-                recognitionRef.current.start();
-              } catch (e) {}
-            }
-          }, 200);
-        }
+        setTimeout(() => {
+          if (!isSpeakingRef.current) {
+            initAutoVoiceRecognition();
+          }
+        }, 150);
       };
 
       recognition.start();
@@ -657,49 +688,32 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       if (
         typeof window !== 'undefined' &&
         !isSpeakingRef.current &&
-        !isListeningRef.current &&
-        recognitionRef.current
+        !isListeningRef.current
       ) {
-        try {
-          recognitionRef.current.start();
-        } catch (e) {}
+        initAutoVoiceRecognition();
       }
-    }, 1200);
+    }, 800);
 
     return () => clearInterval(micSupervisor);
-  }, []);
+  }, [initAutoVoiceRecognition]);
 
-  // Automatic Welcome Greeting on Page Load / First User Gesture (Autoplay Policy Safe)
+  // Activate ambient music and hot mic on first user gesture (quiet & ready)
   useEffect(() => {
-    const triggerWelcome = () => {
-      // Start ambient flute music
+    const handleGesture = () => {
       fluteEngine.start();
-
-      // Ensure microphone is actively listening on first user interaction
       initAutoVoiceRecognition();
-
-      if (hasSpokenWelcomeRef.current) return;
-      hasSpokenWelcomeRef.current = true;
-
-      // Speak greeting
-      speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN);
     };
 
     try {
-      triggerWelcome();
+      handleGesture();
     } catch (e) {}
 
-    const interactionEvents = ['click', 'touchstart', 'keydown', 'scroll'];
-    const handleFirstInteraction = () => {
-      triggerWelcome();
-      interactionEvents.forEach((evt) => window.removeEventListener(evt, handleFirstInteraction));
-    };
-
-    interactionEvents.forEach((evt) => window.addEventListener(evt, handleFirstInteraction, { passive: true }));
+    const events = ['click', 'touchstart', 'keydown', 'scroll'];
+    events.forEach((evt) => window.addEventListener(evt, handleGesture, { passive: true }));
     return () => {
-      interactionEvents.forEach((evt) => window.removeEventListener(evt, handleFirstInteraction));
+      events.forEach((evt) => window.removeEventListener(evt, handleGesture));
     };
-  }, [speak, initAutoVoiceRecognition]);
+  }, [initAutoVoiceRecognition]);
 
   // Avatar Click Handler
   const handleAvatarClick = () => {
@@ -711,18 +725,19 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
   // Dedicated Mic Toggle / Re-activate Handler
   const handleMicToggle = (e) => {
     if (e) e.stopPropagation();
-    fluteEngine.start();
-    if (isListening) {
-      if (recognitionRef.current) {
-        try {
-          recognitionRef.current.stop();
-        } catch (err) {}
-      }
-      setIsListening(false);
-      isListeningRef.current = false;
-    } else {
-      initAutoVoiceRecognition();
+    // 1. Immediately cancel any speaking so mic is 100% responsive
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      try {
+        window.speechSynthesis.cancel();
+      } catch (err) {}
     }
+    isSpeakingRef.current = false;
+    setIsSpeaking(false);
+    speechCooldownUntilRef.current = 0;
+    fluteEngine.start();
+
+    // 2. Restart hot mic
+    initAutoVoiceRecognition();
   };
 
   const tiltX = mousePos.y * -8;
@@ -859,6 +874,13 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
               : 'مائیک فعال کریں (Click to Speak)'}
           </span>
         </button>
+
+        {/* Live Recognized Navigation Feedback */}
+        {liveFeedback && (
+          <div className="px-3.5 py-1 rounded-full bg-energy-teal/20 border border-energy-teal/60 text-energy-cyan font-mono text-xs font-semibold animate-pulse shadow-[0_0_20px_rgba(0,242,254,0.4)]">
+            {liveFeedback}
+          </div>
+        )}
 
         {/* 1-Click Teleportation Horizontal Pills */}
         <div className="w-full flex items-center justify-center">
