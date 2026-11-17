@@ -172,33 +172,33 @@ const NAV_TARGETS = [
 const SECTION_EXPLANATIONS = {
   projects: {
     label: 'Systems & Projects',
-    urdu: "جی! ہم سسٹمز اور پروجیکٹس پر آ گئے ہیں۔ یہاں سمیر کے کلاؤڈ سسٹمز اور انٹرپرائز ساس پلیٹ فارمز ہیں جو سب-15 ملی سیکنڈ ڈیٹا بیس اور 99.99 فیصد اپ ٹائم پر فعال ہیں۔ آپ کسی بھی وقت بیک فلم، ٹوپولوجی، کوڈ، API سوٹ، یا اسکلز پر جا سکتے ہیں۔",
-    roman: "Jee! Hum systems aur projects par aa gaye hain. Yahan Sameer ke cloud systems aur enterprise SaaS platforms hain jo sub-15 millisecond database aur 99.99 percent uptime par faal hain. Aap kisi bhi waqt back film, topology, code, API suite, ya skills par ja sakte hain.",
+    urdu: "جی! ہم سسٹمز اور پروجیکٹس پر آ گئے ہیں۔ یہاں سمیر کے کلاؤڈ سسٹمز اور انٹرپرائز ساس پلیٹ فارمز ہیں جو سب-15 ملی سیکنڈ ڈیٹا بیس اور 99.99 فیصد اپ ٹائم پر فعال ہیں۔ فرمائیے اب آگے کہاں چلیں؟",
+    roman: "Jee! Hum systems aur projects par aa gaye hain. Yahan Sameer ke cloud systems aur enterprise SaaS platforms hain jo sub-15 millisecond database aur 99.99 percent uptime par faal hain. Farmaiye ab agay kahan chalein?",
   },
   film: {
     label: 'Built in Orbit Film',
-    urdu: "جی! ہم بلٹ اِن اوربٹ فلم سیکشن پر آ گئے ہیں۔ یہ سمیر کا فریم ایکوریٹ سنیما شوکیس ہے جو ری موشن 30 فریم فی سیکنڈ پر کوڈ کے ذریعے بنا ہے۔ آپ جب چاہیں سسٹمز، ٹوپولوجی، کوڈ، API سوٹ، یا اسکلز پر جا سکتے ہیں، یا واپس ٹاپ پر آ سکتے ہیں۔",
-    roman: "Jee! Hum Built in Orbit film section par aa gaye hain. Yeh Sameer ka frame-accurate cinema showcase hai jo Remotion 30 frames per second par code ke zariye bana hai. Aap jab chahein systems, topology, code, API suite, ya skills par ja sakte hain, ya wapas top par aa sakte hain.",
+    urdu: "جی! ہم بلٹ اِن اوربٹ فلم سیکشن پر آ گئے ہیں۔ یہ سمیر کا فریم ایکوریٹ سنیما شوکیس ہے جو ری موشن 30 فریم فی سیکنڈ پر کوڈ کے ذریعے بنا ہے۔ فرمائیے اب آگے کہاں چلیں؟",
+    roman: "Jee! Hum Built in Orbit film section par aa gaye hain. Yeh Sameer ka frame-accurate cinema showcase hai jo Remotion 30 frames per second par code ke zariye bana hai. Farmaiye ab agay kahan chalein?",
   },
   architecture: {
     label: 'Microservices Topology',
-    urdu: "جی! ہم مائیکروسروسز ٹوپولوجی پر آ گئے ہیں۔ یہ سمیر کے کلاؤڈ انفراسٹرکچر کا لائیو نیٹ ورک میش ہے جس میں گلوبل ایج روٹنگ اور زیرو ٹرسٹ سیکیورٹی فعال ہے۔ آپ جب چاہیں کوڈ، API سوٹ، اسکلز، یا واپس سسٹمز اور فلم پر جا سکتے ہیں۔",
-    roman: "Jee! Hum microservices topology par aa gaye hain. Yeh Sameer ke cloud infrastructure ka live network mesh hai jis mein global edge routing aur zero-trust security faal hai. Aap jab chahein code, API suite, skills, ya wapas systems aur film par ja sakte hain.",
+    urdu: "جی! ہم مائیکروسروسز ٹوپولوجی پر آ گئے ہیں۔ یہ سمیر کے کلاؤڈ انفراسٹرکچر کا لائیو نیٹ ورک میش ہے جس میں گلوبل ایج روٹنگ اور زیرو ٹرسٹ سیکیورٹی فعال ہے۔ فرمائیے اب آگے کہاں چلیں؟",
+    roman: "Jee! Hum microservices topology par aa gaye hain. Yeh Sameer ke cloud infrastructure ka live network mesh hai jis mein global edge routing aur zero-trust security faal hai. Farmaiye ab agay kahan chalein?",
   },
   code: {
     label: 'Code Inspector',
-    urdu: "جی! ہم پروڈکشن کوڈ انسپیکٹر پر آ گئے ہیں۔ یہاں سمیر کے ری ایکٹو الگورتھمز اور کلین ٹائپ اسکرپٹ کوڈ کے اصل نمونے موجود ہیں جن کا آپ لائیو معائنہ کر سکتے ہیں۔ فرمائیے آگے API سوٹ پر چلیں یا واپس ٹوپولوجی پر؟",
-    roman: "Jee! Hum production code inspector par aa gaye hain. Yahan Sameer ke reactive algorithms aur clean TypeScript code ke asal namoone maujood hain jin ka aap live muayana kar sakte hain. Farmaiye aage API suite par chalein ya wapas topology par?",
+    urdu: "جی! ہم پروڈکشن کوڈ انسپیکٹر پر آ گئے ہیں۔ یہاں سمیر کے ری ایکٹو الگورتھمز اور کلین ٹائپ اسکرپٹ کوڈ کے اصل نمونے موجود ہیں جن کا آپ لائیو معائنہ کر سکتے ہیں۔ فرمائیے اب آگے کہاں چلیں؟",
+    roman: "Jee! Hum production code inspector par aa gaye hain. Yahan Sameer ke reactive algorithms aur clean TypeScript code ke asal namoone maujood hain jin ka aap live muayana kar sakte hain. Farmaiye ab agay kahan chalein?",
   },
   'api-playground': {
     label: 'API Suite',
-    urdu: "جی! ہم ریئل ٹائم API سوٹ پر آ گئے ہیں۔ یہاں آپ سمیر کے پروڈکشن اینڈ پوائنٹس کو براہ راست کال کر کے لائیو ڈیٹا اور لیٹنسی ٹیسٹ کر سکتے ہیں۔ آپ جب چاہیں اسکلز پر جا سکتے ہیں یا واپس کوڈ، ٹوپولوجی اور سسٹمز پر جا سکتے ہیں۔",
-    roman: "Jee! Hum real-time API suite par aa gaye hain. Yahan aap Sameer ke production endpoints ko barahe-raast call kar ke live data aur latency test kar sakte hain. Aap jab chahein skills par ja sakte hain ya wapas code, topology aur systems par ja sakte hain.",
+    urdu: "جی! ہم ریئل ٹائم API سوٹ پر آ گئے ہیں۔ یہاں آپ سمیر کے پروڈکشن اینڈ پوائنٹس کو براہ راست کال کر کے لائیو ڈیٹا اور لیٹنسی ٹیسٹ کر سکتے ہیں۔ فرمائیے اب آگے کہاں چلیں؟",
+    roman: "Jee! Hum real-time API suite par aa gaye hain. Yahan aap Sameer ke production endpoints ko barahe-raast call kar ke live data aur latency test kar sakte hain. Farmaiye ab agay kahan chalein?",
   },
   skills: {
     label: 'Technical Skills',
-    urdu: "جی! ہم ٹیکنیکل اسکلز میٹرکس پر آ گئے ہیں۔ اس میں ری ایکٹ 18، نیکسٹ جے ایس، نوڈ، پوسٹگریس اور ڈاکر سمیت سمیر کی تمام مہارتیں موجود ہیں۔ آپ جب چاہیں واپس کسی بھی سیکشن پر جا سکتے ہیں یا بیک ٹاپ پر آ سکتے ہیں۔",
-    roman: "Jee! Hum technical skills matrix par aa gaye hain. Is mein React 18, Next.js, Node, PostgreSQL aur Docker samet Sameer ki tamam mahaaratein maujood hain. Aap jab chahein wapas kisi bhi section par ja sakte hain ya back top par aa sakte hain.",
+    urdu: "جی! ہم ٹیکنیکل اسکلز میٹرکس پر آ گئے ہیں۔ اس میں ری ایکٹ 18، نیکسٹ جے ایس، نوڈ، پوسٹگریس اور ڈاکر سمیت سمیر کی تمام مہارتیں موجود ہیں۔ فرمائیے اب آگے کہاں چلیں؟",
+    roman: "Jee! Hum technical skills matrix par aa gaye hain. Is mein React 18, Next.js, Node, PostgreSQL aur Docker samet Sameer ki tamam mahaaratein maujood hain. Farmaiye ab agay kahan chalein?",
   },
   'tech-sphere': {
     label: '3D Matrix',
@@ -307,8 +307,10 @@ const checkKeywordMatch = (transcript, keywords) => {
     // 1. Direct equality
     if (clean === target) return true;
 
-    // 2. Direct string inclusion (covers Urdu script phrases and multi-word English/Roman)
-    if (clean.includes(target)) return true;
+    // 2. Direct string inclusion for multi-word phrases or Urdu script
+    if (target.includes(' ') || /[\u0600-\u06FF]/.test(target)) {
+      if (clean.includes(target)) return true;
+    }
 
     // 3. Word boundary regex for single words
     const escaped = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -321,13 +323,16 @@ const checkKeywordMatch = (transcript, keywords) => {
 export const CosmicAvatar = ({ size = 480, className = "" }) => {
   const containerRef = useRef(null);
   const recognitionRef = useRef(null);
-  const isSpeakingRef = useRef(false);
-  const speechCooldownUntilRef = useRef(0);
+  const startListeningRef = useRef(null);
+  const isStartingRef = useRef(false);
   const isListeningRef = useRef(false);
+  const isSpeakingRef = useRef(false);
+  const restartTimerRef = useRef(null);
+  const lastSpeechEndTimeRef = useRef(0);
   const lastActionTimestampRef = useRef(0);
   const activeUtteranceRef = useRef(null);
   const speechSafetyTimeoutRef = useRef(null);
-  const recognitionLangRef = useRef('ur-PK'); // Primary: Pakistani Urdu (with fallback)
+  const recognitionLangRef = useRef('ur-PK'); // Primary: Pakistani Urdu (with automatic fallback)
 
   // Active section tracking (Default: hero)
   const currentSectionRef = useRef('hero');
@@ -425,6 +430,19 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     return voices.find((v) => v.lang.startsWith('en')) || voices[0];
   };
 
+  // Single Debounced Recognition Restarter (Guarantees zero concurrent start calls)
+  const scheduleRestart = useCallback((delay = 250) => {
+    if (restartTimerRef.current) {
+      clearTimeout(restartTimerRef.current);
+      restartTimerRef.current = null;
+    }
+    restartTimerRef.current = setTimeout(() => {
+      if (startListeningRef.current) {
+        startListeningRef.current();
+      }
+    }, delay);
+  }, []);
+
   // Natural Pakistani Urdu Speech Synthesis Engine with Rock-Solid Echo Protection & Auto-Ducking
   const speak = useCallback((urduText, romanText = '', onComplete) => {
     // 1. Immediately duck background flute music so user hears Alina clearly
@@ -433,244 +451,231 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       setIsSpeaking(true);
       isSpeakingRef.current = true;
-      speechCooldownUntilRef.current = Date.now() + 2500;
       setTimeout(() => {
         setIsSpeaking(false);
         isSpeakingRef.current = false;
+        lastSpeechEndTimeRef.current = Date.now();
         fluteEngine.unduck();
         if (onComplete) onComplete();
       }, 2500);
       return;
     }
 
-    try {
-      window.speechSynthesis.cancel();
+    if (speechSafetyTimeoutRef.current) {
+      clearTimeout(speechSafetyTimeoutRef.current);
+      speechSafetyTimeoutRef.current = null;
+    }
 
-      isSpeakingRef.current = true;
-      setIsSpeaking(true);
-      speechCooldownUntilRef.current = Date.now() + 5000;
+    const doSpeak = () => {
+      try {
+        isSpeakingRef.current = true;
+        setIsSpeaking(true);
 
-      const utterance = new SpeechSynthesisUtterance(romanText || urduText);
-      // Retain global and ref handle to prevent Chrome V8 garbage collection bug
-      window.__alinaUtterance = utterance;
-      activeUtteranceRef.current = utterance;
+        const utterance = new SpeechSynthesisUtterance(romanText || urduText);
+        // Retain global and ref handle to prevent Chrome V8 garbage collection bug
+        window.__alinaUtterance = utterance;
+        activeUtteranceRef.current = utterance;
 
-      const preferredVoice = getSureliVoice();
-      if (preferredVoice) utterance.voice = preferredVoice;
+        const preferredVoice = getSureliVoice();
+        if (preferredVoice) utterance.voice = preferredVoice;
 
-      // Ultra-Melodious & Sureli Tone Calibration:
-      // 1.08 pitch: warm, graceful, sweet feminine frequency
-      // 0.94 rate: gentle, soothing, highly articulate cadence
-      utterance.pitch = 1.08;
-      utterance.rate = 0.94;
-      utterance.volume = 1.0;
+        // Ultra-Melodious & Sureli Tone Calibration:
+        utterance.pitch = 1.08;
+        utterance.rate = 0.94;
+        utterance.volume = 1.0;
 
-      let hasFinished = false;
-      const handleSpeechFinish = () => {
-        if (hasFinished) return;
-        hasFinished = true;
-        if (speechSafetyTimeoutRef.current) {
-          clearTimeout(speechSafetyTimeoutRef.current);
-          speechSafetyTimeoutRef.current = null;
-        }
+        let hasFinished = false;
+        const handleSpeechFinish = () => {
+          if (hasFinished) return;
+          hasFinished = true;
+          if (speechSafetyTimeoutRef.current) {
+            clearTimeout(speechSafetyTimeoutRef.current);
+            speechSafetyTimeoutRef.current = null;
+          }
 
+          setIsSpeaking(false);
+          isSpeakingRef.current = false;
+          lastSpeechEndTimeRef.current = Date.now();
+
+          // Auto-restore background flute music when Alina finishes speaking
+          fluteEngine.unduck();
+
+          window.__alinaUtterance = null;
+          activeUtteranceRef.current = null;
+
+          if (onComplete) onComplete();
+
+          // Safely resume listening after speech reverberation window
+          scheduleRestart(250);
+        };
+
+        utterance.onend = handleSpeechFinish;
+        utterance.onerror = () => {
+          handleSpeechFinish();
+        };
+
+        // Watchdog Safety Timer: Force finish if browser SpeechSynthesis hangs
+        const maxSpeechDuration = Math.max(3000, (romanText || urduText).length * 85 + 2500);
+        speechSafetyTimeoutRef.current = setTimeout(handleSpeechFinish, maxSpeechDuration);
+
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {
         setIsSpeaking(false);
         isSpeakingRef.current = false;
-        // 250ms quick grace period so mic becomes hot and listening immediately
-        speechCooldownUntilRef.current = Date.now() + 250;
-
-        // Auto-restore background flute music when Alina finishes speaking
+        lastSpeechEndTimeRef.current = Date.now();
         fluteEngine.unduck();
-
-        window.__alinaUtterance = null;
-        activeUtteranceRef.current = null;
-
         if (onComplete) onComplete();
+      }
+    };
 
-        // Safely restart hot mic recognition
-        setTimeout(() => {
-          if (!isSpeakingRef.current && recognitionRef.current) {
-            try {
-              recognitionRef.current.start();
-            } catch (e) {}
-          }
-        }, 200);
-      };
-
-      utterance.onend = handleSpeechFinish;
-      utterance.onerror = handleSpeechFinish;
-
-      // Watchdog Safety Timer: Force finish if browser SpeechSynthesis hangs or drops onend
-      const maxSpeechDuration = Math.max(3000, (romanText || urduText).length * 85 + 2000);
-      speechSafetyTimeoutRef.current = setTimeout(handleSpeechFinish, maxSpeechDuration);
-
-      window.speechSynthesis.speak(utterance);
-    } catch (e) {
-      setIsSpeaking(false);
-      isSpeakingRef.current = false;
-      fluteEngine.unduck();
-      if (onComplete) onComplete();
+    // Chrome Fix: If SpeechSynthesis is currently speaking or pending, cancel and delay 60ms
+    // so Chrome clears its internal audio buffer without immediately discarding the new utterance!
+    if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+      window.speechSynthesis.cancel();
+      setTimeout(doSpeak, 60);
+    } else {
+      doSpeak();
     }
-  }, []);
+  }, [getSureliVoice, scheduleRestart]);
 
   // Multi-Strategy Teleport Navigation Function (Navigates to Section AND Explains it immediately)
   const teleportTo = useCallback(
     (targetId, addToHistory = true) => {
-      // 1. Immediately cancel any ongoing speech so Alina responds to the new section instantly
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        try {
-          window.speechSynthesis.cancel();
-        } catch (e) {}
-      }
-      isSpeakingRef.current = false;
-      setIsSpeaking(false);
-      speechCooldownUntilRef.current = 0;
-
       // Two-way hopping: push current section to history stack
       if (addToHistory && currentSectionRef.current && currentSectionRef.current !== targetId) {
         navHistoryRef.current.push(currentSectionRef.current);
         if (navHistoryRef.current.length > 25) navHistoryRef.current.shift();
       }
 
-      // 2. Update active section tracker
+      // Update active section tracker
       currentSectionRef.current = targetId;
 
-      // 3. Retrieve concise, natural explanation
+      // Retrieve concise, natural explanation
       const explanation = SECTION_EXPLANATIONS[targetId] || SECTION_EXPLANATIONS['projects'];
       const sectionName = explanation?.label || targetId;
       setLiveFeedback(`جا رہے ہیں: ${sectionName} ➜`);
-      setTimeout(() => setLiveFeedback(''), 3500);
+      setTimeout(() => setLiveFeedback(''), 4000);
 
       const speechUrdu = explanation?.urdu || "جی! ہم پہنچ گئے ہیں۔ فرمائیے اب کہاں چلیں؟";
       const speechRoman = explanation?.roman || "Jee! Hum pohanch gaye hain. Farmaiye ab kahan chalein?";
 
-      // 4. Speak arrival confirmation + in-depth explanation verbally in Pakistani Urdu
+      // Speak arrival confirmation + in-depth explanation verbally in Pakistani Urdu
       speak(speechUrdu, speechRoman);
 
-      // 5. Robust Section Element Finder
+      // Perform smooth scroll to target section
+      if (targetId === 'hero' || targetId === 'start' || targetId === 'top') {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        try {
+          if (window.history && window.history.pushState) {
+            window.history.pushState(null, '', window.location.pathname);
+          }
+        } catch (e) {}
+        return;
+      }
+
       const getTargetElement = (id) => {
         if (id === 'projects' || id === 'systems') {
-          return document.getElementById('projects') || document.querySelector('section#projects') || document.getElementById('systems');
+          return document.getElementById('projects') || document.getElementById('systems');
         }
         if (id === 'code' || id === 'code-inspector') {
-          return document.getElementById('code') || document.querySelector('section#code') || document.getElementById('code-inspector');
+          return document.getElementById('code') || document.getElementById('code-inspector');
         }
         if (id === 'api-playground' || id === 'api' || id === 'api-suite') {
-          return document.getElementById('api-playground') || document.querySelector('section#api-playground') || document.getElementById('api');
+          return document.getElementById('api-playground') || document.getElementById('api-suite') || document.getElementById('api');
         }
         if (id === 'architecture' || id === 'topology') {
-          return document.getElementById('architecture') || document.querySelector('section#architecture') || document.getElementById('topology');
+          return document.getElementById('architecture') || document.getElementById('topology');
         }
         if (id === 'skills') {
-          return document.getElementById('skills') || document.querySelector('section#skills');
-        }
-        if (id === 'tech-sphere' || id === 'matrix') {
-          return document.getElementById('tech-sphere') || document.querySelector('section#tech-sphere');
-        }
-        if (id === 'terminal' || id === 'cli') {
-          return document.getElementById('terminal') || document.querySelector('section#terminal');
-        }
-        if (id === 'contact') {
-          return document.getElementById('contact') || document.querySelector('section#contact');
+          return document.getElementById('skills');
         }
         if (id === 'film') {
-          return document.getElementById('film') || document.querySelector('section#film');
+          return document.getElementById('film');
+        }
+        if (id === 'tech-sphere' || id === 'matrix') {
+          return document.getElementById('tech-sphere');
+        }
+        if (id === 'terminal' || id === 'cli') {
+          return document.getElementById('terminal');
+        }
+        if (id === 'contact') {
+          return document.getElementById('contact');
         }
         return document.getElementById(id) || document.querySelector(`[data-section="${id}"]`);
       };
 
-      // 6. Perform smooth scroll with navbar offset
-      const executeScroll = () => {
-        // Return to start / top / hero
-        if (targetId === 'hero' || targetId === 'start' || targetId === 'top') {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
-          try {
-            if (window.history && window.history.pushState) {
-              window.history.pushState(null, '', window.location.pathname);
-            }
-          } catch (e) {}
-          return;
+      const el = getTargetElement(targetId);
+      if (!el) return;
+
+      const rect = el.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const targetOffset = Math.max(0, rect.top + scrollTop - 85);
+
+      window.scrollTo({
+        top: targetOffset,
+        behavior: 'smooth',
+      });
+
+      try {
+        if (window.history && window.history.pushState) {
+          window.history.pushState(null, '', `#${targetId}`);
         }
+      } catch (e) {}
 
-        const el = getTargetElement(targetId);
-        if (!el) return;
-
-        const rect = el.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-        const targetOffset = Math.max(0, rect.top + scrollTop - 85);
-
-        window.scrollTo({
-          top: targetOffset,
-          behavior: 'smooth',
-        });
-
-        if (el.scrollIntoView) {
-          try {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          } catch (e) {}
-        }
-
-        try {
-          if (window.history && window.history.pushState) {
-            window.history.pushState(null, '', `#${targetId}`);
-          }
-        } catch (e) {}
-
-        try {
-          el.style.transition = 'box-shadow 0.6s ease, outline 0.6s ease';
-          el.style.outline = '2px solid rgba(0, 242, 254, 0.9)';
-          el.style.boxShadow = '0 0 50px rgba(0, 242, 254, 0.5)';
-          setTimeout(() => {
-            el.style.outline = '';
-            el.style.boxShadow = '';
-          }, 2500);
-        } catch (e) {}
-      };
-
-      executeScroll();
-      setTimeout(executeScroll, 250);
+      try {
+        el.style.transition = 'box-shadow 0.6s ease, outline 0.6s ease';
+        el.style.outline = '2px solid rgba(0, 242, 254, 0.9)';
+        el.style.boxShadow = '0 0 50px rgba(0, 242, 254, 0.5)';
+        setTimeout(() => {
+          el.style.outline = '';
+          el.style.boxShadow = '';
+        }, 2500);
+      } catch (e) {}
     },
     [speak]
   );
 
-  // High-Sensitivity Real-Time Speech Recognition (Triggers on 1st Time Instantly!)
-  const initAutoVoiceRecognition = useCallback(() => {
+  // Bulletproof, Collision-Free Hot-Mic Voice Recognition Engine
+  const startListening = useCallback(() => {
     if (typeof window === 'undefined') return;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) return;
 
+    // Mutex Lock: Prevent concurrent initialization or double-start race conditions
+    if (isStartingRef.current || isListeningRef.current) return;
+
     try {
-      if (recognitionRef.current) {
-        try {
-          recognitionRef.current.abort();
-        } catch (e) {}
-      }
+      if (!recognitionRef.current) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 3;
+        recognition.lang = recognitionLangRef.current || 'ur-PK';
 
-      const recognition = new SpeechRecognition();
-      recognitionRef.current = recognition;
-      recognition.lang = recognitionLangRef.current || 'ur-PK';
-      recognition.continuous = true;
-      recognition.interimResults = true; // INSTANT LIVE RECOGNITION (Triggers on first syllable/word!)
+        recognition.onstart = () => {
+          isStartingRef.current = false;
+          isListeningRef.current = true;
+          setIsListening(true);
+        };
 
-      recognition.onstart = () => {
-        setIsListening(true);
-        isListeningRef.current = true;
-      };
+        recognition.onresult = (event) => {
+          // Zero-Echo Guard: Discard all input while Alina is speaking or within 600ms of finishing
+          if (isSpeakingRef.current || Date.now() - lastSpeechEndTimeRef.current < 600) {
+            return;
+          }
 
-      recognition.onresult = (event) => {
-        // Loop over recent results (both interim and final) for instant 1st-try recognition!
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          const rawTranscript = event.results[i][0].transcript.toLowerCase();
-          const cleanTranscript = rawTranscript.replace(/[.,?!]/g, '').trim();
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            const rawTranscript = event.results[i][0].transcript.toLowerCase();
+            const cleanTranscript = rawTranscript.replace(/[.,?!]/g, '').trim();
 
-          if (!cleanTranscript || cleanTranscript.length < 2) continue;
+            if (!cleanTranscript || cleanTranscript.length < 2) continue;
 
-          // As soon as user speaks, duck background flute music immediately
-          fluteEngine.duck();
+            // Duck ambient flute music on voice activity
+            fluteEngine.duck();
 
           // TASK 1: Check Explicit Portfolio Introduction Requests (High Priority & Immediate Barge-in!)
           const introTriggers = [
@@ -708,16 +713,12 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             return;
           }
 
-          // TASK 2 & TASK 3: Direct Section Navigation (Matches forward & specific back navigation: film, systems, topology, code, api suite, skills)
+          // TASK 2 & TASK 3: Direct Section Navigation (Film, Systems, Topology, Code, API Suite, Skills)
           const matchedNav = NAV_TARGETS.find((target) =>
             checkKeywordMatch(cleanTranscript, target.keywords)
           );
 
           if (matchedNav) {
-            // Echo guard: if Alina is already speaking her explanation of THIS same section, ignore echo
-            if (isSpeakingRef.current && currentSectionRef.current === matchedNav.id) {
-              continue;
-            }
             lastActionTimestampRef.current = Date.now();
             teleportTo(matchedNav.id);
             return;
@@ -733,11 +734,6 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             const prevSection = navHistoryRef.current.pop() || 'hero';
             teleportTo(prevSection, false);
             return;
-          }
-
-          // If Alina is speaking and input was not a navigation command, ignore ambient voice
-          if (isSpeakingRef.current || Date.now() < speechCooldownUntilRef.current) {
-            continue;
           }
 
           // Debounce guard for knowledge and conversational queries
@@ -773,60 +769,79 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       };
 
       recognition.onerror = (e) => {
-        setIsListening(false);
+        isStartingRef.current = false;
         isListeningRef.current = false;
+        setIsListening(false);
         if (!isSpeakingRef.current) fluteEngine.unduck();
 
         // If Urdu language model not found on local OS, automatically switch to en-US fallback
-        if (e && e.error === 'language-not-supported' && recognitionLangRef.current !== 'en-US') {
-          recognitionLangRef.current = 'en-US';
+        if (e && (e.error === 'language-not-supported' || e.error === 'network')) {
+          if (recognitionLangRef.current !== 'en-US') {
+            recognitionLangRef.current = 'en-US';
+            if (recognitionRef.current) recognitionRef.current.lang = 'en-US';
+          }
         }
 
         // Resilient restart after brief pause
-        setTimeout(() => {
-          if (!isSpeakingRef.current) {
-            initAutoVoiceRecognition();
-          }
-        }, 300);
+        if (e && e.error !== 'aborted') {
+          scheduleRestart(400);
+        }
       };
 
       recognition.onend = () => {
-        setIsListening(false);
+        isStartingRef.current = false;
         isListeningRef.current = false;
+        setIsListening(false);
         if (!isSpeakingRef.current) fluteEngine.unduck();
 
         // Hot Mic auto-restart: keeps recognition hot and listening immediately
-        setTimeout(() => {
-          if (!isSpeakingRef.current) {
-            initAutoVoiceRecognition();
-          }
-        }, 150);
+        scheduleRestart(250);
       };
 
-      recognition.start();
-    } catch (err) {}
-  }, [speak, teleportTo]);
+      recognitionRef.current = recognition;
+    }
 
-  // Resilient Hot-Mic Supervisor (Heartbeat Engine): Guarantees microphone never dies
+    isStartingRef.current = true;
+    recognitionRef.current.start();
+  } catch (err) {
+    isStartingRef.current = false;
+    if (err && err.name === 'InvalidStateError') {
+      isListeningRef.current = true;
+      setIsListening(true);
+    } else {
+      isListeningRef.current = false;
+      setIsListening(false);
+      scheduleRestart(600);
+    }
+  }
+}, [scheduleRestart, speak, teleportTo]);
+
+  // Keep ref up to date for scheduleRestart
+  useEffect(() => {
+    startListeningRef.current = startListening;
+  }, [startListening]);
+
+  // Resilient Hot-Mic Supervisor (Watchdog Engine): Guarantees microphone never dies without collisions
   useEffect(() => {
     const micSupervisor = setInterval(() => {
       if (
         typeof window !== 'undefined' &&
         !isSpeakingRef.current &&
-        !isListeningRef.current
+        !isListeningRef.current &&
+        !isStartingRef.current
       ) {
-        initAutoVoiceRecognition();
+        startListening();
       }
-    }, 800);
+    }, 4000);
 
     return () => clearInterval(micSupervisor);
-  }, [initAutoVoiceRecognition]);
+  }, [startListening]);
 
   // Activate ambient music and hot mic on first user gesture (quiet & ready)
   useEffect(() => {
     const handleGesture = () => {
       fluteEngine.start();
-      initAutoVoiceRecognition();
+      startListening();
     };
 
     try {
@@ -838,12 +853,12 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     return () => {
       events.forEach((evt) => window.removeEventListener(evt, handleGesture));
     };
-  }, [initAutoVoiceRecognition]);
+  }, [startListening]);
 
   // Avatar Click Handler
   const handleAvatarClick = () => {
     fluteEngine.start();
-    initAutoVoiceRecognition();
+    startListening();
     speak(INITIAL_GREETING_URDU, INITIAL_GREETING_ROMAN);
   };
 
@@ -858,11 +873,11 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     }
     isSpeakingRef.current = false;
     setIsSpeaking(false);
-    speechCooldownUntilRef.current = 0;
+    lastSpeechEndTimeRef.current = Date.now();
     fluteEngine.start();
 
-    // 2. Restart hot mic
-    initAutoVoiceRecognition();
+    // 2. Restart hot mic cleanly
+    startListening();
   };
 
   const tiltX = mousePos.y * -8;
