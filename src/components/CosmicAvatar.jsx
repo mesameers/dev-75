@@ -17,7 +17,7 @@ import {
 import { fluteEngine } from '../utils/fluteEngine';
 import alinaAvatarImg from '../assets/alina_entity.png';
 
-// Navigation Targets for Direct Click & Voice Dispatch
+// Navigation Targets for Direct Click & Voice Dispatch (Supports Two-Way Hopping & Back Navigation)
 const NAV_TARGETS = [
   {
     id: 'film',
@@ -27,7 +27,9 @@ const NAV_TARGETS = [
     keywords: [
       'film', 'flim', 'filam', 'video', 'movie', 'cinema', 'built in orbit',
       'film dikhao', 'video dikhao', 'film par le jao', 'film par chalo', 'film per le jao',
-      'فلم', 'ویڈیو', 'سینما', 'فلم دکھاؤ', 'فلم پر لے جاؤ', 'فلم پر چلو'
+      'film pr', 'film pr le jao', 'film pr chalo', 'film dekho', 'film dekhna hai',
+      'back film', 'back to film', 'wapis film', 'wapas film', 'film par wapas', 'film pr wapis', 'film pr wapas',
+      'فلم', 'ویڈیو', 'سینما', 'فلم دکھاؤ', 'فلم پر لے جاؤ', 'فلم پر چلو', 'فلم پر واپس', 'واپس فلم'
     ],
   },
   {
@@ -45,9 +47,11 @@ const NAV_TARGETS = [
       'systems pr', 'systems pr le jao', 'systems pr chalo', 'system pr le jao', 'system pr chalo',
       'projects pr', 'projects pr le jao', 'projects pr chalo', 'project pr le jao',
       'systems dekhna hai', 'projects dekhna hai',
+      'back systems', 'back to systems', 'back projects', 'back to projects',
+      'wapis systems', 'wapas systems', 'wapis projects', 'systems par wapas', 'systems pr wapis', 'projects par wapas', 'projects pr wapis',
       'سسٹم', 'سسٹمز', 'سیستم', 'سیستمز', 'پروجیکٹ', 'پروجیکٹس',
       'پروجیکٹ دکھاؤ', 'سسٹم دکھاؤ', 'سسٹمز دکھاؤ', 'سسٹمز پر لے جاؤ', 'سسٹم پر لے جاؤ',
-      'پروجیکٹس پر لے جاؤ', 'پروجیکٹس دکھاؤ', 'سسٹمز پر چلو', 'سسٹم پر چلو', 'سسٹمز پر'
+      'پروجیکٹس پر لے جاؤ', 'پروجیکٹس دکھاؤ', 'سسٹمز پر چلو', 'سسٹم پر چلو', 'سسٹمز پر', 'سسٹمز پر واپس', 'واپس سسٹمز'
     ],
   },
   {
@@ -59,7 +63,9 @@ const NAV_TARGETS = [
     keywords: [
       'architecture', 'topology', 'toplogy', 'mesh', 'microservices', 'microservice', 'cloud', 'cluster',
       'topology dikhao', 'architecture dikhao', 'topology par le jao', 'topology par chalo', 'topology per le jao', 'topology pr le jao', 'topology pr chalo',
-      'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ', 'ٹوپولوجی دکھاؤ', 'ٹوپولوجی پر لے جاؤ', 'ٹوپولوجی پر چلو'
+      'back topology', 'back to topology', 'back architecture', 'back to architecture',
+      'wapis topology', 'wapas topology', 'topology par wapas', 'topology pr wapis', 'architecture par wapas',
+      'آرکیٹیکچر', 'ٹوپولوجی', 'کلاؤڈ', 'ٹوپولوجی دکھاؤ', 'ٹوپولوجی پر لے جاؤ', 'ٹوپولوجی پر چلو', 'ٹوپولوجی پر واپس', 'واپس ٹوپولوجی'
     ],
   },
   {
@@ -73,7 +79,8 @@ const NAV_TARGETS = [
       'code dikhao', 'code dekhao', 'coding dikhao', 'code par le jao', 'code per le jao', 'code pe le jao',
       'code pr', 'code pr le jao', 'code pr chalo', 'coding pr', 'coding pr le jao',
       'code par chalo', 'code inspector', 'code batao', 'code dekho', 'code dekhna hai',
-      'کوڈ', 'الگورتھم', 'کوڈنگ', 'کوڈ دکھاؤ', 'کوڈ دکھاو', 'کوڈ پر لے جاؤ', 'کوڈ پر چلو', 'کود', 'کوٹ', 'کووڈ', 'کوڈ بتاؤ', 'کوڈ پر', 'پروڈکشن کوڈ'
+      'back code', 'back to code', 'wapis code', 'wapas code', 'code par wapas', 'code pr wapis',
+      'کوڈ', 'الگورتھم', 'کوڈنگ', 'کوڈ دکھاؤ', 'کوڈ دکھاو', 'کوڈ پر لے جاؤ', 'کوڈ پر چلو', 'کود', 'کوٹ', 'کووڈ', 'کوڈ بتاؤ', 'کوڈ پر', 'پروڈکشن کوڈ', 'کوڈ پر واپس', 'واپس کوڈ'
     ],
   },
   {
@@ -88,8 +95,10 @@ const NAV_TARGETS = [
       'api pr', 'api pr le jao', 'api pr chalo', 'api suite pr', 'api suite pr le jao', 'api suite pr chalo',
       'api suite par le jao', 'api suite per le jao', 'api suite pe le jao', 'api par chalo',
       'api batao', 'api suite batao', 'suite dikhao', 'suite pr le jao', 'suite par le jao', 'api dekhna hai',
+      'back api', 'back to api', 'back api suite', 'back to api suite',
+      'wapis api', 'wapis api suite', 'wapas api suite', 'api par wapas', 'api suite pr wapis',
       'اے پی آئی', 'اے پی ائی', 'ای پی آئی', 'ای پی ائی', 'ٹیسٹ', 'اے پی آئی سویٹ', 'سویٹ', 'سوئٹ', 'پلے گراؤنڈ',
-      'اے پی آئی دکھاؤ', 'اے پی آئی سویٹ دکھاؤ', 'اے پی آئی پر لے جاؤ', 'اے پی آئی سویٹ پر لے جاؤ', 'ای پی آئی سویٹ', 'اے پی آئی بتاؤ', 'اے پی آئی پر چلو'
+      'اے پی آئی دکھاؤ', 'اے پی آئی سویٹ دکھاؤ', 'اے پی آئی پر لے جاؤ', 'اے پی آئی سویٹ پر لے جاؤ', 'ای پی آئی سویٹ', 'اے پی آئی بتاؤ', 'اے پی آئی پر چلو', 'اے پی آئی پر واپس', 'واپس اے پی آئی'
     ],
   },
   {
@@ -100,7 +109,9 @@ const NAV_TARGETS = [
     keywords: [
       'skills', 'skill', 'tech stack', 'technologies', 'technology', 'tools', 'kya aata hai',
       'skills dikhao', 'skills par le jao', 'skills par chalo', 'skills per le jao',
-      'اسکلز', 'ٹیکنالوجی', 'ہنر', 'اسکلز دکھاؤ', 'اسکلز پر لے جاؤ', 'اسکلز پر چلو'
+      'skills pr', 'skills pr le jao', 'skills pr chalo', 'skills dekhna hai',
+      'back skills', 'back to skills', 'wapis skills', 'wapas skills', 'skills par wapas', 'skills pr wapis',
+      'اسکلز', 'ٹیکنالوجی', 'ہنر', 'اسکلز دکھاؤ', 'اسکلز پر لے جاؤ', 'اسکلز پر چلو', 'اسکلز پر واپس', 'واپس اسکلز'
     ],
   },
   {
@@ -111,7 +122,8 @@ const NAV_TARGETS = [
     color: '#F59E0B',
     keywords: [
       'matrix', 'sphere', '3d', 'globe', '3d dikhao', 'matrix dikhao',
-      '3d par le jao', 'matrix par le jao', '3d matrix', 'matrix par chalo',
+      '3d par le jao', 'matrix par le jao', '3d matrix', 'matrix par chalo', 'matrix pr', 'matrix pr le jao',
+      'back matrix', 'back 3d', 'wapis matrix',
       'تھری ڈی', 'میٹرکس', 'تھری ڈی دکھاؤ', 'میٹرکس پر لے جاؤ'
     ],
   },
@@ -123,7 +135,8 @@ const NAV_TARGETS = [
     color: '#A855F7',
     keywords: [
       'terminal', 'cli', 'shell', 'bash', 'console', 'command',
-      'terminal dikhao', 'terminal kholo', 'terminal par le jao', 'terminal par chalo',
+      'terminal dikhao', 'terminal kholo', 'terminal par le jao', 'terminal par chalo', 'terminal pr', 'terminal pr le jao',
+      'back terminal', 'back cli', 'wapis terminal',
       'ٹرمینل', 'سی ایل آئی', 'ٹرمینل دکھاؤ', 'ٹرمینل پر لے جاؤ', 'ٹرمینل پر چلو'
     ],
   },
@@ -134,7 +147,8 @@ const NAV_TARGETS = [
     color: '#00FFE0',
     keywords: [
       'contact', 'hire', 'email', 'mail', 'connect', 'message', 'rabta', 'baat karni hai',
-      'contact dikhao', 'contact par le jao', 'contact par chalo', 'rabta karna hai',
+      'contact dikhao', 'contact par le jao', 'contact par chalo', 'rabta karna hai', 'contact pr', 'contact pr le jao',
+      'back contact', 'wapis contact',
       'رابطہ', 'ای میل', 'رابطہ دکھاؤ', 'رابطہ پر لے جاؤ', 'رابطہ کرنا ہے'
     ],
   },
@@ -145,45 +159,46 @@ const NAV_TARGETS = [
     icon: ArrowRight,
     color: '#00F2FE',
     keywords: [
-      'upar', 'top', 'hero', 'home', 'shuru', 'start', 'wapas',
-      'upar jao', 'wapas upar', 'wapas chalo', 'upar le jao', 'start par jao', 'start par le jao',
-      'shuru mein jao', 'shuru par le jao', 'wapas start', 'wapas shuru',
-      'اوپر', 'ہیرو', 'شروع', 'واپس', 'شروع پر لے جاؤ', 'اوپر لے چلو', 'آغاز'
+      'back top', 'back to top', 'top', 'top pr', 'top par', 'top pe', 'wapis top', 'wapas top',
+      'back to start', 'wapis start', 'wapas shuru', 'shuru pr le jao', 'shuru par le jao', 'start pr le jao',
+      'start par le jao', 'upar le jao', 'sab se upar', 'sab se upar le jao', 'top pr chalo', 'start pr chalo',
+      'hero pr le jao', 'hero par le jao', 'hero', 'start', 'home',
+      'اوپر لے جاؤ', 'سب سے اوپر', 'واپس ٹاپ', 'واپس اسٹارٹ', 'شروع پر لے جاؤ', 'آغاز پر'
     ],
   },
 ];
 
-// In-Depth Concise Explanations for Each Section (Arrival announcement + What it does + Prompt next action)
+// In-Depth Melodious Explanations for Each Section (Arrival announcement + Detailed feature breakdown + Two-Way hopping prompt)
 const SECTION_EXPLANATIONS = {
   projects: {
     label: 'Systems & Projects',
-    urdu: "جی! ہم سسٹمز اور پروجیکٹس پر آ گئے ہیں۔ یہاں سمیر کے کلاؤڈ سسٹمز اور اسکیل ایبل پلیٹ فارمز ہیں جو سب-15 ملی سیکنڈ ڈیٹا بیس اور 99.99 فیصد اپ ٹائم پر فعال ہیں۔ فرمائیے اب کہاں چلیں؟",
-    roman: "Jee! Hum systems aur projects par aa gaye hain. Yahan Sameer ke cloud systems aur scalable platforms hain jo sub-15 millisecond database aur 99.99 percent uptime par faal hain. Farmaiye ab kahan chalein?",
+    urdu: "جی! ہم سسٹمز اور پروجیکٹس پر آ گئے ہیں۔ یہاں سمیر کے کلاؤڈ سسٹمز اور انٹرپرائز ساس پلیٹ فارمز ہیں جو سب-15 ملی سیکنڈ ڈیٹا بیس اور 99.99 فیصد اپ ٹائم پر فعال ہیں۔ آپ کسی بھی وقت بیک فلم، ٹوپولوجی، کوڈ، API سوٹ، یا اسکلز پر جا سکتے ہیں۔",
+    roman: "Jee! Hum systems aur projects par aa gaye hain. Yahan Sameer ke cloud systems aur enterprise SaaS platforms hain jo sub-15 millisecond database aur 99.99 percent uptime par faal hain. Aap kisi bhi waqt back film, topology, code, API suite, ya skills par ja sakte hain.",
   },
   film: {
     label: 'Built in Orbit Film',
-    urdu: "جی! ہم فلم سیکشن پر آ گئے ہیں۔ بلٹ ان اوربٹ فلم سمیر کا فریم ایکوریٹ سنیما شوکیس ہے جو ری موشن پر 30 فریم فی سیکنڈ پر بنا ہے۔ فرمائیے اب کہاں چلیں؟",
-    roman: "Jee! Hum film section par aa gaye hain. Built in Orbit film Sameer ka frame-accurate cinema showcase hai jo Remotion par 30 frames per second par bana hai. Farmaiye ab kahan chalein?",
+    urdu: "جی! ہم بلٹ اِن اوربٹ فلم سیکشن پر آ گئے ہیں۔ یہ سمیر کا فریم ایکوریٹ سنیما شوکیس ہے جو ری موشن 30 فریم فی سیکنڈ پر کوڈ کے ذریعے بنا ہے۔ آپ جب چاہیں سسٹمز، ٹوپولوجی، کوڈ، API سوٹ، یا اسکلز پر جا سکتے ہیں، یا واپس ٹاپ پر آ سکتے ہیں۔",
+    roman: "Jee! Hum Built in Orbit film section par aa gaye hain. Yeh Sameer ka frame-accurate cinema showcase hai jo Remotion 30 frames per second par code ke zariye bana hai. Aap jab chahein systems, topology, code, API suite, ya skills par ja sakte hain, ya wapas top par aa sakte hain.",
   },
   architecture: {
     label: 'Microservices Topology',
-    urdu: "جی! ہم مائیکروسروسز ٹوپولوجی پر آ گئے ہیں۔ یہ سمیر کے کلاؤڈ انفراسٹرکچر کا لائیو نیٹ ورک میش ہے جس میں گلوبل ایج روٹنگ اور زیرو ٹرسٹ سیکیورٹی فعال ہے۔ فرمائیے اب کہاں چلیں؟",
-    roman: "Jee! Hum microservices topology par aa gaye hain. Yeh Sameer ke cloud infrastructure ka live network mesh hai jis mein global edge routing aur zero-trust security faal hai. Farmaiye ab kahan chalein?",
+    urdu: "جی! ہم مائیکروسروسز ٹوپولوجی پر آ گئے ہیں۔ یہ سمیر کے کلاؤڈ انفراسٹرکچر کا لائیو نیٹ ورک میش ہے جس میں گلوبل ایج روٹنگ اور زیرو ٹرسٹ سیکیورٹی فعال ہے۔ آپ جب چاہیں کوڈ، API سوٹ، اسکلز، یا واپس سسٹمز اور فلم پر جا سکتے ہیں۔",
+    roman: "Jee! Hum microservices topology par aa gaye hain. Yeh Sameer ke cloud infrastructure ka live network mesh hai jis mein global edge routing aur zero-trust security faal hai. Aap jab chahein code, API suite, skills, ya wapas systems aur film par ja sakte hain.",
   },
   code: {
     label: 'Code Inspector',
-    urdu: "جی! ہم پروڈکشن کوڈ انسپیکٹر پر آ گئے ہیں۔ یہاں سمیر کے ری ایکٹو الگورتھمز اور کلین ٹائپ اسکرپٹ کوڈ کے نمونے موجود ہیں جن کا آپ لائیو معائنہ کر سکتے ہیں۔ فرمائیے اب کہاں چلیں؟",
-    roman: "Jee! Hum production code inspector par aa gaye hain. Yahan Sameer ke reactive algorithms aur clean TypeScript code ke namoone maujood hain jin ka aap live muayana kar sakte hain. Farmaiye ab kahan chalein?",
+    urdu: "جی! ہم پروڈکشن کوڈ انسپیکٹر پر آ گئے ہیں۔ یہاں سمیر کے ری ایکٹو الگورتھمز اور کلین ٹائپ اسکرپٹ کوڈ کے اصل نمونے موجود ہیں جن کا آپ لائیو معائنہ کر سکتے ہیں۔ فرمائیے آگے API سوٹ پر چلیں یا واپس ٹوپولوجی پر؟",
+    roman: "Jee! Hum production code inspector par aa gaye hain. Yahan Sameer ke reactive algorithms aur clean TypeScript code ke asal namoone maujood hain jin ka aap live muayana kar sakte hain. Farmaiye aage API suite par chalein ya wapas topology par?",
   },
   'api-playground': {
     label: 'API Suite',
-    urdu: "جی! ہم لائیو API سویٹ پر آ گئے ہیں۔ یہاں آپ سمیر کے پروڈکشن مائیکروسروسز اینڈ پوائنٹس کو کال کر کے ریئل ٹائم رسپانس اور لیٹنسی چیک کر سکتے ہیں۔ فرمائیے اب کہاں چلیں؟",
-    roman: "Jee! Hum live API suite par aa gaye hain. Yahan aap Sameer ke production microservices endpoints ko call kar ke real-time response aur latency check kar sakte hain. Farmaiye ab kahan chalein?",
+    urdu: "جی! ہم ریئل ٹائم API سوٹ پر آ گئے ہیں۔ یہاں آپ سمیر کے پروڈکشن اینڈ پوائنٹس کو براہ راست کال کر کے لائیو ڈیٹا اور لیٹنسی ٹیسٹ کر سکتے ہیں۔ آپ جب چاہیں اسکلز پر جا سکتے ہیں یا واپس کوڈ، ٹوپولوجی اور سسٹمز پر جا سکتے ہیں۔",
+    roman: "Jee! Hum real-time API suite par aa gaye hain. Yahan aap Sameer ke production endpoints ko barahe-raast call kar ke live data aur latency test kar sakte hain. Aap jab chahein skills par ja sakte hain ya wapas code, topology aur systems par ja sakte hain.",
   },
   skills: {
     label: 'Technical Skills',
-    urdu: "جی! ہم ٹیکنیکل اسکلز سیکشن پر آ گئے ہیں۔ اس میں ری ایکٹ 18، نیکسٹ جے ایس، نوڈ، پوسٹگریس اور ڈاکر سمیت سمیر کی تمام کور ٹیکنالوجیز شامل ہیں۔ فرمائیے اب کہاں چلیں؟",
-    roman: "Jee! Hum technical skills section par aa gaye hain. Is mein React 18, Next.js, Node, PostgreSQL aur Docker samet Sameer ki tamam core technologies shamil hain. Farmaiye ab kahan chalein?",
+    urdu: "جی! ہم ٹیکنیکل اسکلز میٹرکس پر آ گئے ہیں۔ اس میں ری ایکٹ 18، نیکسٹ جے ایس، نوڈ، پوسٹگریس اور ڈاکر سمیت سمیر کی تمام مہارتیں موجود ہیں۔ آپ جب چاہیں واپس کسی بھی سیکشن پر جا سکتے ہیں یا بیک ٹاپ پر آ سکتے ہیں۔",
+    roman: "Jee! Hum technical skills matrix par aa gaye hain. Is mein React 18, Next.js, Node, PostgreSQL aur Docker samet Sameer ki tamam mahaaratein maujood hain. Aap jab chahein wapas kisi bhi section par ja sakte hain ya back top par aa sakte hain.",
   },
   'tech-sphere': {
     label: '3D Matrix',
@@ -202,8 +217,8 @@ const SECTION_EXPLANATIONS = {
   },
   hero: {
     label: 'Hero Section',
-    urdu: "جی چلیے! ہم واپس شروع یعنی ہیرو سیکشن پر آ گئے ہیں۔ یہاں سمیر حسین کا تعارف اور لائیو سسٹم میٹرکس موجود ہیں۔ فرمائیے اب کس سیکشن پر لے کر چلوں؟",
-    roman: "Jee chaliye! Hum wapas shuru yaani hero section par aa gaye hain. Yahan Sameer Hussain ka taaruf aur live system matrix maujood hain. Farmaiye ab kis section par le kar chaloon?",
+    urdu: "جی چلیے! ہم واپس سب سے اوپر یعنی ہیرو سیکشن پر آ گئے ہیں۔ یہاں سمیر حسین کا تعارف اور لائیو پورٹ فولیو میٹرکس موجود ہیں۔ فرمائیے اب کس سیکشن پر لے کر چلوں؟",
+    roman: "Jee chaliye! Hum wapas sab se upar yaani hero section par aa gaye hain. Yahan Sameer Hussain ka taaruf aur live portfolio matrix maujood hain. Farmaiye ab kis section par le kar chaloon?",
   },
 };
 
@@ -213,17 +228,21 @@ const INITIAL_GREETING_ROMAN = "Khushamdeed! Main Alina hoon, Sameer Hussain ki 
 
 // Comprehensive Conversational AI Knowledge Base for Alina
 const AI_KNOWLEDGE_BASE = [
-  // 1. Detailed Portfolio Introduction (when user asks what is here / what it does)
+  // 1. Detailed Portfolio Introduction (Task 1: Comprehensive Introduction when requested)
   {
     intent: 'portfolio_introduction',
     triggers: [
-      'intro do', 'introduction', 'intro', 'taaruf', 'portfolio intro', 'is portfolio mein kya hai',
-      'portfolio ke bare mein batao', 'kya kya cheezein hain', 'kya kaam karti hain', 'website mein kya hai',
-      'portfolio explain karo', 'sab explain karo', 'portfolio ka introduction', 'overview do', 'website ka intro',
-      'tell me about this portfolio', 'what is this website', 'features batao', 'kya kya hai yahan', 'تعارف'
+      'portfolio ka introduction', 'portfolio ka intro', 'portfolio intro', 'intro do',
+      'introduction do', 'introduction', 'intro', 'taaruf karwao', 'taaruf do', 'taaruf',
+      'portfolio taaruf', 'apna aur portfolio ka intro', 'apna aur portfolio ka intro do',
+      'portfolio ke bare mein batao', 'portfolio explain karo', 'sab explain karo',
+      'website ka intro', 'tell me about this portfolio', 'what is this website',
+      'website ke bare mein batao', 'introduce portfolio', 'portfolio batao',
+      'is portfolio mein kya hai', 'kya kya cheezein hain', 'features batao',
+      'پورٹ فولیو کا تعارف', 'تعارف کروائیں', 'تعارف', 'انٹروڈکشن'
     ],
-    urdu: "سمیر حسین کے اس پورٹ فولیو میں آٹھ جدید ترین سسٹمز شامل ہیں۔ پہلا، بلٹ ان اوربٹ فلم جو ری موشن پر ویڈیو شوکیس ہے۔ دوسرا، فلیگ شپ کلاؤڈ سسٹمز اور پروجیکٹس۔ تیسرا، مائیکروسروسز میش ٹوپولوجی جس کی لیٹنسی بارہ ملی سیکنڈ ہے۔ چوتھا، لائیو کوڈ انسپیکٹر جس میں پروڈکشن الگورتھمز ہیں۔ پانچواں، لائیو API ٹیسٹنگ سوٹ۔ چھٹا، ٹیکنیکل اسکلز میٹرکس۔ ساتواں، انٹرایکٹو تھری ڈی میٹرکس۔ اور آٹھواں، لائیو ڈویلپر سی ایل آئی ٹرمینل۔ آپ جس سیکشن پر جانا چاہیں، بس فرمائیے میں لے چلوں گی۔",
-    roman: "Sameer Hussain ke is portfolio mein aath jadeed systems shamil hain. Pehla, 'Built in Orbit' film jo Remotion 30 fps par video showcase hai. Doosra, flagship cloud systems aur platforms. Teesra, microservices mesh topology jis ki latency sirf 12 millisecond hai. Chautha, live code inspector jis mein production algorithms hain. Panchwa, live API testing suite. Chhata, technical skills matrix. Satwa, interactive 3D matrix globe. Aur aathwa, live developer CLI terminal. Aap jis section par jana chahein, bas mujhe batayein main aap ko wahan le chaloon gi.",
+    urdu: "خوش آمدید! سمیر حسین کے اس پورٹ فولیو میں چھ بنیادی سسٹمز شامل ہیں: پہلا، بلٹ ان اوربٹ سنیما فلم، دوسرا، ہائی پرفارمنس کلاؤڈ سسٹمز اور پروجیکٹس، تیسرا، مائیکروسروسز ٹوپولوجی، چوتھا، لائیو کوڈ انسپیکٹر، پانچواں، ریئل ٹائم API ٹیسٹنگ سوٹ، اور چھٹا، ٹیکنیکل اسکلز میٹرکس۔ آپ فلم، سسٹمز، ٹوپولوجی، کوڈ، API سوٹ یا اسکلز، جس سیکشن پر جانا چاہیں یا واپس آنا چاہیں، بس فرمائیے میں لے چلوں گی۔",
+    roman: "Khush-aamdeed! Sameer Hussain ke is portfolio mein chhey bunyaadi systems shaamil hain: Pehla, Built in Orbit cinema film; doosra, high-performance cloud systems aur projects; teesra, microservices topology; chautha, live production code inspector; paanchwa, real-time API suite; aur chatha, technical skills matrix. Aap film, systems, topology, code, API suite ya skills, jis bhi section par jaana chahein ya wapas aana chahein, bas bataiye, main aap ko le chaloon gi.",
   },
   // 2. About Sameer
   {
@@ -312,6 +331,8 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
   // Active section tracking (Default: hero)
   const currentSectionRef = useRef('hero');
+  // Section Navigation History Stack for Two-Way Hopping
+  const navHistoryRef = useRef([]);
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -334,6 +355,75 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // Pre-load voices on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      const loadVoices = () => {
+        try {
+          window.speechSynthesis.getVoices();
+        } catch (e) {}
+      };
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }, []);
+
+  // Helper to pick the most melodious, beautiful female voice ("Sureli Voice")
+  const getSureliVoice = () => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices || voices.length === 0) return null;
+
+    // 1. South Asian & Indian Natural female voices (Utmost sweet, melodious pronunciation for Roman Urdu)
+    const southAsianMelodious = voices.find(
+      (v) =>
+        v.name.includes('Neerja') ||
+        v.name.includes('Swara') ||
+        v.name.includes('Heera') ||
+        ((v.lang === 'en-IN' || v.lang === 'hi-IN') &&
+          (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('natural') || !v.name.includes('Hemant')))
+    );
+    if (southAsianMelodious) return southAsianMelodious;
+
+    // 2. Microsoft Natural Online Neural Voices (Edge / Windows 11 high-end AI voices: Jenny, Aria, Sonia, Libby)
+    const msNatural = voices.find(
+      (v) =>
+        (v.name.includes('Jenny') || v.name.includes('Aria') || v.name.includes('Sonia') || v.name.includes('Libby')) &&
+        v.name.includes('Natural')
+    );
+    if (msNatural) return msNatural;
+
+    // 3. Google Natural Female voices
+    const googleNatural = voices.find(
+      (v) =>
+        v.name.includes('Google UK English Female') ||
+        v.name.includes('Google US English Female') ||
+        v.name.includes('Google हिन्दी')
+    );
+    if (googleNatural) return googleNatural;
+
+    // 4. Apple premium female voices
+    const appleFemale = voices.find((v) =>
+      ['Samantha', 'Victoria', 'Karen', 'Tessa', 'Moira'].some((n) => v.name.includes(n))
+    );
+    if (appleFemale) return appleFemale;
+
+    // 5. Urdu voice if installed
+    const urduVoice = voices.find((v) => v.lang.includes('ur'));
+    if (urduVoice) return urduVoice;
+
+    // 6. Generic female or natural
+    const generalFemale = voices.find(
+      (v) =>
+        v.name.toLowerCase().includes('female') ||
+        v.name.toLowerCase().includes('zira') ||
+        v.name.toLowerCase().includes('natural')
+    );
+    if (generalFemale) return generalFemale;
+
+    return voices.find((v) => v.lang.startsWith('en')) || voices[0];
+  };
 
   // Natural Pakistani Urdu Speech Synthesis Engine with Rock-Solid Echo Protection & Auto-Ducking
   const speak = useCallback((urduText, romanText = '', onComplete) => {
@@ -365,18 +455,15 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       window.__alinaUtterance = utterance;
       activeUtteranceRef.current = utterance;
 
-      const voices = window.speechSynthesis.getVoices();
-
-      // Natural female voice search
-      const preferredVoice =
-        voices.find((v) => (v.lang.includes('ur') || v.lang.includes('hi')) && !v.name.includes('Hemant')) ||
-        voices.find((v) => (v.name.includes('Zira') || v.name.includes('Jenny') || v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Female') || v.name.includes('Natural'))) ||
-        voices.find((v) => v.lang.startsWith('en') && v.name.toLowerCase().includes('female')) ||
-        voices.find((v) => v.lang.startsWith('en'));
-
+      const preferredVoice = getSureliVoice();
       if (preferredVoice) utterance.voice = preferredVoice;
-      utterance.pitch = 1.18; // Warm, polite feminine presenter tone
-      utterance.rate = 0.88; // Normal, crystal-clear understandable cadence
+
+      // Ultra-Melodious & Sureli Tone Calibration:
+      // 1.08 pitch: warm, graceful, sweet feminine frequency
+      // 0.94 rate: gentle, soothing, highly articulate cadence
+      utterance.pitch = 1.08;
+      utterance.rate = 0.94;
+      utterance.volume = 1.0;
 
       let hasFinished = false;
       const handleSpeechFinish = () => {
@@ -428,7 +515,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
 
   // Multi-Strategy Teleport Navigation Function (Navigates to Section AND Explains it immediately)
   const teleportTo = useCallback(
-    (targetId) => {
+    (targetId, addToHistory = true) => {
       // 1. Immediately cancel any ongoing speech so Alina responds to the new section instantly
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
         try {
@@ -438,6 +525,12 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
       isSpeakingRef.current = false;
       setIsSpeaking(false);
       speechCooldownUntilRef.current = 0;
+
+      // Two-way hopping: push current section to history stack
+      if (addToHistory && currentSectionRef.current && currentSectionRef.current !== targetId) {
+        navHistoryRef.current.push(currentSectionRef.current);
+        if (navHistoryRef.current.length > 25) navHistoryRef.current.shift();
+      }
 
       // 2. Update active section tracker
       currentSectionRef.current = targetId;
@@ -579,15 +672,35 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
           // As soon as user speaks, duck background flute music immediately
           fluteEngine.duck();
 
-          // 1. Check Return-to-Start / Top / Hero Requests (Highest Priority for returning!)
+          // TASK 1: Check Explicit Portfolio Introduction Requests (High Priority & Immediate Barge-in!)
+          const introTriggers = [
+            'portfolio ka introduction', 'portfolio ka intro', 'portfolio intro', 'intro do',
+            'introduction do', 'introduction', 'intro', 'taaruf karwao', 'taaruf do', 'taaruf',
+            'portfolio taaruf', 'apna aur portfolio ka intro', 'apna aur portfolio ka intro do',
+            'portfolio ke bare mein batao', 'portfolio explain karo', 'sab explain karo',
+            'website ka intro', 'tell me about this portfolio', 'what is this website',
+            'website ke bare mein batao', 'introduce portfolio', 'portfolio batao',
+            'is portfolio mein kya hai', 'kya kya cheezein hain', 'features batao',
+            'پورٹ فولیو کا تعارف', 'تعارف کروائیں', 'تعارف', 'انٹروڈکشن'
+          ];
+          if (checkKeywordMatch(cleanTranscript, introTriggers)) {
+            lastActionTimestampRef.current = Date.now();
+            setLiveFeedback("پورٹ فولیو کا تعارف // Portfolio Introduction");
+            setTimeout(() => setLiveFeedback(''), 4500);
+            const introData = AI_KNOWLEDGE_BASE.find((k) => k.intent === 'portfolio_introduction');
+            if (introData) {
+              speak(introData.urdu, introData.roman);
+            }
+            return;
+          }
+
+          // TASK 4: Check Return-to-Top / Hero Requests ("back top", "top", "wapis top", "wapis start", "sab se upar", etc.)
           const returnTopWords = [
-            'wapas start', 'start par', 'start pe', 'shuru par', 'shuru pe', 'wapas shuru',
-            'wapas upar', 'wapas chalo', 'upar le jao', 'upar chalo', 'back to top',
-            'upar jao', 'wapas le jao', 'hero par jao', 'top par jao', 'home par jao',
-            'start par le jao', 'shuru mein le jao', 'wapas chalen', 'shuru se',
-            'start pr', 'start pr le jao', 'start pr chalo', 'wapas pr', 'wapas', 'upar', 'shuru',
-            'واپس اوپر', 'اوپر لے جاؤ', 'واپس چلو', 'اوپر چلو', 'شروع پر', 'واپس شروع',
-            'اسٹارٹ پر', 'واپس اسٹارٹ', 'اوپر جاؤ', 'شروع میں لے جاؤ', 'واپس لے جاؤ', 'شروع', 'واپس'
+            'back top', 'back to top', 'top', 'top pr', 'top par', 'top pe', 'wapis top', 'wapas top',
+            'back to start', 'wapis start', 'wapas shuru', 'shuru pr le jao', 'shuru par le jao', 'start pr le jao',
+            'start par le jao', 'upar le jao', 'sab se upar', 'sab se upar le jao', 'top pr chalo', 'start pr chalo',
+            'hero pr le jao', 'hero par le jao', 'hero', 'home',
+            'اوپر لے جاؤ', 'سب سے اوپر', 'واپس ٹاپ', 'واپس اسٹارٹ', 'شروع پر لے جاؤ', 'آغاز پر'
           ];
           if (checkKeywordMatch(cleanTranscript, returnTopWords)) {
             lastActionTimestampRef.current = Date.now();
@@ -595,7 +708,7 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             return;
           }
 
-          // 2. Direct Section Navigation (Highest Priority for navigating to any specific section!)
+          // TASK 2 & TASK 3: Direct Section Navigation (Matches forward & specific back navigation: film, systems, topology, code, api suite, skills)
           const matchedNav = NAV_TARGETS.find((target) =>
             checkKeywordMatch(cleanTranscript, target.keywords)
           );
@@ -607,6 +720,18 @@ export const CosmicAvatar = ({ size = 480, className = "" }) => {
             }
             lastActionTimestampRef.current = Date.now();
             teleportTo(matchedNav.id);
+            return;
+          }
+
+          // TASK 3: Generic "Back" / "Wapis" navigation (Pops previous section from history)
+          const genericBackWords = [
+            'back', 'wapis', 'wapas', 'pichhe', 'go back', 'wapis jao', 'wapas jao', 'pichhe jao',
+            'previous', 'previous section', 'pichhla section', 'واپس', 'پیچھے', 'پچھلا'
+          ];
+          if (checkKeywordMatch(cleanTranscript, genericBackWords)) {
+            lastActionTimestampRef.current = Date.now();
+            const prevSection = navHistoryRef.current.pop() || 'hero';
+            teleportTo(prevSection, false);
             return;
           }
 
