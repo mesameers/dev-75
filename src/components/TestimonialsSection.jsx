@@ -7,9 +7,11 @@ export const TestimonialsSection = () => {
 
   return (
     <section
+      id="testimonials"
       ref={sectionRef}
-      className="py-24 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden"
+      className="py-24 px-6 bg-transparent relative border-t border-slate-900/60 overflow-hidden scroll-mt-20"
     >
+      <span id="reviews" className="sr-only" />
       <div className="max-w-5xl mx-auto relative z-10 text-center">
         {/* Header Indicator */}
         <div className="inline-flex items-center space-x-2 font-mono text-xs tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1.5 rounded-full mb-6 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
